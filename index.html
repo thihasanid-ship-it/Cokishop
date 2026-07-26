@@ -3,509 +3,525 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Coki — 精致女子生活馆</title>
+  <title>Coki — 潮流女性买手店</title>
   <style>
     :root {
-      --primary: #ff5e7e;
-      --primary-light: #fff0f3;
-      --dark: #1a1a1a;
-      --gray: #888;
-      --light-bg: #faf9f6;
+      --dewu-black: #121212;
+      --dewu-cyan: #00f0ff;
+      --dewu-neon: #ccff00;
+      --bg-gray: #f6f6f6;
       --card-bg: #ffffff;
-      --shadow: 0 8px 24px rgba(149, 157, 165, 0.08);
-      --radius: 16px;
+      --radius-lg: 18px;
+      --radius-sm: 10px;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--light-bg);
-      color: var(--dark);
+      background-color: var(--bg-gray);
+      color: var(--dewu-black);
       padding-bottom: 90px;
     }
 
-    /* 顶部毛玻璃导航栏 */
+    /* 1. 顶部黑潮 Header */
     header {
+      background-color: var(--dewu-black);
+      padding: 12px 16px;
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 12px 20px;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(0,0,0,0.03);
+      margin-bottom: 10px;
     }
 
-    .brand-logo {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      background: linear-gradient(45deg, #ff5e7e, #a142f4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .logo {
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -1px;
+      font-style: italic;
     }
 
-    .cart-btn {
+    .logo span {
+      color: var(--dewu-cyan);
+    }
+
+    .cart-box {
       position: relative;
-      background: #f0f0f2;
-      width: 40px;
-      height: 40px;
+      background: rgba(255, 255, 255, 0.15);
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
       cursor: pointer;
-      transition: transform 0.1s ease;
+      transition: transform 0.15s ease;
     }
 
-    .cart-btn:active {
-      transform: scale(0.9);
-    }
+    .cart-box:active { transform: scale(0.88); }
 
     .cart-badge {
       position: absolute;
       top: -2px;
       right: -2px;
-      background: var(--primary);
-      color: #fff;
+      background: var(--dewu-neon);
+      color: var(--dewu-black);
       font-size: 10px;
-      font-weight: bold;
+      font-weight: 900;
       width: 18px;
       height: 18px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid #fff;
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .cart-badge.bump {
-      transform: scale(1.4);
-    }
-
-    /* 搜索栏 */
-    .search-container {
-      padding: 12px 20px;
-    }
-
+    /* 搜索框 */
     .search-box {
-      background: #fff;
-      border-radius: 24px;
-      padding: 10px 18px;
+      background: #222;
+      border-radius: 20px;
+      padding: 8px 14px;
       display: flex;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-      border: 1px solid #efeef1;
+      border: 1px solid #333;
     }
 
     .search-box input {
+      background: transparent;
       border: none;
       outline: none;
-      background: transparent;
-      margin-left: 10px;
-      width: 100%;
-      font-size: 14px;
-    }
-
-    /* 首页 Banner */
-    .hero-wrapper {
-      padding: 0 20px;
-      margin-top: 6px;
-    }
-
-    .hero-card {
-      background: linear-gradient(135deg, #ff8fa3 0%, #ff4d6d 100%);
-      border-radius: var(--radius);
-      padding: 28px 24px;
       color: #fff;
-      box-shadow: 0 10px 20px rgba(255, 94, 126, 0.25);
+      margin-left: 8px;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    .search-box input::placeholder { color: #777; }
+
+    /* 2. 独家保证 Tag 栏 */
+    .guarantee-bar {
+      background: #000;
+      color: #888;
+      font-size: 11px;
+      padding: 6px 16px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #222;
+    }
+
+    .guarantee-item { display: flex; align-items: center; gap: 4px; }
+    .guarantee-item span { color: var(--dewu-cyan); font-weight: bold; }
+
+    /* 3. 得物风格主海报 Banner */
+    .banner-wrapper { padding: 12px 16px 0; }
+    
+    .hero-banner {
+      background: linear-gradient(135deg, #1f1f1f 0%, #000000 100%);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      color: #fff;
       position: relative;
       overflow: hidden;
+      border: 1px solid #2c2c2c;
     }
 
-    .hero-card::after {
-      content: 'Coki';
-      position: absolute;
-      right: -20px;
-      bottom: -20px;
-      font-size: 90px;
+    .banner-tag {
+      background: var(--dewu-cyan);
+      color: var(--dewu-black);
+      font-size: 10px;
       font-weight: 900;
-      opacity: 0.12;
-      color: #fff;
-    }
-
-    .hero-tag {
+      padding: 3px 8px;
+      border-radius: 4px;
       display: inline-block;
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(4px);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .hero-card h2 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
+    .hero-banner h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .hero-banner p { font-size: 12px; color: #aaa; margin-bottom: 14px; }
 
-    .hero-card p {
-      font-size: 13px;
-      opacity: 0.9;
-      margin-bottom: 18px;
-    }
-
-    .cta-btn {
+    .banner-btn {
       background: #fff;
-      color: var(--primary);
+      color: var(--dewu-black);
       border: none;
-      padding: 10px 22px;
+      padding: 8px 18px;
       border-radius: 20px;
-      font-weight: 700;
-      font-size: 13px;
+      font-weight: 800;
+      font-size: 12px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       transition: all 0.15s ease;
     }
 
-    .cta-btn:active {
-      transform: scale(0.94);
-      background: #f7f7f7;
-    }
+    .banner-btn:active { transform: scale(0.92); background: var(--dewu-neon); }
 
-    /* 标题 */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 20px 12px;
-    }
-
-    .section-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--dark);
-    }
-
-    /* 分类 Icon 横向滚动 */
+    /* 4. 分类 Round Cards */
     .categories {
       display: flex;
+      justify-content: space-between;
+      padding: 16px;
+      background: #fff;
+      margin-top: 12px;
+    }
+
+    .cat-item { text-align: center; cursor: pointer; }
+    .cat-item:active { transform: scale(0.9); }
+
+    .cat-icon-bg {
+      width: 52px;
+      height: 52px;
+      background: #f0f0f2;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin: 0 auto 6px;
+    }
+
+    .cat-label { font-size: 12px; font-weight: 600; color: #333; }
+
+    /* 模块标题 */
+    .section-title {
+      font-size: 16px;
+      font-weight: 900;
+      padding: 18px 16px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .section-title span { font-size: 11px; color: #888; font-weight: normal; }
+
+    /* 5. 横向滑动新品专区 */
+    .horizontal-scroll {
+      display: flex;
       gap: 12px;
-      padding: 0 20px;
+      padding: 0 16px;
       overflow-x: auto;
       scrollbar-width: none;
     }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
 
-    .categories::-webkit-scrollbar {
-      display: none;
-    }
-
-    .cat-card {
+    .scroll-card {
+      min-width: 120px;
       background: #fff;
-      min-width: 76px;
-      padding: 14px 10px;
-      border-radius: 14px;
-      text-align: center;
-      border: 1px solid #f0f0f0;
+      border-radius: 12px;
+      padding: 8px;
       cursor: pointer;
-      transition: all 0.15s ease;
     }
+    .scroll-card:active { transform: scale(0.95); }
 
-    .cat-card:active {
-      transform: scale(0.92);
-      background: var(--primary-light);
-      border-color: var(--primary);
-    }
+    .scroll-img { width: 100%; height: 110px; border-radius: 8px; object-fit: cover; }
+    .scroll-title { font-size: 11px; font-weight: 600; margin: 6px 0 2px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+    .scroll-price { font-size: 13px; font-weight: 800; color: var(--dewu-black); }
 
-    .cat-icon {
-      font-size: 26px;
-      margin-bottom: 6px;
-      display: block;
-    }
-
-    .cat-name {
-      font-size: 12px;
-      font-weight: 600;
-      color: #444;
-    }
-
-    /* 双列商品瀑布流 */
+    /* 6. 双列得物爆款瀑布流 */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      padding: 0 20px;
+      gap: 10px;
+      padding: 0 16px;
     }
 
     .product-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
+      background: #fff;
+      border-radius: var(--radius-sm);
       overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid #f2f2f4;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
       cursor: pointer;
-    }
-
-    .product-card:active {
-      transform: scale(0.97);
-    }
-
-    .img-box {
-      width: 100%;
-      height: 170px;
-      background: #f5f5f7;
       position: relative;
-      overflow: hidden;
+      transition: transform 0.15s ease;
     }
 
-    .img-box img {
+    .product-card:active { transform: scale(0.97); }
+
+    .img-wrapper {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: 175px;
+      background: #fafafa;
+      position: relative;
     }
 
-    .product-info {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      flex: 1;
+    .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+    .hot-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 10px;
     }
 
-    .product-title {
-      font-size: 13px;
+    .product-info { padding: 10px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+
+    .product-name {
+      font-size: 12px;
       font-weight: 600;
       color: #222;
-      margin-bottom: 10px;
-      line-height: 1.35;
+      line-height: 1.4;
+      margin-bottom: 8px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .price-row {
+    .price-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .price {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--primary);
-    }
+    .price-num { font-size: 15px; font-weight: 900; color: var(--dewu-black); }
 
-    .add-cart-btn {
-      background: var(--dark);
+    .buy-btn {
+      background: var(--dewu-black);
       color: #fff;
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       font-size: 16px;
+      font-weight: bold;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.15s ease;
     }
 
-    .add-cart-btn:active {
-      transform: scale(0.85);
-      background: var(--primary);
-    }
+    .buy-btn:active { background: var(--dewu-cyan); color: #000; }
 
-    /* 飘出的 Toast 提示框 */
-    .toast {
+    /* 7. 得物风 App 底部导航 */
+    .bottom-nav {
       position: fixed;
-      bottom: 30px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 14px;
+      border-top: 1px solid #eaeaea;
+      z-index: 1000;
+    }
+
+    .nav-tab { text-align: center; color: #888; font-size: 10px; font-weight: 600; cursor: pointer; }
+    .nav-tab.active { color: var(--dewu-black); }
+    .nav-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+
+    /* 全局提示 Toast */
+    #toast {
+      position: fixed;
+      bottom: 75px;
       left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: rgba(26, 26, 26, 0.9);
-      color: #fff;
+      transform: translateX(-50%) translateY(50px);
+      background: #000;
+      color: var(--dewu-neon);
       padding: 10px 20px;
       border-radius: 20px;
-      font-size: 13px;
-      font-weight: 500;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 1000;
+      font-size: 12px;
+      font-weight: bold;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       pointer-events: none;
+      z-index: 2000;
     }
 
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- 顶部导航 -->
+  <!-- 1. Header -->
   <header>
-    <div class="brand-logo">Coki.</div>
-    <div class="cart-btn" onclick="showToast('🛒 正在前往购物车...')">
-      🛍️
-      <div class="cart-badge" id="cartCount">0</div>
+    <div class="top-bar">
+      <div class="logo">COKI<span>.POIZON</span></div>
+      <div class="cart-box" onclick="notify('🛒 前往购物车结算')">
+        🛍️
+        <div class="cart-badge" id="badge">0</div>
+      </div>
+    </div>
+    <div class="search-box">
+      🔍 <input type="text" placeholder="搜索 独家女装 / 潮流包包 / 挂件饰品">
     </div>
   </header>
 
-  <!-- 搜索框 -->
-  <div class="search-container">
-    <div class="search-box">
-      🔍 <input type="text" placeholder="搜索连衣裙、包包、吊坠饰品...">
+  <!-- 2. 品质保证栏 -->
+  <div class="guarantee-bar">
+    <div class="guarantee-item"><span>✓</span> 官方鉴别</div>
+    <div class="guarantee-item"><span>✓</span> 正品保障</div>
+    <div class="guarantee-item"><span>✓</span> 逐件查验</div>
+  </div>
+
+  <!-- 3. 主 Banner -->
+  <div class="banner-wrapper">
+    <div class="hero-banner">
+      <span class="banner-tag">POIZON SELECTION</span>
+      <h2>Coki 潮流买手季</h2>
+      <p>精选夏日高颜值女装 & 原创配饰</p>
+      <button class="banner-btn" onclick="notify('🔥 已加载最新潮流榜单！')">立即抢购</button>
     </div>
   </div>
 
-  <!-- 首页 Banner -->
-  <div class="hero-wrapper">
-    <div class="hero-card">
-      <span class="hero-tag">NEW COLLECTION</span>
-      <h2>Coki 独家定制款</h2>
-      <p>精选夏日高质感女装 & 时尚配饰</p>
-      <button class="cta-btn" onclick="showToast('✨ 已为你筛选最新热卖款！')">立即探索</button>
-    </div>
-  </div>
-
-  <!-- 分类导航 -->
-  <div class="section-header">
-    <span class="section-title">热门分类</span>
-  </div>
+  <!-- 4. 金刚区分类 -->
   <div class="categories">
-    <div class="cat-card" onclick="showToast('开打分类：女装专区')">
-      <span class="cat-icon">👗</span>
-      <span class="cat-name">女装</span>
+    <div class="cat-item" onclick="notify('进入：女装专区')">
+      <div class="cat-icon-bg">👗</div>
+      <div class="cat-label">女装</div>
     </div>
-    <div class="cat-card" onclick="showToast('开打分类：包包专区')">
-      <span class="cat-icon">👜</span>
-      <span class="cat-name">包包</span>
+    <div class="cat-item" onclick="notify('进入：潮包专区')">
+      <div class="cat-icon-bg">👜</div>
+      <div class="cat-label">包包</div>
     </div>
-    <div class="cat-card" onclick="showToast('开打分类：精选挂件')">
-      <span class="cat-icon">🧸</span>
-      <span class="cat-name">挂件</span>
+    <div class="cat-item" onclick="notify('进入：萌系挂件')">
+      <div class="cat-icon-bg">🧸</div>
+      <div class="cat-label">挂件</div>
     </div>
-    <div class="cat-card" onclick="showToast('开打分类：彩妆护肤')">
-      <span class="cat-icon">💄</span>
-      <span class="cat-name">美妆</span>
+    <div class="cat-item" onclick="notify('进入：美妆护肤')">
+      <div class="cat-icon-bg">💄</div>
+      <div class="cat-label">美妆</div>
     </div>
-    <div class="cat-card" onclick="showToast('开打分类：珠宝首饰')">
-      <span class="cat-icon">💎</span>
-      <span class="cat-name">首饰</span>
+    <div class="cat-item" onclick="notify('进入：珠宝首饰')">
+      <div class="cat-icon-bg">💎</div>
+      <div class="cat-label">首饰</div>
     </div>
   </div>
 
-  <!-- 推荐商品网格 -->
-  <div class="section-header">
-    <span class="section-title">爆款推荐</span>
+  <!-- 5. 新品首发横向滑块 -->
+  <div class="section-title">
+    新品首发 <span>NEW ARRIVALS</span>
+  </div>
+  <div class="horizontal-scroll">
+    <div class="scroll-card" onclick="notify('查看新品：限定粉色小方包')">
+      <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=300" class="scroll-img">
+      <div class="scroll-title">限定款单肩小方包</div>
+      <div class="scroll-price">K 32,000</div>
+    </div>
+    <div class="scroll-card" onclick="notify('查看新品：日系毛绒小熊')">
+      <img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=300" class="scroll-img">
+      <div class="scroll-title">萌系小熊包包挂件</div>
+      <div class="scroll-price">K 9,500</div>
+    </div>
+    <div class="scroll-card" onclick="notify('查看新品：花漾香水')">
+      <img src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=300" class="scroll-img">
+      <div class="scroll-title">少女花漾持久香水</div>
+      <div class="scroll-price">K 18,000</div>
+    </div>
+  </div>
+
+  <!-- 6. 爆款推荐瀑布流 -->
+  <div class="section-title">
+    热门推荐 <span>HOT TRENDS</span>
   </div>
 
   <div class="product-grid">
-    <!-- 商品 1 -->
-    <div class="product-card" onclick="showToast('查看商品：法式法式复古裙')">
-      <div class="img-box">
+    
+    <div class="product-card" onclick="notify('查看商品：法式碎花裙')">
+      <div class="img-wrapper">
         <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500" alt="连衣裙">
+        <div class="hot-badge">🔥 1.2w人想要</div>
       </div>
       <div class="product-info">
-        <div class="product-title">法式优雅法式碎花连衣裙</div>
-        <div class="price-row">
-          <span class="price">K 25,000</span>
-          <button class="add-cart-btn" onclick="addToCart(event)">+</button>
+        <div class="product-name">Coki 自制法式复古碎花连衣裙 - 2024夏季新款</div>
+        <div class="price-bar">
+          <span class="price-num">K 25,000</span>
+          <button class="buy-btn" onclick="addCart(event)">+</button>
         </div>
       </div>
     </div>
 
-    <!-- 商品 2 -->
-    <div class="product-card" onclick="showToast('查看商品：高级感复古皮包')">
-      <div class="img-box">
+    <div class="product-card" onclick="notify('查看商品：头层牛皮小方包')">
+      <div class="img-wrapper">
         <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500" alt="皮包">
+        <div class="hot-badge">🔥 8,500人想要</div>
       </div>
       <div class="product-info">
-        <div class="product-title">高级质感复古单肩小方包</div>
-        <div class="price-row">
-          <span class="price">K 32,000</span>
-          <button class="add-cart-btn" onclick="addToCart(event)">+</button>
+        <div class="product-name">高级质感头层牛皮复古单肩小方包</div>
+        <div class="price-bar">
+          <span class="price-num">K 32,000</span>
+          <button class="buy-btn" onclick="addCart(event)">+</button>
         </div>
       </div>
     </div>
 
-    <!-- 商品 3 -->
-    <div class="product-card" onclick="showToast('查看商品：可爱毛绒挂件')">
-      <div class="img-box">
-        <img src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=500" alt="香水饰品">
+    <div class="product-card" onclick="notify('查看商品：日系小熊挂件')">
+      <div class="img-wrapper">
+        <img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=500" alt="挂件">
+        <div class="hot-badge">🔥 3,100人想要</div>
       </div>
       <div class="product-info">
-        <div class="product-title">精致花漾少女香水饰品</div>
-        <div class="price-row">
-          <span class="price">K 18,000</span>
-          <button class="add-cart-btn" onclick="addToCart(event)">+</button>
+        <div class="product-name">超萌日系毛绒小熊包包钥匙扣挂件</div>
+        <div class="price-bar">
+          <span class="price-num">K 9,500</span>
+          <button class="buy-btn" onclick="addCart(event)">+</button>
         </div>
       </div>
     </div>
 
-    <!-- 商品 4 -->
-    <div class="product-card" onclick="showToast('查看商品：日系可爱吊饰')">
-      <div class="img-box">
-        <img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=500" alt="包包挂件">
+    <div class="product-card" onclick="notify('查看商品：变色润唇膏')">
+      <div class="img-wrapper">
+        <img src="https://images.unsplash.com/photo-1599733589046-10c005739ef0?w=500" alt="唇膏">
+        <div class="hot-badge">🔥 4,200人想要</div>
       </div>
       <div class="product-info">
-        <div class="product-title">日系萌系软糯小熊包包挂件</div>
-        <div class="price-row">
-          <span class="price">K 9,500</span>
-          <button class="add-cart-btn" onclick="addToCart(event)">+</button>
+        <div class="product-name">变色润唇膏保湿补水天然成分</div>
+        <div class="price-bar">
+          <span class="price-num">K 12,000</span>
+          <button class="buy-btn" onclick="addCart(event)">+</button>
         </div>
       </div>
     </div>
+
   </div>
 
-  <!-- Toast 动态提示组件 -->
-  <div class="toast" id="toast">已加入购物车</div>
+  <!-- 7. 底部 App 导航 -->
+  <div class="bottom-nav">
+    <div class="nav-tab active"><span class="nav-icon">⚡</span>购买</div>
+    <div class="nav-tab" onclick="notify('进入：探索专区')"><span class="nav-icon">🔥</span>探索</div>
+    <div class="nav-tab" onclick="notify('进入：消息中心')"><span class="nav-icon">💬</span>消息</div>
+    <div class="nav-tab" onclick="notify('进入：个人中心')"><span class="nav-icon">👤</span>我的</div>
+  </div>
+
+  <div id="toast">已加入购物车</div>
 
   <script>
-    let cartCount = 0;
-
-    // 添加购物车交互与微动画
-    function addToCart(e) {
-      e.stopPropagation(); // 阻止触发卡片点击事件
-      cartCount++;
-      
-      const badge = document.getElementById('cartCount');
-      badge.innerText = cartCount;
-      
-      // 触发角标跳动动画
-      badge.classList.add('bump');
-      setTimeout(() => badge.classList.remove('bump'), 200);
-
-      showToast('✅ 已成功加入购物车！');
+    let count = 0;
+    
+    function addCart(e) {
+      e.stopPropagation();
+      count++;
+      document.getElementById('badge').innerText = count;
+      notify('⚡ 已加入购物车！');
     }
 
-    // 显示高级 Toast 底部气泡
-    let toastTimer;
-    function showToast(msg) {
+    let timer;
+    function notify(msg) {
       const toast = document.getElementById('toast');
       toast.innerText = msg;
       toast.classList.add('show');
-      
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
         toast.classList.remove('show');
-      }, 2000);
+      }, 1600);
     }
   </script>
 </body>
