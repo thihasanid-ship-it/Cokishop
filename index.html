@@ -1,260 +1,95 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>精品综合商城</title>
-  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <title>Coki - 精选时尚女性商城</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f7; margin: 0; padding: 20px; }
-    .container { max-width: 500px; margin: 0 auto; padding-bottom: 80px; }
-    h1 { text-align: center; color: #1d1d1f; font-size: 24px; margin-bottom: 15px; }
-    
-    /* 搜索框与分类导航 */
-    .search-box { width: 100%; box-sizing: border-box; padding: 12px 16px; border-radius: 20px; border: 1px solid #e5e5ea; background: white; font-size: 15px; margin-bottom: 15px; outline: none; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-    .category-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
-    .category-tabs::-webkit-scrollbar { display: none; }
-    .tab { padding: 8px 16px; background: #e5e5ea; border-radius: 16px; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; color: #1d1d1f; transition: all 0.2s; }
-    .tab.active { background: #007aff; color: white; }
+    /* 全局基础样式 */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #f8f9fa; color: #333; padding-bottom: 50px; }
 
-    /* 商品卡片 */
-    .card { background: white; padding: 16px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: transform 0.1s; }
-    .card:active { transform: scale(0.98); }
-    .product-info { display: flex; align-items: center; gap: 15px; }
-    .icon { font-size: 36px; min-width: 45px; text-align: center; }
-    .name { font-weight: 600; font-size: 16px; color: #1d1d1f; }
-    .price { color: #e64340; font-weight: bold; font-size: 15px; margin-top: 4px; }
-    .stock { color: #86868b; font-size: 12px; margin-top: 2px; }
-    .empty-tip { text-align: center; color: #86868b; padding: 40px 0; font-size: 15px; }
+    /* 顶部导航 */
+    header { background: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); sticky: top; top: 0; z-index: 100; }
+    .logo { font-size: 24px; font-weight: bold; color: #ff6b81; letter-spacing: 1px; }
+    .nav-icons { font-size: 20px; cursor: pointer; }
 
-    button { background: #007aff; color: white; border: none; padding: 10px 18px; border-radius: 20px; font-weight: 600; font-size: 14px; cursor: pointer; }
-    button:disabled { background: #e5e5ea; color: #8e8e93; }
+    /* 首页大海报 Banner */
+    .hero-banner { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #fff; padding: 40px 20px; text-align: center; border-radius: 0 0 20px 20px; }
+    .hero-banner h1 { font-size: 28px; margin-bottom: 10px; font-weight: 700; }
+    .hero-banner p { font-size: 14px; opacity: 0.9; margin-bottom: 20px; }
+    .hero-btn { background: #fff; color: #ff6b81; border: none; padding: 10px 24px; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-    /* 底部结算悬浮条 */
-    .cart-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 460px; background: #1d1d1f; color: white; padding: 14px 20px; border-radius: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.25); z-index: 100; }
-    .checkout-btn { background: #34c759; }
+    /* 分类导航栏 */
+    .section-title { font-size: 18px; font-weight: bold; margin: 25px 20px 15px; color: #222; }
+    .categories { display: flex; justify-content: space-between; padding: 0 20px; gap: 10px; overflow-x: auto; }
+    .cat-item { background: #fff; flex: 1; min-width: 70px; text-align: center; padding: 15px 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); font-size: 13px; font-weight: 500; }
+    .cat-icon { font-size: 24px; margin-bottom: 5px; display: block; }
 
-    /* 详情弹窗 */
-    .modal-mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 200; backdrop-filter: blur(4px); }
-    .modal-card { background: white; width: 85%; max-width: 400px; border-radius: 24px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto; }
-    
-    .gallery-main { font-size: 80px; text-align: center; background: #f8f8f9; padding: 20px; border-radius: 18px; margin-bottom: 12px; transition: all 0.2s; }
-    .gallery-thumbs { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-    .thumb { font-size: 28px; padding: 6px 12px; background: #f0f0f2; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
-    .thumb.active { border-color: #007aff; background: #e8f2ff; transform: scale(1.1); }
-
-    .modal-title { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 8px; }
-    .modal-desc { font-size: 14px; color: #666; line-height: 1.5; background: #f5f5f7; padding: 12px; border-radius: 12px; margin: 15px 0; }
-    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-    .btn-secondary { background: #e5e5ea; color: #1d1d1f; flex: 1; }
-    .btn-primary { background: #007aff; flex: 1; }
+    /* 商品网格 */
+    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 0 20px; }
+    .product-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; }
+    .product-img { width: 100%; height: 160px; background-color: #eee; object-fit: cover; }
+    .product-info { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .product-title { font-size: 14px; font-weight: 500; color: #444; margin-bottom: 8px; line-height: 1.3; }
+    .product-price-row { display: flex; justify-content: space-between; align-items: center; }
+    .product-price { font-size: 16px; font-weight: bold; color: #ff6b81; }
+    .add-btn { background: #ff6b81; color: #fff; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   </style>
 </head>
 <body>
-  <div id="app" class="container">
-    <h1>📱 极简综合商城</h1>
 
-    <!-- 搜索框 -->
-    <input 
-      type="text" 
-      class="search-box" 
-      v-model="searchQuery" 
-      placeholder="🔍 搜索商品名称..." 
-    />
+  <!-- 1. 顶部导航 -->
+  <header>
+    <div class="logo">Coki.</div>
+    <div class="nav-icons">🛒</div>
+  </header>
 
-    <!-- 五大分类导航标签 -->
-    <div class="category-tabs">
-      <div 
-        v-for="cat in categories" 
-        :key="cat" 
-        class="tab" 
-        :class="{ active: currentCategory === cat }"
-        @click="currentCategory = cat"
-      >
-        {{ cat }}
-      </div>
-    </div>
+  <!-- 2. 首页大海报 -->
+  <section class="hero-banner">
+    <h1>Coki 夏季新品发布</h1>
+    <p>全场时尚服装 & 精美包包 8 折起</p>
+    <button class="hero-btn" onclick="alert('即将跳往新品专区！')">立即选购</button>
+  </section>
 
-    <!-- 商品列表展示 -->
-    <div v-for="item in filteredProducts" :key="item.id" class="card" @click="openDetail(item)">
+  <!-- 3. 分类导航 -->
+  <div class="section-title">热门分类</div>
+  <section class="categories">
+    <div class="cat-item"><span class="cat-icon">👗</span>女装</div>
+    <div class="cat-item"><span class="cat-icon">👜</span>包包</div>
+    <div class="cat-item"><span class="cat-icon">🧸</span>挂件</div>
+    <div class="cat-item"><span class="cat-icon">💄</span>美妆</div>
+  </section>
+
+  <!-- 4. 推荐商品 -->
+  <div class="section-title">精选推荐</div>
+  <section class="product-grid">
+    
+    <!-- 商品 1 -->
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400" alt="女装">
       <div class="product-info">
-        <span class="icon">{{ item.images[0] }}</span>
-        <div>
-          <div class="name">{{ item.name }}</div>
-          <div class="price">￥{{ item.price }}</div>
-          <div class="stock">剩余库存: {{ item.stock }}</div>
-        </div>
-      </div>
-      <button @click.stop="addToCart(item)" :disabled="item.stock <= 0">
-        {{ item.stock > 0 ? '+ 加购物车' : '已售罄' }}
-      </button>
-    </div>
-
-    <div v-if="filteredProducts.length === 0" class="empty-tip">
-      找不到匹配的商品 😅
-    </div>
-
-    <!-- 购物车结算条 -->
-    <div v-if="cart.length > 0" class="cart-bar">
-      <div>已选 {{ totalCount }} 件，共 <strong>￥{{ totalPrice }}</strong></div>
-      <button class="checkout-btn" @click="checkout">去结算</button>
-    </div>
-
-    <!-- 商品详情弹窗 -->
-    <div v-if="selectedProduct" class="modal-mask" @click.self="selectedProduct = null">
-      <div class="modal-card">
-        
-        <div class="gallery-main">
-          {{ selectedProduct.images[currentImageIndex] }}
-        </div>
-
-        <div class="gallery-thumbs">
-          <div 
-            v-for="(img, index) in selectedProduct.images" 
-            :key="index" 
-            class="thumb"
-            :class="{ active: currentImageIndex === index }"
-            @click="currentImageIndex = index"
-          >
-            {{ img }}
-          </div>
-        </div>
-
-        <div class="modal-title">{{ selectedProduct.name }}</div>
-        <div class="price" style="text-align: center; font-size: 18px;">￥{{ selectedProduct.price }}</div>
-        
-        <div class="modal-desc">
-          <strong>商品简介：</strong><br>
-          {{ selectedProduct.description }}
-        </div>
-
-        <div style="font-size: 13px; color: #888; text-align: center;">
-          当前可用库存：{{ selectedProduct.stock }} 件
-        </div>
-
-        <div class="modal-actions">
-          <button class="btn-secondary" @click="selectedProduct = null">关闭</button>
-          <button class="btn-primary" @click="addToCart(selectedProduct)" :disabled="selectedProduct.stock <= 0">
-            加购物车
-          </button>
+        <div class="product-title">法式复古碎花连衣裙</div>
+        <div class="product-price-row">
+          <span class="product-price">K 25,000</span>
+          <button class="add-btn">+</button>
         </div>
       </div>
     </div>
 
-  </div>
+    <!-- 商品 2 -->
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400" alt="包包">
+      <div class="product-info">
+        <div class="product-title">复古简约单肩小皮包</div>
+        <div class="product-price-row">
+          <span class="product-price">K 32,000</span>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
 
-  <script>
-    const { createApp } = Vue;
-    createApp({
-      data() {
-        return {
-          searchQuery: '',
-          currentCategory: '全部',
-          categories: ['全部', '服装', '数码', '母婴', '食品', '美妆'],
-          
-          // 50 个商品完整数据，每个商品包含 3 张视觉图片
-          products: [
-            // ================= 1. 服装类 (10 个) =================
-            { id: 101, category: '服装', name: '百搭休闲 T恤', price: 89, stock: 50, images: ['👕', '👚', '🎽'], description: '纯棉透气，亲肤舒适，多色可选，日常百搭。' },
-            { id: 102, category: '服装', name: '经典修身牛仔裤', price: 199, stock: 35, images: ['👖', '👔', '👟'], description: '立体裁剪，挺括显瘦，耐磨舒适，四季皆宜。' },
-            { id: 103, category: '服装', name: '优雅连衣裙', price: 299, stock: 20, images: ['👗', '👠', '👜'], description: '飘逸面料，修身显瘦设计，适合多种社交场合。' },
-            { id: 104, category: '服装', name: '防风保暖羽绒服', price: 599, stock: 15, images: ['🧥', '🧣', '🧤'], description: '高品质羽绒填充，轻盈抗寒，锁温效果极佳。' },
-            { id: 105, category: '服装', name: '运动跑鞋', price: 349, stock: 30, images: ['👟', '🧦', '🎽'], description: '减震回弹科技底，透气网面，迈步更轻盈。' },
-            { id: 106, category: '服装', name: '商务正装西服', price: 899, stock: 12, images: ['👔', '👞', '💼'], description: '精针细线，挺拔干练，提升职场专业形象。' },
-            { id: 107, category: '服装', name: '韩版宽松卫衣', price: 159, stock: 40, images: ['🥋', '🧢', '🎒'], description: '落肩袖设计，潮酷范十足，内里加绒保暖。' },
-            { id: 108, category: '服装', name: '防晒冰丝遮阳帽', price: 49, stock: 80, images: ['🧢', '👒', '🕶️'], description: 'UPF50+ 高效防晒，宽大帽檐，夏季出行必备。' },
-            { id: 109, category: '服装', name: '保暖纯羊毛围巾', price: 129, stock: 25, images: ['🧣', '🧥', '🧤'], description: '100% 纯羊毛，触感细腻不扎人，百搭冬日造型。' },
-            { id: 110, category: '服装', name: '真皮复古单鞋', price: 269, stock: 18, images: ['👠', '🥿', '👜'], description: '头层牛皮制作，软底不磨脚，兼具复古与时尚。' },
+  </section>
 
-            // ================= 2. 数码类 (10 个) =================
-            { id: 201, category: '数码', name: '智能手机 Pro', price: 4999, stock: 15, images: ['📱', '📸', '🔋'], description: '超清晰三摄系统，旗舰芯片，全天候超长续航。' },
-            { id: 202, category: '数码', name: '轻薄笔记本电脑', price: 5999, stock: 10, images: ['💻', '⌨️', '🖱️'], description: '高性能处理器，高刷新率全面屏，轻至 1.2kg。' },
-            { id: 203, category: '数码', name: '无线主动降噪耳机', price: 1299, stock: 25, images: ['🎧', '📻', '🔋'], description: '深度降噪，高保真音质，开盖即连，单次续航 8h。' },
-            { id: 204, category: '数码', name: '智能运动手表', price: 1499, stock: 20, images: ['⌚', '🏃', '❤️'], description: '心率血氧全程监测，支持百种运动模式，高清触控屏。' },
-            { id: 205, category: '数码', name: '高清平板电脑', price: 2899, stock: 18, images: ['📱', '✏️', '🎬'], description: '护眼大屏，支持手写笔绘图，网课办公娱乐好帮手。' },
-            { id: 206, category: '数码', name: '机械游戏键盘', price: 399, stock: 30, images: ['⌨️', '🎮', '🖥️'], description: '全键无冲，RGB 炫彩背光，机械轴体击键手感佳。' },
-            { id: 207, category: '数码', name: '人体工学无线鼠标', price: 199, stock: 45, images: ['🖱️', '💻', '🔋'], description: '贴合手掌设计，静音按键，高精度光学追踪。' },
-            { id: 208, category: '数码', name: '大容量快充移动电源', price: 129, stock: 60, images: ['🔋', '⚡', '📱'], description: '20000mAh 大容量，多口双向快充，出行用电无忧。' },
-            { id: 209, category: '数码', name: '4K 超高清微投仪', price: 2199, stock: 8, images: ['📹', '🎬', '🍿'], description: '智能自动对焦，影院级色彩呈现，居家随心看大片。' },
-            { id: 210, category: '数码', name: '便携蓝牙小音箱', price: 249, stock: 35, images: ['🔊', '🎵', '🏕️'], description: '低音澎湃，IPX7 级防水，户外露营氛围神器。' },
-
-            // ================= 3. 母婴类 (10 个) =================
-            { id: 301, category: '母婴', name: '婴儿超柔纸尿裤', price: 128, stock: 100, images: ['👶', '🍼', '☁️'], description: '海量吸收不反渗，海绵般轻柔，保护宝宝娇嫩肌肤。' },
-            { id: 302, category: '母婴', name: '防胀气宽口玻璃奶瓶', price: 89, stock: 60, images: ['🍼', '👶', '🧸'], description: '仿真母乳奶嘴，高硼硅玻璃耐高温，轻松拍嗝防胀气。' },
-            { id: 303, category: '母婴', name: '高腰提篮婴儿推车', price: 899, stock: 10, images: ['🛒', '👶', '☀️'], description: '一键单手收车，四轮独立减震，远离汽车尾气。' },
-            { id: 304, category: '母婴', name: '婴幼儿配方奶粉 1段', price: 328, stock: 40, images: ['🥛', '🍼', '👶'], description: '富含 DHA 与益生元，接近母乳营养，促进宝宝发育。' },
-            { id: 305, category: '母婴', name: '可折叠婴儿游戏床', price: 459, stock: 15, images: ['🛏️', '🧸', '👶'], description: '无异味环保面料，边角圆润防磕碰，给宝宝专属乐园。' },
-            { id: 306, category: '母婴', name: '手持双边电动吸奶器', price: 299, stock: 25, images: ['🍼', '⚡', '👩'], description: '无痛催乳模式，大吸力低噪音，妈妈备奶省时省力。' },
-            { id: 307, category: '母婴', name: '毛绒陪睡安抚玩偶', price: 59, stock: 80, images: ['🧸', '🐰', '👶'], description: '短毛绒不掉毛，内置柔和音乐，陪伴宝宝安稳入睡。' },
-            { id: 308, category: '母婴', name: '婴儿手口湿巾 10包', price: 39, stock: 120, images: ['🧻', '💧', '👶'], description: 'EDI 纯水配方，无酒精无香精，温和擦拭口手。' },
-            { id: 309, category: '母婴', name: '儿童安全座椅', price: 1199, stock: 8, images: ['🪑', '🚗', '👶'], description: 'ISOFIX 刚性接口，五点式安全带，全方位保护出行安全。' },
-            { id: 310, category: '母婴', name: '宝宝辅食研磨碗套装', price: 45, stock: 70, images: ['🥣', '🥄', '🥕'], description: '食品级 PP 材质，轻松研磨果泥菜泥，宝宝进食更顺利。' },
-
-            // ================= 4. 食品类 (10 个) =================
-            { id: 401, category: '食品', name: '香浓黑巧克力', price: 35, stock: 80, images: ['🍫', '☕', '🍬'], description: '72% 可可含量，苦甜交织，口感丝滑醇厚。' },
-            { id: 402, category: '食品', name: '每日坚果混合礼盒', price: 88, stock: 60, images: ['🌰', '🥜', '🍇'], description: '低温烘焙保持原香，果仁饱满，干果酸甜，营养丰富。' },
-            { id: 403, category: '食品', name: '冷萃纯黑咖啡豆', price: 65, stock: 50, images: ['☕', '🫘', '🥛'], description: '阿拉比卡中度烘焙，带有坚果与柑橘香气，回甘悠长。' },
-            { id: 404, category: '食品', name: '日式抹茶夹心饼干', price: 25, stock: 90, images: ['🍪', '🍵', '🍰'], description: '选自优质抹茶粉，酥脆外皮包裹浓郁夹心，甜而不腻。' },
-            { id: 405, category: '食品', name: '特级初榨橄榄油', price: 128, stock: 30, images: ['🫒', '🥗', '🍳'], description: '物理冷压初榨，酸度小于 0.5%，适合冷拌及日常烹饪。' },
-            { id: 406, category: '食品', name: '原味薯片大礼包', price: 29, stock: 110, images: ['🥔', '🍿', '🥤'], description: '原切马铃薯片，薄脆爽口，看剧打游戏的快乐源泉。' },
-            { id: 407, category: '食品', name: '新鲜红富士苹果 5kg', price: 49, stock: 40, images: ['🍎', '🍏', '📦'], description: '产地直发，脆甜多汁，皮薄肉厚，富含维生素 C。' },
-            { id: 408, category: '食品', name: '手工整块牛排 4片装', price: 158, stock: 25, images: ['🥩', '🍷', '🍳'], description: '原肉整切无拼接，雪花纹理清晰，肉质嫩滑多汁。' },
-            { id: 409, category: '食品', name: '有机高钙纯牛奶 24盒', price: 69, stock: 70, images: ['🥛', '🐮', '🍞'], description: '优质牧场奶源，高蛋白高钙，早晚一杯补充能量。' },
-            { id: 410, category: '食品', name: '四川特产辣条礼盒', price: 19, stock: 150, images: ['🌶️', '🍢', '🍺'], description: '甜辣过瘾，地道川味，嚼劲十足，回忆童年美味。' },
-
-            // ================= 5. 美妆类 (10 个) =================
-            { id: 501, category: '美妆', name: '水润轻薄粉底液', price: 280, stock: 30, images: ['💄', '✨', '🪞'], description: '自然遮瑕不脱妆，打造清透奶油肌，持久保湿控油。' },
-            { id: 502, category: '美妆', name: '经典正红丝绒口红', price: 199, stock: 45, images: ['💄', '💋', '🌹'], description: '显白不挑皮，哑光丝绒质地，涂抹顺滑，持色久。' },
-            { id: 503, category: '美妆', name: '玻尿酸补水面膜 10片', price: 99, stock: 80, images: ['🎭', '💧', '✨'], description: '密集深层补水，隐形蚕丝膜布，改善干燥紧绷。' },
-            { id: 504, category: '美妆', name: '温和氨基酸洁面乳', price: 85, stock: 65, images: ['🧼', '🫧', '💧'], description: '泡沫丰富细腻，洗后紧致不干涩，敏感肌亦可用。' },
-            { id: 505, category: '美妆', name: '九色大地色眼影盘', price: 139, stock: 40, images: ['🎨', '👁️', '✨'], description: '消肿大地色系，哑光细闪兼备，延展性好不飞粉。' },
-            { id: 506, category: '美妆', name: '清爽无油高倍防晒霜', price: 159, stock: 55, images: ['☀️', '🧴', '🏖️'], description: 'SPF50+ PA++++，成膜快不粘腻，后续上妆不搓泥。' },
-            { id: 507, category: '美妆', name: '小棕瓶夜间修护精华', price: 680, stock: 15, images: ['🧪', '💧', '🌙'], description: '深层抗老抗氧，修护肌肤屏障，重现细腻光泽。' },
-            { id: 508, category: '美妆', name: '植物精油温和卸妆油', price: 129, stock: 50, images: ['🧴', '💧', '✨'], description: '秒速乳化，轻松卸除防水彩妆，清爽卸妆无残留。' },
-            { id: 509, category: '美妆', name: '淡雅玫瑰香氛香水', price: 320, stock: 20, images: ['🧴', '🌸', '💐'], description: '前调柑橘，中调木质玫瑰，留香持久，优雅迷人。' },
-            { id: 510, category: '美妆', name: '柔焦定妆散粉', price: 119, stock: 60, images: ['🪞', '💨', '✨'], description: '粉质超细如烟，一秒隐形毛孔，长效控油打造雾面妆。' }
-          ],
-          cart: [],
-          selectedProduct: null,
-          currentImageIndex: 0
-        };
-      },
-      computed: {
-        filteredProducts() {
-          return this.products.filter(item => {
-            const matchesCategory = this.currentCategory === '全部' || item.category === this.currentCategory;
-            const matchesSearch = item.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-            return matchesCategory && matchesSearch;
-          });
-        },
-        totalCount() { return this.cart.reduce((s, i) => s + i.quantity, 0); },
-        totalPrice() { return this.cart.reduce((s, i) => s + i.price * i.quantity, 0); }
-      },
-      methods: {
-        openDetail(product) { 
-          this.selectedProduct = product; 
-          this.currentImageIndex = 0; 
-        },
-        addToCart(product) {
-          const item = this.cart.find(c => c.id === product.id);
-          if (item) {
-            if (item.quantity < product.stock) item.quantity++;
-            else alert('不能再加了，已经超出当前库存！');
-          } else {
-            this.cart.push({ id: product.id, price: product.price, quantity: 1 });
-          }
-        },
-        checkout() {
-          this.cart.forEach(cartItem => {
-            const product = this.products.find(p => p.id === cartItem.id);
-            if (product) product.stock -= cartItem.quantity;
-          });
-          alert('🎉 下单成功！商品库存已实时扣减。');
-          this.cart = [];
-          this.selectedProduct = null;
-        }
-      }
-    }).mount('#app');
-  </script>
 </body>
 </html>
