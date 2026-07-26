@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Coki — 潮流女性买手店</title>
+  <title>Coki — 精致桌面收纳专区</title>
   <style>
     :root {
       --dewu-black: #121212;
@@ -12,7 +12,7 @@
       --bg-gray: #f6f6f6;
       --card-bg: #ffffff;
       --radius-lg: 18px;
-      --radius-sm: 10px;
+      --radius-sm: 12px;
     }
 
     * {
@@ -29,7 +29,7 @@
       padding-bottom: 90px;
     }
 
-    /* 1. 顶部黑潮 Header */
+    /* 1. Header */
     header {
       background-color: var(--dewu-black);
       padding: 12px 16px;
@@ -54,9 +54,7 @@
       font-style: italic;
     }
 
-    .logo span {
-      color: var(--dewu-cyan);
-    }
+    .logo span { color: var(--dewu-cyan); }
 
     .cart-box {
       position: relative;
@@ -68,7 +66,6 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform 0.15s ease;
     }
 
     .cart-box:active { transform: scale(0.88); }
@@ -109,33 +106,15 @@
       font-size: 13px;
     }
 
-    .search-box input::placeholder { color: #777; }
-
-    /* 2. 独家保证 Tag 栏 */
-    .guarantee-bar {
-      background: #000;
-      color: #888;
-      font-size: 11px;
-      padding: 6px 16px;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #222;
-    }
-
-    .guarantee-item { display: flex; align-items: center; gap: 4px; }
-    .guarantee-item span { color: var(--dewu-cyan); font-weight: bold; }
-
-    /* 3. 得物风格主海报 Banner */
+    /* 2. Banner */
     .banner-wrapper { padding: 12px 16px 0; }
     
     .hero-banner {
-      background: linear-gradient(135deg, #1f1f1f 0%, #000000 100%);
+      background: linear-gradient(135deg, #2b2b2b 0%, #000000 100%);
       border-radius: var(--radius-lg);
       padding: 20px;
       color: #fff;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid #2c2c2c;
+      border: 1px solid #333;
     }
 
     .banner-tag {
@@ -152,51 +131,11 @@
     .hero-banner h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
     .hero-banner p { font-size: 12px; color: #aaa; margin-bottom: 14px; }
 
-    .banner-btn {
-      background: #fff;
-      color: var(--dewu-black);
-      border: none;
-      padding: 8px 18px;
-      border-radius: 20px;
-      font-weight: 800;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .banner-btn:active { transform: scale(0.92); background: var(--dewu-neon); }
-
-    /* 4. 分类 Round Cards */
-    .categories {
-      display: flex;
-      justify-content: space-between;
-      padding: 16px;
-      background: #fff;
-      margin-top: 12px;
-    }
-
-    .cat-item { text-align: center; cursor: pointer; }
-    .cat-item:active { transform: scale(0.9); }
-
-    .cat-icon-bg {
-      width: 52px;
-      height: 52px;
-      background: #f0f0f2;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin: 0 auto 6px;
-    }
-
-    .cat-label { font-size: 12px; font-weight: 600; color: #333; }
-
     /* 模块标题 */
     .section-title {
       font-size: 16px;
       font-weight: 900;
-      padding: 18px 16px 10px;
+      padding: 20px 16px 12px;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
@@ -204,34 +143,11 @@
 
     .section-title span { font-size: 11px; color: #888; font-weight: normal; }
 
-    /* 5. 横向滑动新品专区 */
-    .horizontal-scroll {
-      display: flex;
-      gap: 12px;
-      padding: 0 16px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .horizontal-scroll::-webkit-scrollbar { display: none; }
-
-    .scroll-card {
-      min-width: 120px;
-      background: #fff;
-      border-radius: 12px;
-      padding: 8px;
-      cursor: pointer;
-    }
-    .scroll-card:active { transform: scale(0.95); }
-
-    .scroll-img { width: 100%; height: 110px; border-radius: 8px; object-fit: cover; }
-    .scroll-title { font-size: 11px; font-weight: 600; margin: 6px 0 2px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
-    .scroll-price { font-size: 13px; font-weight: 800; color: var(--dewu-black); }
-
-    /* 6. 双列得物爆款瀑布流 */
+    /* 商品瀑布流/网格 */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 12px;
       padding: 0 16px;
     }
 
@@ -243,15 +159,15 @@
       flex-direction: column;
       cursor: pointer;
       position: relative;
-      transition: transform 0.15s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     }
 
     .product-card:active { transform: scale(0.97); }
 
     .img-wrapper {
       width: 100%;
-      height: 175px;
-      background: #fafafa;
+      height: 180px;
+      background: #f0f0f0;
       position: relative;
     }
 
@@ -269,18 +185,14 @@
       border-radius: 10px;
     }
 
-    .product-info { padding: 10px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+    .product-info { padding: 12px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
 
     .product-name {
       font-size: 12px;
       font-weight: 600;
       color: #222;
       line-height: 1.4;
-      margin-bottom: 8px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      margin-bottom: 10px;
     }
 
     .price-bar {
@@ -308,7 +220,7 @@
 
     .buy-btn:active { background: var(--dewu-cyan); color: #000; }
 
-    /* 7. 得物风 App 底部导航 */
+    /* 底部 App 导航 */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -327,7 +239,7 @@
     .nav-tab.active { color: var(--dewu-black); }
     .nav-icon { font-size: 20px; display: block; margin-bottom: 2px; }
 
-    /* 全局提示 Toast */
+    /* 动态提示 Toast */
     #toast {
       position: fixed;
       bottom: 75px;
@@ -351,141 +263,76 @@
 </head>
 <body>
 
-  <!-- 1. Header -->
+  <!-- Header -->
   <header>
     <div class="top-bar">
-      <div class="logo">COKI<span>.POIZON</span></div>
+      <div class="logo">COKI<span>.STORE</span></div>
       <div class="cart-box" onclick="notify('🛒 前往购物车结算')">
         🛍️
         <div class="cart-badge" id="badge">0</div>
       </div>
     </div>
     <div class="search-box">
-      🔍 <input type="text" placeholder="搜索 独家女装 / 潮流包包 / 挂件饰品">
+      🔍 <input type="text" placeholder="搜索 桌面收纳 / 化妆品收纳盒">
     </div>
   </header>
 
-  <!-- 2. 品质保证栏 -->
-  <div class="guarantee-bar">
-    <div class="guarantee-item"><span>✓</span> 官方鉴别</div>
-    <div class="guarantee-item"><span>✓</span> 正品保障</div>
-    <div class="guarantee-item"><span>✓</span> 逐件查验</div>
-  </div>
-
-  <!-- 3. 主 Banner -->
+  <!-- Banner -->
   <div class="banner-wrapper">
     <div class="hero-banner">
-      <span class="banner-tag">POIZON SELECTION</span>
-      <h2>Coki 潮流买手季</h2>
-      <p>精选夏日高颜值女装 & 原创配饰</p>
-      <button class="banner-btn" onclick="notify('🔥 已加载最新潮流榜单！')">立即抢购</button>
+      <span class="banner-tag">DESK ORGANIZER</span>
+      <h2>Coki 桌面美学系列</h2>
+      <p>大容量 · 带镜带抽屉 · 告别凌乱</p>
     </div>
   </div>
 
-  <!-- 4. 金刚区分类 -->
-  <div class="categories">
-    <div class="cat-item" onclick="notify('进入：女装专区')">
-      <div class="cat-icon-bg">👗</div>
-      <div class="cat-label">女装</div>
-    </div>
-    <div class="cat-item" onclick="notify('进入：潮包专区')">
-      <div class="cat-icon-bg">👜</div>
-      <div class="cat-label">包包</div>
-    </div>
-    <div class="cat-item" onclick="notify('进入：萌系挂件')">
-      <div class="cat-icon-bg">🧸</div>
-      <div class="cat-label">挂件</div>
-    </div>
-    <div class="cat-item" onclick="notify('进入：美妆护肤')">
-      <div class="cat-icon-bg">💄</div>
-      <div class="cat-label">美妆</div>
-    </div>
-    <div class="cat-item" onclick="notify('进入：珠宝首饰')">
-      <div class="cat-icon-bg">💎</div>
-      <div class="cat-label">首饰</div>
-    </div>
-  </div>
-
-  <!-- 5. 新品首发横向滑块 -->
+  <!-- 商品列表 -->
   <div class="section-title">
-    新品首发 <span>NEW ARRIVALS</span>
-  </div>
-  <div class="horizontal-scroll">
-    <div class="scroll-card" onclick="notify('查看新品：限定粉色小方包')">
-      <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=300" class="scroll-img">
-      <div class="scroll-title">限定款单肩小方包</div>
-      <div class="scroll-price">K 32,000</div>
-    </div>
-    <div class="scroll-card" onclick="notify('查看新品：日系毛绒小熊')">
-      <img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=300" class="scroll-img">
-      <div class="scroll-title">萌系小熊包包挂件</div>
-      <div class="scroll-price">K 9,500</div>
-    </div>
-    <div class="scroll-card" onclick="notify('查看新品：花漾香水')">
-      <img src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=300" class="scroll-img">
-      <div class="scroll-title">少女花漾持久香水</div>
-      <div class="scroll-price">K 18,000</div>
-    </div>
-  </div>
-
-  <!-- 6. 爆款推荐瀑布流 -->
-  <div class="section-title">
-    热门推荐 <span>HOT TRENDS</span>
+    精选收纳盒 <span>ORGANIZER COLLECTION</span>
   </div>
 
   <div class="product-grid">
     
-    <div class="product-card" onclick="notify('查看商品：法式碎花裙')">
+    <!-- 商品 1 -->
+    <div class="product-card" onclick="notify('查看详情：多功能带镜化妆品收纳盒')">
       <div class="img-wrapper">
-        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500" alt="连衣裙">
-        <div class="hot-badge">🔥 1.2w人想要</div>
+        <img src="item1.jpg" alt="多功能带镜化妆品收纳盒" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+        <div class="hot-badge">🔥 热销推荐</div>
       </div>
       <div class="product-info">
-        <div class="product-name">Coki 自制法式复古碎花连衣裙 - 2024夏季新款</div>
+        <div class="product-name">多功能带镜桌面化妆品收纳盒（带抽屉/纸巾盒）</div>
         <div class="price-bar">
-          <span class="price-num">K 25,000</span>
+          <span class="price-num">40,000 MMK</span>
           <button class="buy-btn" onclick="addCart(event)">+</button>
         </div>
       </div>
     </div>
 
-    <div class="product-card" onclick="notify('查看商品：头层牛皮小方包')">
+    <!-- 商品 2 -->
+    <div class="product-card" onclick="notify('查看详情：双抽屉加厚带镜收纳盒')">
       <div class="img-wrapper">
-        <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500" alt="皮包">
-        <div class="hot-badge">🔥 8,500人想要</div>
+        <img src="item2.jpg" alt="双抽屉加厚带镜收纳盒" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+        <div class="hot-badge">🔥 爆款热卖</div>
       </div>
       <div class="product-info">
-        <div class="product-name">高级质感头层牛皮复古单肩小方包</div>
+        <div class="product-name">双抽屉加厚大容量桌面收纳盒（带镜子/口红格）</div>
         <div class="price-bar">
-          <span class="price-num">K 32,000</span>
+          <span class="price-num">50,000 MMK</span>
           <button class="buy-btn" onclick="addCart(event)">+</button>
         </div>
       </div>
     </div>
 
-    <div class="product-card" onclick="notify('查看商品：日系小熊挂件')">
+    <!-- 商品 3 -->
+    <div class="product-card" onclick="notify('查看详情：豪华多层组合带镜收纳盒')">
       <div class="img-wrapper">
-        <img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=500" alt="挂件">
-        <div class="hot-badge">🔥 3,100人想要</div>
+        <img src="item3.jpg" alt="豪华多层组合带镜收纳盒" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+        <div class="hot-badge">🔥 旗舰首选</div>
       </div>
       <div class="product-info">
-        <div class="product-name">超萌日系毛绒小熊包包钥匙扣挂件</div>
+        <div class="product-name">豪华多层组合桌面化妆品收纳盒（全功能旗舰款）</div>
         <div class="price-bar">
-          <span class="price-num">K 9,500</span>
-          <button class="buy-btn" onclick="addCart(event)">+</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" onclick="notify('查看商品：变色润唇膏')">
-      <div class="img-wrapper">
-        <img src="https://images.unsplash.com/photo-1599733589046-10c005739ef0?w=500" alt="唇膏">
-        <div class="hot-badge">🔥 4,200人想要</div>
-      </div>
-      <div class="product-info">
-        <div class="product-name">变色润唇膏保湿补水天然成分</div>
-        <div class="price-bar">
-          <span class="price-num">K 12,000</span>
+          <span class="price-num">60,000 MMK</span>
           <button class="buy-btn" onclick="addCart(event)">+</button>
         </div>
       </div>
@@ -493,11 +340,10 @@
 
   </div>
 
-  <!-- 7. 底部 App 导航 -->
+  <!-- 底部 App 导航 -->
   <div class="bottom-nav">
-    <div class="nav-tab active"><span class="nav-icon">⚡</span>购买</div>
-    <div class="nav-tab" onclick="notify('进入：探索专区')"><span class="nav-icon">🔥</span>探索</div>
-    <div class="nav-tab" onclick="notify('进入：消息中心')"><span class="nav-icon">💬</span>消息</div>
+    <div class="nav-tab active"><span class="nav-icon">⚡</span>首页</div>
+    <div class="nav-tab" onclick="notify('进入：分类专区')"><span class="nav-icon">🔍</span>分类</div>
     <div class="nav-tab" onclick="notify('进入：个人中心')"><span class="nav-icon">👤</span>我的</div>
   </div>
 
