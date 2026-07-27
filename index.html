@@ -3,65 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>店铺首页界面</title>
+    <title>Coki Shop - 得物潮流馆</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: #121212; /* 得物暗黑潮流风背景，若喜欢亮色可改为 #fafafa */
+            color: #ffffff;
             max-width: 480px;
             margin: 0 auto;
-            padding-bottom: 50px;
+            padding-bottom: 70px;
         }
 
-        /* 顶部导航与店铺信息 */
+        /* 顶部导航与店铺 Header */
         .header {
-            background-color: #fff;
-            padding: 10px 12px;
+            background-color: #1a1a1a;
+            padding: 12px 16px;
+            border-bottom: 1px solid #2a2a2a;
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .back-icon, .action-icons span {
             font-size: 18px;
             cursor: pointer;
+            color: #fff;
         }
 
         .action-icons span {
-            margin-left: 15px;
+            margin-left: 16px;
         }
 
         .shop-info {
             display: flex;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .shop-logo {
-            width: 44px;
-            height: 44px;
-            border-radius: 6px;
-            border: 1px solid #eee;
-            margin-right: 10px;
-            background: #f9f9f9;
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-right: 12px;
+            background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
-            color: #e4393c;
-            font-weight: bold;
+            font-size: 12px;
+            color: #00f0ff; /* 得物标志性的青蓝色 */
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .shop-detail {
@@ -75,172 +79,136 @@
         }
 
         .shop-name {
-            font-size: 15px;
-            font-weight: bold;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #fff;
         }
 
-        .flagship-tag {
-            background: #333;
-            color: #fff;
-            font-size: 10px;
+        .verified-tag {
+            background: #00f0ff;
+            color: #000;
+            font-size: 9px;
+            font-weight: bold;
             padding: 1px 4px;
-            border-radius: 3px;
+            border-radius: 2px;
+            text-transform: uppercase;
         }
 
         .shop-stats {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             font-size: 11px;
-            color: #666;
-            margin-top: 3px;
-        }
-
-        .years-tag {
-            color: #d97706;
-            background: #fffbe3;
-            padding: 0 3px;
-            border-radius: 2px;
-            border: 1px solid #fde68a;
-        }
-
-        .stars {
-            color: #e4393c;
+            color: #888;
+            margin-top: 4px;
         }
 
         .shop-actions {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
+            gap: 8px;
         }
 
         .btn-follow {
-            border: 1px solid #e4393c;
-            color: #e4393c;
-            background: #fff;
-            padding: 3px 10px;
-            border-radius: 12px;
+            border: none;
+            background: #00f0ff;
+            color: #000;
+            padding: 5px 14px;
+            border-radius: 20px;
             font-size: 12px;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .btn-service {
-            border: 1px solid #ccc;
-            color: #666;
-            background: #fff;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        /* 标签与资质 */
-        .shop-tags {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            white-space: nowrap;
-            padding-bottom: 8px;
-            font-size: 10px;
-            color: #d97706;
-        }
-
-        .shop-tag-item {
-            background: #fffbe3;
-            padding: 2px 6px;
-            border-radius: 3px;
-        }
-
-        .auth-bar {
-            background: #2a2b2e;
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 4px;
+        /* 得物特色：正品鉴别保障条 */
+        .auth-banner {
+            background: linear-gradient(90deg, #1f242d 0%, #111419 100%);
+            border: 1px solid #2d3545;
+            color: #a5b4fc;
+            padding: 8px 12px;
+            border-radius: 6px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             font-size: 11px;
-            margin-bottom: 10px;
+        }
+
+        .auth-banner span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* 导航 Tab */
         .nav-tabs {
             display: flex;
             justify-content: space-around;
-            background: #fff;
-            border-bottom: 1px solid #eee;
-            padding: 10px 0;
+            background: #1a1a1a;
+            border-bottom: 1px solid #262626;
+            padding: 12px 0;
             font-size: 14px;
         }
 
         .nav-item {
-            color: #333;
+            color: #888;
+            font-weight: 500;
             position: relative;
         }
 
         .nav-item.active {
-            color: #e4393c;
+            color: #fff;
             font-weight: bold;
         }
 
         .nav-item.active::after {
             content: '';
             position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #e4393c;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 3px;
+            background-color: #00f0ff;
+            border-radius: 2px;
         }
 
         /* 筛选排序 */
         .filter-bar {
             display: flex;
             justify-content: space-around;
-            background: #fff;
-            padding: 8px 0;
+            background: #121212;
+            padding: 12px 0;
             font-size: 12px;
-            color: #666;
-            border-bottom: 1px solid #f0f0f0;
+            color: #777;
         }
 
         .filter-item.active {
-            color: #e4393c;
+            color: #00f0ff;
             font-weight: bold;
         }
 
-        /* 补贴提示条 */
-        .subsidy-banner {
-            background: #fff;
-            padding: 6px;
-            text-align: center;
-            font-size: 12px;
-            color: #e4393c;
-            border: 1px solid #fecaca;
-            margin: 8px;
-            border-radius: 4px;
-        }
-
-        /* 商品网格布局 */
+        /* 得物风格：双列商品流 */
         .goods-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            padding: 0 8px;
+            gap: 10px;
+            padding: 0 10px;
         }
 
         .goods-card {
-            background: #fff;
-            border-radius: 6px;
+            background: #1a1a1a;
+            border-radius: 8px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            border: 1px solid #262626;
         }
 
         .goods-img-wrap {
             width: 100%;
-            padding-top: 100%; /* 1:1 正方形图片容器 */
+            padding-top: 100%; /* 1:1 正方形图片 */
             position: relative;
-            background: #f0f0f0;
+            background: #222;
         }
 
         .goods-img {
@@ -252,8 +220,22 @@
             object-fit: cover;
         }
 
+        /* 得物专属：图片左下角/右上角鉴别标签 */
+        .dewu-tag {
+            position: absolute;
+            bottom: 6px;
+            left: 6px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid #00f0ff;
+            color: #00f0ff;
+            font-size: 9px;
+            padding: 1px 4px;
+            border-radius: 2px;
+            backdrop-filter: blur(2px);
+        }
+
         .goods-info {
-            padding: 8px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -262,59 +244,42 @@
 
         .goods-title {
             font-size: 13px;
-            line-height: 1.3;
-            color: #333;
-            margin-bottom: 4px;
+            line-height: 1.4;
+            color: #eee;
+            margin-bottom: 6px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-        }
-
-        .goods-tags {
-            font-size: 10px;
-            color: #999;
-            margin-bottom: 6px;
+            font-weight: 500;
         }
 
         .goods-price-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            margin-top: 6px;
         }
 
         .price-symbol {
-            font-size: 11px;
-            color: #e4393c;
+            font-size: 12px;
+            color: #fff;
+            font-weight: bold;
         }
 
         .price-num {
-            font-size: 16px;
-            font-weight: bold;
-            color: #e4393c;
-        }
-
-        .sales-num {
-            font-size: 10px;
-            color: #999;
-            margin-left: 4px;
-        }
-
-        .btn-add-cart {
-            width: 22px;
-            height: 22px;
-            background: #e4393c;
+            font-size: 18px;
+            font-weight: 800;
             color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
+            font-family: "Arial Black", Gadget, sans-serif;
         }
 
-        /* 底部营销活动条 */
+        .want-num {
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* 底部得物风营销条 */
         .bottom-promo-bar {
             position: fixed;
             bottom: 0;
@@ -322,32 +287,30 @@
             right: 0;
             max-width: 480px;
             margin: 0 auto;
-            background: #fef08a;
+            background: #00f0ff;
+            color: #000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 12px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            padding: 10px 16px;
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 -4px 20px rgba(0,240,255,0.15);
         }
 
-        .promo-tags {
-            display: flex;
-            gap: 6px;
-        }
-
-        .promo-badge {
-            border: 1px solid #e4393c;
-            color: #e4393c;
-            font-size: 11px;
+        .promo-text span {
+            background: #000;
+            color: #fff;
             padding: 2px 6px;
-            border-radius: 4px;
-            background: #fff;
+            border-radius: 3px;
+            margin-right: 4px;
+            font-size: 11px;
         }
     </style>
 </head>
 <body>
 
-    <!-- 店铺头部区 -->
+    <!-- 店铺 Header Zone -->
     <div class="header">
         <div class="top-bar">
             <span class="back-icon">❮</span>
@@ -358,78 +321,62 @@
         </div>
 
         <div class="shop-info">
-            <div class="shop-logo">公牛</div>
+            <div class="shop-logo">COKI</div>
             <div class="shop-detail">
                 <div class="shop-title-row">
-                    <span class="shop-name">公牛数码配件官方旗舰店</span>
-                    <span class="flagship-tag">官方旗舰</span>
+                    <span class="shop-name">COKI SHOP</span>
+                    <span class="verified-tag">品牌直营</span>
                 </div>
                 <div class="shop-stats">
-                    <span class="years-tag">5年老店</span>
-                    <span>本店已拼 377万+ 件</span>
-                    <span class="stars">★★★★★</span>
+                    <span>潮流买手店</span>
+                    <span>•</span>
+                    <span>12.8万人想要</span>
                 </div>
             </div>
             <div class="shop-actions">
                 <button class="btn-follow">+ 关注</button>
-                <button class="btn-service">💬 客服</button>
             </div>
         </div>
 
-        <!-- 标签行 -->
-        <div class="shop-tags">
-            <span class="shop-tag-item">疯抢 1.8 万件</span>
-            <span class="shop-tag-item">超 4.1 万人种草该店</span>
-            <span class="shop-tag-item">近 30 天全店好评 5.3 万条</span>
-        </div>
-
-        <!-- 官方授权 -->
-        <div class="auth-bar">
-            <span>🛡️ 店铺资质</span>
-            <span>BULL/公牛 官方授权</span>
+        <!-- 得物核心：先鉴别 后发货 -->
+        <div class="auth-banner">
+            <span>🛡️ 正品保障 · 逐件查验 · 极速发货</span>
+            <span style="color: #666;">❯</span>
         </div>
     </div>
 
     <!-- 导航 Tab -->
     <div class="nav-tabs">
-        <div class="nav-item">旗舰店保障</div>
-        <div class="nav-item active">全部商品</div>
-        <div class="nav-item">评价 (50.4万条)</div>
-        <div class="nav-item" style="color: #e4393c; font-weight: bold;">大促</div>
+        <div class="nav-item active">精选商品</div>
+        <div class="nav-item">新品上架</div>
+        <div class="nav-item">穿搭社区</div>
+        <div class="nav-item">店铺动态</div>
     </div>
 
-    <!-- 排序筛选 -->
+    <!-- 筛选排序 -->
     <div class="filter-bar">
-        <div class="filter-item active">默认</div>
+        <div class="filter-item active">综合</div>
         <div class="filter-item">销量</div>
-        <div class="filter-item">上新 🔴</div>
         <div class="filter-item">价格 ⇅</div>
-        <div class="filter-item">🖼️ 大图</div>
+        <div class="filter-item">极速发货</div>
     </div>
 
-    <!-- 补贴提示 -->
-    <div class="subsidy-banner">
-        优先展示 <b>百亿补贴</b> 商品
-    </div>
-
-    <!-- 商品双列网格 -->
+    <!-- 双列商品流（黑暗潮流美学） -->
     <div class="goods-grid">
         <!-- 商品 1 -->
         <div class="goods-card">
             <div class="goods-img-wrap">
-                <!-- 替换为你自己的图片路径 -->
-                <img class="goods-img" src="https://via.placeholder.com/300x300/10b981/ffffff?text=140W充电站" alt="商品图">
+                <img class="goods-img" src="https://via.placeholder.com/300x300/222222/00f0ff?text=COKI+Hoodie" alt="商品">
+                <div class="dewu-tag">鉴别通过</div>
             </div>
             <div class="goods-info">
-                <div class="goods-title">【公牛】140W桌面充电站USB插座/多接口快充</div>
-                <div class="goods-tags">1170人收藏 · 正品险 · 退货包运费</div>
+                <div class="goods-title">COKI 24SS 重磅美式复古宽松连帽卫衣</div>
                 <div class="goods-price-row">
                     <div>
                         <span class="price-symbol">¥</span>
-                        <span class="price-num">354</span>
-                        <span class="sales-num">已拼108件</span>
+                        <span class="price-num">329</span>
                     </div>
-                    <div class="btn-add-cart">+</div>
+                    <span class="want-num">2341人付款</span>
                 </div>
             </div>
         </div>
@@ -437,18 +384,17 @@
         <!-- 商品 2 -->
         <div class="goods-card">
             <div class="goods-img-wrap">
-                <img class="goods-img" src="https://via.placeholder.com/300x300/a855f7/ffffff?text=20000毫安充电宝" alt="商品图">
+                <img class="goods-img" src="https://via.placeholder.com/300x300/222222/ffffff?text=COKI+Sneaker" alt="商品">
+                <div class="dewu-tag">极速到家</div>
             </div>
             <div class="goods-info">
-                <div class="goods-title">品牌 3C认证充电宝20000毫安3口快充大容量</div>
-                <div class="goods-tags">3.1万人收藏 · 只换不修 · 正品险</div>
+                <div class="goods-title">COKI x Street 联名款厚底解构运动鞋</div>
                 <div class="goods-price-row">
                     <div>
                         <span class="price-symbol">¥</span>
-                        <span class="price-num">114</span>
-                        <span class="sales-num">全店回购9.2万件</span>
+                        <span class="price-num">589</span>
                     </div>
-                    <div class="btn-add-cart">+</div>
+                    <span class="want-num">8920人付款</span>
                 </div>
             </div>
         </div>
@@ -456,18 +402,17 @@
         <!-- 商品 3 -->
         <div class="goods-card">
             <div class="goods-img-wrap">
-                <img class="goods-img" src="https://via.placeholder.com/300x300/3b82f6/ffffff?text=小白PRO插座" alt="商品图">
+                <img class="goods-img" src="https://via.placeholder.com/300x300/222222/00f0ff?text=COKI+Tee" alt="商品">
+                <div class="dewu-tag">鉴别通过</div>
             </div>
             <div class="goods-info">
-                <div class="goods-title">买插座认准 新国标 小白PRO插座 USB款 1.8m</div>
-                <div class="goods-tags">新国标 · 儿童保护门 · 高温阻燃</div>
+                <div class="goods-title">COKI 潮牌纯棉印花短袖T恤 男女同款</div>
                 <div class="goods-price-row">
                     <div>
                         <span class="price-symbol">¥</span>
-                        <span class="price-num">49.9</span>
-                        <span class="sales-num">已拼5万+件</span>
+                        <span class="price-num">169</span>
                     </div>
-                    <div class="btn-add-cart">+</div>
+                    <span class="want-num">1.2万人付款</span>
                 </div>
             </div>
         </div>
@@ -475,31 +420,28 @@
         <!-- 商品 4 -->
         <div class="goods-card">
             <div class="goods-img-wrap">
-                <img class="goods-img" src="https://via.placeholder.com/300x300/ec4899/ffffff?text=Type-C数据线" alt="商品图">
+                <img class="goods-img" src="https://via.placeholder.com/300x300/222222/ffffff?text=COKI+Cap" alt="商品">
+                <div class="dewu-tag">鉴别通过</div>
             </div>
             <div class="goods-info">
-                <div class="goods-title">颜值在线 iPhone17/Android 快充不伤机 Type-C数据线</div>
-                <div class="goods-tags">官方正品 · 3A快充 · 耐弯折</div>
+                <div class="goods-title">COKI 棒球帽潮牌美式弯檐鸭舌帽</div>
                 <div class="goods-price-row">
                     <div>
                         <span class="price-symbol">¥</span>
-                        <span class="price-num">19.9</span>
-                        <span class="sales-num">已拼10万+件</span>
+                        <span class="price-num">99</span>
                     </div>
-                    <div class="btn-add-cart">+</div>
+                    <span class="want-num">4510人付款</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 底部平台优惠栏 -->
+    <!-- 底部得物风格优惠栏 -->
     <div class="bottom-promo-bar">
-        <div class="promo-tags">
-            <span class="promo-badge">平台满 99 减 5</span>
-            <span class="promo-badge">平台满 199 减 10</span>
-            <span class="promo-badge">平台满 299 减 15</span>
+        <div class="promo-text">
+            <span>COKI</span> 得物专属：全场满¥300立减¥30
         </div>
-        <span style="font-size: 12px; color: #999;">❯</span>
+        <div>立即领券 ❯</div>
     </div>
 
 </body>
