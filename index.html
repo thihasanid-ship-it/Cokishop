@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Coki Shop - 得物潮流馆</title>
+    <title>Shop - 得物潮流馆</title>
     <style>
         * {
             margin: 0;
@@ -137,7 +137,7 @@
             cursor: pointer;
         }
 
-        /* 导航 Tab */
+        /* 导航 Tab 栏 */
         .nav-tabs {
             display: flex;
             justify-content: space-around;
@@ -172,7 +172,7 @@
             border-radius: 2px;
         }
 
-        /* 筛选排序栏 */
+        /* 排序筛选栏 */
         .filter-bar {
             display: flex;
             justify-content: space-around;
@@ -227,7 +227,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #00f0ff;
+            text-align: center;
+            padding: 10px;
+            background-size: cover;
+            background-position: center;
         }
 
         .dewu-tag {
@@ -288,7 +297,33 @@
             color: #666;
         }
 
-        /* 社区/动态等占位内容 */
+        /* 评论列表样式 */
+        .reviews-list {
+            padding: 10px 16px;
+        }
+
+        .review-item {
+            background: #1a1a1a;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #262626;
+            margin-bottom: 10px;
+        }
+
+        .review-user {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 6px;
+        }
+
+        .review-text {
+            font-size: 13px;
+            color: #eee;
+            line-height: 1.4;
+        }
+
         .content-placeholder {
             padding: 40px 20px;
             text-align: center;
@@ -326,7 +361,7 @@
             font-size: 11px;
         }
 
-        /* 看图弹窗（Modal） */
+        /* 看图弹窗 */
         .image-modal {
             display: none;
             position: fixed;
@@ -346,11 +381,19 @@
             display: flex;
         }
 
-        .modal-img {
-            max-width: 100%;
-            max-height: 70vh;
+        .modal-img-box {
+            width: 80vw;
+            height: 80vw;
+            max-width: 320px;
+            max-height: 320px;
             border-radius: 8px;
-            border: 1px solid #333;
+            border: 1px solid #00f0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #00f0ff;
         }
 
         .modal-title {
@@ -380,6 +423,7 @@
 </head>
 <body>
 
+    <!-- 店铺 Header -->
     <div class="header">
         <div class="top-bar">
             <span class="back-icon" onclick="alert('返回上一页')">❮</span>
@@ -413,13 +457,15 @@
         </div>
     </div>
 
+    <!-- 1. 顶部 Tab 导航（替换为你指定的四个） -->
     <div class="nav-tabs">
         <div class="nav-item active" onclick="switchTab(this, 'featured')">精选商品</div>
-        <div class="nav-item" onclick="switchTab(this, 'new')">新品上架</div>
-        <div class="nav-item" onclick="switchTab(this, 'community')">穿搭社区</div>
+        <div class="nav-item" onclick="switchTab(this, 'all')">全部商品</div>
+        <div class="nav-item" onclick="switchTab(this, 'reviews')">评价</div>
         <div class="nav-item" onclick="switchTab(this, 'dynamic')">店铺动态</div>
     </div>
 
+    <!-- 排序筛选栏 -->
     <div class="filter-bar" id="filterBar">
         <div class="filter-item active" onclick="switchFilter(this)">综合</div>
         <div class="filter-item" onclick="switchFilter(this)">销量</div>
@@ -427,115 +473,136 @@
         <div class="filter-item" onclick="switchFilter(this)">极速发货</div>
     </div>
 
-    <div class="goods-grid" id="goodsContainer">
-        </div>
+    <!-- 内容展示区域 -->
+    <div id="mainContainer">
+        <div class="goods-grid" id="goodsContainer"></div>
+    </div>
 
-    <div class="bottom-promo-bar" onclick="alert('恭喜！优惠券 [满300减30] 已成功领取并存入您的卡券包')">
+    <!-- 底部领券栏 -->
+    <div class="bottom-promo-bar" onclick="alert('恭喜！优惠券 [满300减30] 已成功领取')">
         <div class="promo-text">
             <span>COKI</span> 得物专属：全场满¥300立减¥30
         </div>
         <div>点击领券 ❯</div>
     </div>
 
+    <!-- 大图查看弹窗 -->
     <div class="image-modal" id="imageModal" onclick="closeModal()">
         <div class="modal-close" onclick="closeModal()">✕</div>
-        <img class="modal-img" id="modalImg" src="" alt="大图 preview">
+        <div class="modal-img-box" id="modalImgBox"></div>
         <div class="modal-title" id="modalTitle"></div>
     </div>
 
     <script>
-        // 1. 精选商品数据
+        // 1. 精选商品
         const featuredProducts = [
-            { id: 1, title: 'COKI 24SS 重磅美式复古宽松连帽卫衣', price: 329, sales: '2341人付款', tag: '鉴别通过', img: 'https://via.placeholder.com/600x600/222222/00f0ff?text=COKI+Hoodie' },
-            { id: 2, title: 'COKI x Street 联名款厚底解构运动鞋', price: 589, sales: '8920人付款', tag: '极速到家', img: 'https://via.placeholder.com/600x600/222222/ffffff?text=COKI+Sneaker' },
-            { id: 3, title: 'COKI 潮牌纯棉印花短袖T恤 男女同款', price: 169, sales: '1.2万人付款', tag: '鉴别通过', img: 'https://via.placeholder.com/600x600/222222/00f0ff?text=COKI+Tee' },
-            { id: 4, title: 'COKI 棒球帽潮牌美式弯檐鸭舌帽', price: 99, sales: '4510人付款', tag: '鉴别通过', img: 'https://via.placeholder.com/600x600/222222/ffffff?text=COKI+Cap' }
+            { id: 1, title: 'COKI 24SS 重磅美式复古宽松连帽卫衣', price: 329, sales: '2341人付款', tag: '鉴别通过', bg: 'linear-gradient(135deg, #1e293b, #0f172a)', label: 'COKI Hoodie' },
+            { id: 2, title: 'COKI x Street 联名款厚底解构运动鞋', price: 589, sales: '8920人付款', tag: '极速到家', bg: 'linear-gradient(135deg, #331832, #110912)', label: 'COKI Sneaker' }
         ];
 
-        // 2. 新品上架数据（点击“新品上架”时渲染）
-        const newProducts = [
-            { id: 5, title: '【2026秋季新品】COKI 刺绣水洗牛仔夹克外套', price: 459, sales: '首发新品', tag: '新品鉴别', img: 'https://via.placeholder.com/600x600/1a2e3b/00f0ff?text=COKI+Jacket' },
-            { id: 6, title: '【限时发售】COKI 极简黑武士机能工装裤', price: 299, sales: '新品上架', tag: '极速发货', img: 'https://via.placeholder.com/600x600/1a2e3b/ffffff?text=COKI+Pants' },
-            { id: 7, title: 'COKI 银饰925银古巴链条潮牌项链', price: 189, sales: '新品上架', tag: '鉴别通过', img: 'https://via.placeholder.com/600x600/1a2e3b/00f0ff?text=COKI+Necklace' },
-            { id: 8, title: 'COKI 联名款防水多功能背包', price: 349, sales: '少量现货', tag: '新品鉴别', img: 'https://via.placeholder.com/600x600/1a2e3b/ffffff?text=COKI+Backpack' }
+        // 2. 全部商品
+        const allProducts = [
+            ...featuredProducts,
+            { id: 3, title: 'COKI 潮牌纯棉印花短袖T恤 男女同款', price: 169, sales: '1.2万人付款', tag: '鉴别通过', bg: 'linear-gradient(135deg, #14281d, #09120d)', label: 'COKI Tee' },
+            { id: 4, title: 'COKI 棒球帽潮牌美式弯檐鸭舌帽', price: 99, sales: '4510人付款', tag: '鉴别通过', bg: 'linear-gradient(135deg, #2b1c11, #120b06)', label: 'COKI Cap' },
+            { id: 5, title: 'COKI 刺绣水洗牛仔夹克外套', price: 459, sales: '890人付款', tag: '新品鉴别', bg: 'linear-gradient(135deg, #112233, #08111a)', label: 'COKI Jacket' },
+            { id: 6, title: 'COKI 极简黑武士机能工装裤', price: 299, sales: '1500人付款', tag: '极速发货', bg: 'linear-gradient(135deg, #222222, #111111)', label: 'COKI Pants' }
         ];
 
-        let currentTab = 'featured';
+        // 3. 评价数据
+        const reviewsData = [
+            { user: '潮人***88', text: '卫衣面料非常厚实，版型绝了！得物鉴别包装很专业，过验无误。', time: '2026-03-20' },
+            { user: 'K***G', text: '鞋子发货速度极快，隔天就到了，颜值在线，上脚包裹感很好！', time: '2026-03-18' },
+            { user: '发财***呀', text: 'T恤纯棉质量很好，摸起来很有质感，满意！', time: '2026-03-15' }
+        ];
 
-        // 渲染商品列表
+        // 渲染商品网格
         function renderProducts(list) {
-            const container = document.getElementById('goodsContainer');
-            container.style.display = 'grid';
-            container.innerHTML = list.map(item => `
-                <div class="goods-card" onclick="openModal('${item.img}', '${item.title}')">
-                    <div class="goods-img-wrap">
-                        <img class="goods-img" src="${item.img}" alt="${item.title}">
-                        <div class="dewu-tag">${item.tag}</div>
-                    </div>
-                    <div class="goods-info">
-                        <div class="goods-title">${item.title}</div>
-                        <div class="goods-price-row">
-                            <div>
-                                <span class="price-symbol">¥</span>
-                                <span class="price-num">${item.price}</span>
+            const container = document.getElementById('mainContainer');
+            container.innerHTML = `
+                <div class="goods-grid">
+                    ${list.map(item => `
+                        <div class="goods-card" onclick="openModal('${item.bg}', '${item.label}', '${item.title}')">
+                            <div class="goods-img-wrap">
+                                <div class="goods-img" style="background: ${item.bg}">${item.label}</div>
+                                <div class="dewu-tag">${item.tag}</div>
                             </div>
-                            <span class="want-num">${item.sales}</span>
+                            <div class="goods-info">
+                                <div class="goods-title">${item.title}</div>
+                                <div class="goods-price-row">
+                                    <div>
+                                        <span class="price-symbol">¥</span>
+                                        <span class="price-num">${item.price}</span>
+                                    </div>
+                                    <span class="want-num">${item.sales}</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    `).join('')}
                 </div>
-            `).join('');
+            `;
+        }
+
+        // 渲染评价列表
+        function renderReviews() {
+            const container = document.getElementById('mainContainer');
+            container.innerHTML = `
+                <div class="reviews-list">
+                    ${reviewsData.map(r => `
+                        <div class="review-item">
+                            <div class="review-user">
+                                <span>${r.user}</span>
+                                <span>${r.time}</span>
+                            </div>
+                            <div class="review-text">“ ${r.text} ”</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
         }
 
         // Tab 切换逻辑
         function switchTab(element, type) {
-            currentTab = type;
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
 
             const filterBar = document.getElementById('filterBar');
-            const container = document.getElementById('goodsContainer');
 
             if (type === 'featured') {
                 filterBar.style.display = 'flex';
                 renderProducts(featuredProducts);
-            } else if (type === 'new') {
+            } else if (type === 'all') {
                 filterBar.style.display = 'flex';
-                renderProducts(newProducts); // 加载新品数据
-            } else if (type === 'community') {
+                renderProducts(allProducts);
+            } else if (type === 'reviews') {
                 filterBar.style.display = 'none';
-                container.style.display = 'block';
-                container.innerHTML = '<div class="content-placeholder">📸 COKI 穿搭社区正在加载潮流达人秀...</div>';
+                renderReviews();
             } else if (type === 'dynamic') {
                 filterBar.style.display = 'none';
-                container.style.display = 'block';
-                container.innerHTML = '<div class="content-placeholder">📢 店铺最新动态：下周五晚8点 2026AW 新品首发！</div>';
+                document.getElementById('mainContainer').innerHTML = '<div class="content-placeholder">📢 店铺动态：COKI 2026SS 爆款限时复刻，全场领券立减！</div>';
             }
         }
 
-        // 排序选项切换
+        // 筛选逻辑
         function switchFilter(element) {
             document.querySelectorAll('.filter-item').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
-            // 此处可扩展重新排序逻辑
         }
 
-        // 关注按钮状态切换
+        // 关注状态
         let isFollowed = false;
         function toggleFollow() {
             const btn = document.getElementById('btnFollow');
             isFollowed = !isFollowed;
-            if (isFollowed) {
-                btn.innerText = '已关注';
-                btn.classList.add('followed');
-            } else {
-                btn.innerText = '+ 关注';
-                btn.classList.remove('followed');
-            }
+            btn.innerText = isFollowed ? '已关注' : '+ 关注';
+            btn.classList.toggle('followed', isFollowed);
         }
 
-        // 点击商品看大图弹窗
-        function openModal(imgUrl, title) {
-            document.getElementById('modalImg').src = imgUrl;
+        // 点击看图弹窗
+        function openModal(bg, label, title) {
+            const box = document.getElementById('modalImgBox');
+            box.style.background = bg;
+            box.innerText = label;
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('imageModal').classList.add('active');
         }
@@ -544,7 +611,7 @@
             document.getElementById('imageModal').classList.remove('active');
         }
 
-        // 初始化页面渲染
+        // 初始化
         renderProducts(featuredProducts);
     </script>
 </body>
