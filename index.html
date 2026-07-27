@@ -3,265 +3,284 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Coki — 用户注册 / 登录</title>
+  <title>Coki — 精致桌面收纳专区</title>
   <style>
     :root {
       --dewu-black: #121212;
       --dewu-cyan: #00f0ff;
       --dewu-neon: #ccff00;
-      --bg-gray: #f8f8f8;
-      --border-gray: #e5e5e5;
-      --radius-lg: 20px;
-      --radius-md: 12px;
+      --bg-gray: #f6f6f6;
+      --radius-lg: 18px;
+      --radius-sm: 12px;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--dewu-black);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 24px 20px;
+      background-color: var(--bg-gray);
+      color: var(--dewu-black);
+      padding-bottom: 90px;
     }
 
     /* 1. 顶部 Header */
-    .top-bar {
+    header {
+      background-color: var(--dewu-black);
+      padding: 14px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 10px;
     }
 
-    .back-btn {
-      font-size: 20px;
-      color: #fff;
-      cursor: pointer;
-      width: 36px;
-      height: 36px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .brand-logo {
+    .logo {
       font-size: 22px;
       font-weight: 900;
+      color: #fff;
+      letter-spacing: -1px;
       font-style: italic;
-      letter-spacing: -0.5px;
     }
 
-    .brand-logo span { color: var(--dewu-cyan); }
+    .logo span { color: var(--dewu-cyan); }
 
-    /* 2. 标语与切换栏 */
-    .hero-text {
-      margin: 30px 0 20px;
+    .cart-btn {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 8px 14px;
+      border-radius: 20px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .hero-text h1 {
-      font-size: 28px;
+    .cart-badge {
+      background: var(--dewu-neon);
+      color: var(--dewu-black);
+      font-size: 11px;
       font-weight: 900;
-      line-height: 1.2;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    /* 2. Banner 海报 */
+    .banner-wrapper { padding: 12px 16px 0; }
+    
+    .hero-banner {
+      background: linear-gradient(135deg, #2b2b2b 0%, #000000 100%);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      color: #fff;
+      border: 1px solid #333;
+    }
+
+    .banner-tag {
+      background: var(--dewu-cyan);
+      color: var(--dewu-black);
+      font-size: 10px;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
       margin-bottom: 8px;
     }
 
-    .hero-text p {
-      font-size: 13px;
-      color: #888;
-    }
+    .hero-banner h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .hero-banner p { font-size: 12px; color: #aaa; }
 
-    /* 白色卡片容器 */
-    .auth-card {
-      background: #ffffff;
-      color: var(--dewu-black);
-      border-radius: var(--radius-lg);
-      padding: 24px 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .tab-bar {
-      display: flex;
-      gap: 20px;
-      border-bottom: 2px solid var(--border-gray);
-      padding-bottom: 10px;
-      margin-bottom: 20px;
-    }
-
-    .tab-item {
+    /* 3. 商品列表标题 */
+    .section-title {
       font-size: 16px;
-      font-weight: 800;
-      color: #a0a0a0;
-      cursor: pointer;
+      font-weight: 900;
+      padding: 20px 16px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .section-title span { font-size: 11px; color: #888; font-weight: normal; }
+
+    /* 4. 双列瀑布流 */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 0 16px;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .img-wrapper {
+      width: 100%;
+      height: 170px;
+      background: #f0f0f0;
       position: relative;
     }
 
-    .tab-item.active {
-      color: var(--dewu-black);
-    }
+    .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-    .tab-item.active::after {
-      content: '';
+    .hot-badge {
       position: absolute;
-      bottom: -12px;
-      left: 0;
-      width: 100%;
-      height: 3px;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 10px;
+    }
+
+    .product-info { padding: 12px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+    .product-name { font-size: 12px; font-weight: 600; color: #222; line-height: 1.4; margin-bottom: 10px; }
+    .price-bar { display: flex; justify-content: space-between; align-items: center; }
+    .price-num { font-size: 14px; font-weight: 900; color: var(--dewu-black); }
+
+    .add-btn {
       background: var(--dewu-black);
-      border-radius: 2px;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    /* 表单输入框 */
-    .input-group {
-      margin-bottom: 14px;
+    .add-btn:active { background: var(--dewu-cyan); color: #000; }
+
+    /* 5. 底部固定结算栏 */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      padding: 12px 16px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
     }
 
-    .input-box {
+    .total-price { font-size: 18px; font-weight: 900; color: #111; }
+
+    .checkout-now-btn {
+      background: var(--dewu-black);
+      color: var(--dewu-neon);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* 6. 免注册弹窗 Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      display: none;
+      align-items: flex-end;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .checkout-card {
+      background: #fff;
+      width: 100%;
+      border-radius: 24px 24px 0 0;
+      padding: 24px 20px 30px;
+      animation: slideUp 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-title { font-size: 18px; font-weight: 900; }
+    .close-btn { font-size: 20px; color: #888; cursor: pointer; padding: 4px; }
+
+    .order-summary {
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+      max-height: 120px;
+      overflow-y: auto;
+      font-size: 13px;
+    }
+
+    .summary-item { display: flex; justify-content: space-between; margin-bottom: 6px; }
+
+    .input-field {
       width: 100%;
       background: #f4f4f6;
       border: 1px solid transparent;
-      padding: 14px 16px;
-      border-radius: var(--radius-md);
-      font-size: 14px;
-      font-weight: 600;
-      color: #111;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 10px;
       outline: none;
-      transition: all 0.2s ease;
     }
 
-    .input-box:focus {
-      border-color: var(--dewu-black);
-      background: #fff;
-    }
+    .input-field:focus { border-color: #111; background: #fff; }
 
-    .code-row {
-      display: flex;
-      gap: 10px;
-    }
-
-    .send-btn {
-      background: #eee;
-      border: none;
-      padding: 0 14px;
-      border-radius: var(--radius-md);
-      font-size: 12px;
-      font-weight: 700;
-      color: #444;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    /* 提交主按钮 */
-    .submit-btn {
+    .submit-order-btn {
       width: 100%;
-      background: var(--dewu-black);
+      background: #0084ff;
       color: #fff;
       border: none;
-      padding: 16px;
-      border-radius: var(--radius-md);
+      padding: 15px;
+      border-radius: 12px;
       font-size: 15px;
-      font-weight: 800;
+      font-weight: 900;
+      cursor: pointer;
       margin-top: 10px;
-      cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease;
     }
 
-    .submit-btn:active {
-      transform: scale(0.97);
-      background: #333;
-    }
-
-    /* 3. 快捷登录/第三方授权 */
-    .social-divider {
-      display: flex;
-      align-items: center;
-      margin: 30px 0 20px;
-      color: #666;
-      font-size: 12px;
-    }
-
-    .social-divider::before, .social-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #333;
-    }
-
-    .social-divider span {
-      padding: 0 12px;
-    }
-
-    .social-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .social-btn {
-      width: 100%;
-      padding: 14px;
-      border-radius: var(--radius-md);
-      border: 1px solid #333;
-      background: #1e1e1e;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease;
-    }
-
-    .social-btn:active { transform: scale(0.98); }
-
-    /* 各品牌色彩细节 */
-    .btn-fb { background: #1877f2; border: none; }
-    .btn-tiktok { background: #000000; border: 1px solid #333; color: #fff; }
-    .btn-google { background: #ffffff; color: #111; border: none; }
-
-    .social-icon {
-      font-size: 18px;
-    }
-
-    /* 底部条款 */
-    .terms {
-      text-align: center;
-      font-size: 11px;
-      color: #666;
-      margin-top: 25px;
-    }
-
-    .terms a {
-      color: var(--dewu-cyan);
-      text-decoration: none;
-    }
-
-    /* Toast */
+    /* Toast 提示 */
     #toast {
       position: fixed;
-      top: 20px;
-      left: 50%;
+      top: 20px; left: 50%;
       transform: translateX(-50%) translateY(-50px);
       background: var(--dewu-neon);
-      color: var(--dewu-black);
-      padding: 10px 20px;
+      color: #000;
+      padding: 8px 18px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 900;
       opacity: 0;
-      transition: all 0.25s ease;
-      z-index: 2000;
+      transition: all 0.2s ease;
+      z-index: 3000;
       pointer-events: none;
     }
 
@@ -270,93 +289,181 @@
 </head>
 <body>
 
-  <div>
-    <div class="top-bar">
-      <div class="back-btn" onclick="notify('返回上一页')">‹</div>
-      <div class="brand-logo">COKI<span>.POIZON</span></div>
-      <div style="width: 36px;"></div>
+  <!-- Header -->
+  <header>
+    <div class="logo">COKI<span>.STORE</span></div>
+    <div class="cart-btn" onclick="openCheckout()">
+      🛒 清单 <span class="cart-badge" id="cart-count">0</span>
     </div>
+  </header>
 
-    <div class="hero-text">
-      <h1>加入 COKI<br>探索潮流生活</h1>
-      <p>注册即可享受首单专属折扣与免费鉴别服务</p>
-    </div>
-
-    <div class="auth-card">
-      <div class="tab-bar">
-        <div class="tab-item active" id="tab-reg" onclick="switchTab('reg')">新用户注册</div>
-        <div class="tab-item" id="tab-login" onclick="switchTab('login')">账号登录</div>
-      </div>
-
-      <div class="input-group">
-        <input type="text" class="input-box" placeholder="请输入手机号 / 邮箱">
-      </div>
-
-      <div class="input-group code-row">
-        <input type="text" class="input-box" placeholder="请输入验证码">
-        <button class="send-btn" onclick="notify('验证码已发送！')">获取验证码</button>
-      </div>
-
-      <div class="input-group">
-        <input type="password" class="input-box" placeholder="设置密码 (8-20位数字与字母)">
-      </div>
-
-      <button class="submit-btn" id="sub-btn" onclick="notify('🎉 注册成功！欢迎加入 Coki')">立即注册</button>
+  <!-- Banner -->
+  <div class="banner-wrapper">
+    <div class="hero-banner">
+      <span class="banner-tag">DESK ORGANIZER</span>
+      <h2>Coki 桌面美学系列</h2>
+      <p>TikTok 粉丝专属优惠 · 支持货到付款 (COD)</p>
     </div>
   </div>
 
-  <div>
-    <div class="social-divider">
-      <span>第三方快捷登录</span>
+  <!-- 商品列表 -->
+  <div class="section-title">
+    精选收纳盒 <span>COLLECTION</span>
+  </div>
+
+  <div class="product-grid">
+    
+    <!-- 商品 1 -->
+    <div class="product-card">
+      <div class="img-wrapper">
+        <img src="item1.jpg" alt="多功能带镜收纳盒" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+        <div class="hot-badge">🔥 热销款</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name">多功能带镜桌面收纳盒（带抽屉/纸巾盒）</div>
+        <div class="price-bar">
+          <span class="price-num">40,000 MMK</span>
+          <button class="add-btn" onclick="addToCart('多功能带镜收纳盒', 40000)">+ 选择</button>
+        </div>
+      </div>
     </div>
 
-    <div class="social-list">
-      <button class="social-btn btn-fb" onclick="notify('🌐 正在调起 Facebook 快捷登录...')">
-        <span class="social-icon">📘</span> 使用 Facebook 快捷登录
-      </button>
-
-      <button class="social-btn btn-tiktok" onclick="notify('🎵 正在调起 TikTok 授权登录...')">
-        <span class="social-icon">🎵</span> 使用 TikTok 快捷登录
-      </button>
-
-      <button class="social-btn btn-google" onclick="notify('🔍 正在调起 Google 快捷登录...')">
-        <span class="social-icon">🌐</span> 使用 Google 账号登录
-      </button>
+    <!-- 商品 2 -->
+    <div class="product-card">
+      <div class="img-wrapper">
+        <img src="item2.jpg" alt="双抽屉加厚收纳盒" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+        <div class="hot-badge">🔥 爆款</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name">双抽屉加厚大容量桌面收纳盒（带镜子）</div>
+        <div class="price-bar">
+          <span class="price-num">50,000 MMK</span>
+          <button class="add-btn" onclick="addToCart('双抽屉加厚收纳盒', 50000)">+ 选择</button>
+        </div>
+      </div>
     </div>
 
-    <div class="terms">
-      注册即代表同意 Coki <a href="#">服务条款</a> 与 <a href="#">隐私政策</a>
+    <!-- 商品 3 -->
+    <div class="product-card">
+      <div class="img-wrapper">
+        <img src="item3.jpg" alt="豪华多层组合收纳盒" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+        <div class="hot-badge">🔥 旗舰款</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name">豪华多层组合桌面化妆品收纳盒</div>
+        <div class="price-bar">
+          <span class="price-num">60,000 MMK</span>
+          <button class="add-btn" onclick="addToCart('豪华多层组合收纳盒', 60000)">+ 选择</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 底部固定栏 -->
+  <div class="bottom-bar">
+    <div>
+      <div style="font-size: 11px; color: #888;">合计总价：</div>
+      <div class="total-price" id="total-price-display">0 MMK</div>
+    </div>
+    <button class="checkout-now-btn" onclick="openCheckout()">确认下单</button>
+  </div>
+
+  <!-- 弹窗：填写收货信息（无注册） -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="checkout-card">
+      <div class="modal-header">
+        <div class="modal-title">填写送货信息</div>
+        <div class="close-btn" onclick="closeCheckout()">✕</div>
+      </div>
+
+      <div class="order-summary" id="order-summary"></div>
+
+      <input type="text" class="input-field" id="cust-name" placeholder="您的姓名 (Name)">
+      <input type="tel" class="input-field" id="cust-phone" placeholder="联系电话 (Phone)">
+      <input type="text" class="input-field" id="cust-address" placeholder="送货地址 (City / Township)">
+
+      <button class="submit-order-btn" onclick="sendOrder()">
+        💬 提交并发送订单
+      </button>
     </div>
   </div>
 
   <div id="toast">提示信息</div>
 
   <script>
-    function switchTab(type) {
-      const regTab = document.getElementById('tab-reg');
-      const loginTab = document.getElementById('tab-login');
-      const subBtn = document.getElementById('sub-btn');
+    let cart = [];
+    let totalPrice = 0;
 
-      if (type === 'reg') {
-        regTab.classList.add('active');
-        loginTab.classList.remove('active');
-        subBtn.innerText = '立即注册';
-      } else {
-        loginTab.classList.add('active');
-        regTab.classList.remove('active');
-        subBtn.innerText = '安全登录';
-      }
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      totalPrice += price;
+      updateCartUI();
+      showToast('⚡ 已添加到选择清单！');
     }
 
-    let timer;
-    function notify(msg) {
+    function updateCartUI() {
+      document.getElementById('cart-count').innerText = cart.length;
+      document.getElementById('total-price-display').innerText = totalPrice.toLocaleString() + ' MMK';
+    }
+
+    function openCheckout() {
+      if (cart.length === 0) {
+        showToast('🛒 请先选择至少一款商品');
+        return;
+      }
+
+      let summaryHTML = '';
+      cart.forEach((item, index) => {
+        summaryHTML += `<div class="summary-item">
+          <span>${index + 1}. ${item.name}</span>
+          <b>${item.price.toLocaleString()} MMK</b>
+        </div>`;
+      });
+      document.getElementById('order-summary').innerHTML = summaryHTML;
+      document.getElementById('checkout-modal').classList.add('active');
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkout-modal').classList.remove('active');
+    }
+
+    function sendOrder() {
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
+
+      if (!name || !phone || !address) {
+        showToast('⚠️ 请填写完整的姓名、电话和地址');
+        return;
+      }
+
+      // 生成发给客服的信息文本
+      let msg = `🛒【Coki 官网新订单】\n\n`;
+      msg += `👤 姓名: ${name}\n`;
+      msg += `📞 电话: ${phone}\n`;
+      msg += `📍 地址: ${address}\n\n`;
+      msg += `📦 订购商品:\n`;
+      cart.forEach((item, i) => {
+        msg += `${i + 1}. ${item.name} (${item.price.toLocaleString()} MMK)\n`;
+      });
+      msg += `\n💰 订单总额: ${totalPrice.toLocaleString()} MMK (COD货到付款)`;
+
+      // 自动复制并弹窗提示
+      navigator.clipboard.writeText(msg).then(() => {
+        showToast('📋 订单信息已自动复制！');
+        alert("订单信息已生成并复制到剪贴板！\n\n您可以直接粘贴发送给 Messenger 或 TikTok 客服！");
+        closeCheckout();
+      });
+    }
+
+    let toastTimer;
+    function showToast(msg) {
       const toast = document.getElementById('toast');
       toast.innerText = msg;
       toast.classList.add('show');
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 1800);
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 1800);
     }
   </script>
 </body>
