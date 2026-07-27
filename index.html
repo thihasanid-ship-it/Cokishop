@@ -3,71 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shop - 得物潮流馆</title>
+    <title>COKI Luxury Store</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #121212;
-            color: #ffffff;
+            background-color: #0d0d0d;
+            color: #f5f5f7;
             max-width: 480px;
             margin: 0 auto;
-            padding-bottom: 70px;
+            padding-bottom: 80px;
             position: relative;
             min-height: 100vh;
         }
 
-        /* 顶部 Header */
+        /* 顶部 Header：极简暗黑与微光渐变 */
         .header {
-            background-color: #1a1a1a;
-            padding: 12px 16px;
-            border-bottom: 1px solid #2a2a2a;
+            background: linear-gradient(180deg, #161618 0%, #0d0d0d 100%);
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .back-icon, .action-icons span {
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
+            color: #a1a1a6;
+            transition: color 0.2s;
+        }
+
+        .back-icon:hover, .action-icons span:hover {
             color: #fff;
         }
 
         .action-icons span {
-            margin-left: 16px;
+            margin-left: 18px;
         }
 
         .shop-info {
             display: flex;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .shop-logo {
-            width: 52px;
-            height: 52px;
-            border-radius: 8px;
-            border: 1px solid #333;
-            margin-right: 12px;
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            margin-right: 14px;
             background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            color: #00f0ff;
-            font-weight: 900;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-size: 13px;
+            color: #d4af37; /* 高级香槟金 */
+            font-weight: 700;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
 
         .shop-detail {
@@ -77,24 +82,25 @@
         .shop-title-row {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .shop-name {
-            font-size: 17px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
             color: #fff;
         }
 
         .verified-tag {
-            background: #00f0ff;
-            color: #000;
+            background: rgba(212, 175, 55, 0.15);
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.3);
             font-size: 9px;
-            font-weight: bold;
-            padding: 1px 4px;
-            border-radius: 2px;
-            text-transform: uppercase;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 3px;
+            letter-spacing: 0.5px;
         }
 
         .shop-stats {
@@ -102,123 +108,138 @@
             align-items: center;
             gap: 8px;
             font-size: 11px;
-            color: #888;
-            margin-top: 4px;
+            color: #86868b;
+            margin-top: 5px;
+            letter-spacing: 0.3px;
         }
 
         .btn-follow {
-            border: none;
-            background: #00f0ff;
-            color: #000;
-            padding: 6px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #f5f5f7;
+            padding: 6px 16px;
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 11px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-follow:hover {
+            border-color: #d4af37;
+            color: #d4af37;
         }
 
         .btn-follow.followed {
-            background: #333;
-            color: #888;
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.08);
+            color: #6e6e73;
         }
 
-        /* 正品鉴别保障条 */
+        /* 正品保障：磨砂玻璃黑金条 */
         .auth-banner {
-            background: linear-gradient(90deg, #1f242d 0%, #111419 100%);
-            border: 1px solid #2d3545;
-            color: #a5b4fc;
-            padding: 8px 12px;
-            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #a1a1a6;
+            padding: 10px 14px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 11px;
             cursor: pointer;
+            letter-spacing: 0.5px;
         }
 
-        /* 导航 Tab 栏 */
+        /* 导航 Tab 栏：优雅极简底线 */
         .nav-tabs {
             display: flex;
             justify-content: space-around;
-            background: #1a1a1a;
-            border-bottom: 1px solid #262626;
-            padding: 12px 0;
-            font-size: 14px;
+            background: #0d0d0d;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 14px 0 10px 0;
+            font-size: 13px;
         }
 
         .nav-item {
-            color: #888;
-            font-weight: 500;
+            color: #86868b;
+            font-weight: 400;
             position: relative;
             cursor: pointer;
-            padding: 2px 4px;
+            padding: 4px 6px;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
         }
 
         .nav-item.active {
-            color: #fff;
-            font-weight: bold;
+            color: #ffffff;
+            font-weight: 500;
         }
 
         .nav-item.active::after {
             content: '';
             position: absolute;
-            bottom: -12px;
+            bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 16px;
-            height: 3px;
-            background-color: #00f0ff;
-            border-radius: 2px;
+            width: 14px;
+            height: 2px;
+            background-color: #d4af37; /* 香槟金点缀 */
+            border-radius: 1px;
         }
 
         /* 排序筛选栏 */
         .filter-bar {
             display: flex;
             justify-content: space-around;
-            background: #121212;
-            padding: 12px 0;
-            font-size: 12px;
-            color: #777;
+            background: #0d0d0d;
+            padding: 14px 0;
+            font-size: 11px;
+            color: #6e6e73;
+            letter-spacing: 0.5px;
         }
 
         .filter-item {
             cursor: pointer;
+            transition: color 0.2s;
         }
 
         .filter-item.active {
-            color: #00f0ff;
-            font-weight: bold;
+            color: #d4af37;
+            font-weight: 500;
         }
 
-        /* 双列商品流 */
+        /* 双列商品流：精致卡片微边框 */
         .goods-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            padding: 0 10px;
+            gap: 12px;
+            padding: 0 12px;
         }
 
         .goods-card {
-            background: #1a1a1a;
-            border-radius: 8px;
+            background: #141416;
+            border-radius: 10px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            border: 1px solid #262626;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             cursor: pointer;
-            transition: transform 0.1s ease;
+            transition: all 0.25s ease;
         }
 
-        .goods-card:active {
-            transform: scale(0.98);
+        .goods-card:hover {
+            border-color: rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
         }
 
         .goods-img-wrap {
             width: 100%;
             padding-top: 100%;
             position: relative;
-            background: #222;
+            background: #1c1c1e;
         }
 
         .goods-img {
@@ -230,30 +251,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-            color: #00f0ff;
-            text-align: center;
-            padding: 10px;
-            background-size: cover;
-            background-position: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #d4af37;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .dewu-tag {
             position: absolute;
-            bottom: 6px;
-            left: 6px;
-            background: rgba(0, 0, 0, 0.75);
-            border: 1px solid #00f0ff;
-            color: #00f0ff;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e5e5ea;
             font-size: 9px;
-            padding: 1px 4px;
-            border-radius: 2px;
-            backdrop-filter: blur(2px);
+            padding: 2px 6px;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            letter-spacing: 0.3px;
         }
 
         .goods-info {
-            padding: 10px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -261,50 +281,51 @@
         }
 
         .goods-title {
-            font-size: 13px;
-            line-height: 1.4;
-            color: #eee;
-            margin-bottom: 6px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #e5e5ea;
+            margin-bottom: 8px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            font-weight: 500;
+            font-weight: 400;
+            letter-spacing: 0.2px;
         }
 
         .goods-price-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-top: 6px;
         }
 
         .price-symbol {
-            font-size: 12px;
+            font-size: 11px;
             color: #fff;
-            font-weight: bold;
+            margin-right: 1px;
         }
 
         .price-num {
-            font-size: 18px;
-            font-weight: 800;
+            font-size: 16px;
+            font-weight: 600;
             color: #fff;
-            font-family: "Arial Black", Gadget, sans-serif;
+            letter-spacing: -0.3px;
         }
 
         .want-num {
             font-size: 10px;
-            color: #666;
+            color: #6e6e73;
         }
 
         .content-placeholder {
-            padding: 40px 20px;
+            padding: 60px 20px;
             text-align: center;
-            color: #666;
-            font-size: 14px;
+            color: #6e6e73;
+            font-size: 13px;
+            letter-spacing: 0.5px;
         }
 
-        /* 底部领券栏 */
+        /* 底部领券栏：高级黑金风格 */
         .bottom-promo-bar {
             position: fixed;
             bottom: 0;
@@ -312,29 +333,30 @@
             right: 0;
             max-width: 480px;
             margin: 0 auto;
-            background: #00f0ff;
-            color: #000;
+            background: linear-gradient(90deg, #1f1d18 0%, #121212 100%);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            color: #d4af37;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 16px;
-            font-weight: bold;
-            font-size: 12px;
-            box-shadow: 0 -4px 20px rgba(0,240,255,0.15);
+            padding: 12px 18px;
+            font-size: 11px;
             cursor: pointer;
             z-index: 100;
+            backdrop-filter: blur(20px);
         }
 
         .promo-text span {
-            background: #000;
-            color: #fff;
-            padding: 2px 6px;
-            border-radius: 3px;
-            margin-right: 4px;
-            font-size: 11px;
+            background: #d4af37;
+            color: #000;
+            padding: 1px 5px;
+            border-radius: 2px;
+            margin-right: 6px;
+            font-weight: 600;
+            font-size: 10px;
         }
 
-        /* 看图弹窗 */
+        /* 大图查看弹窗 */
         .image-modal {
             display: none;
             position: fixed;
@@ -342,12 +364,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.92);
             z-index: 1000;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             padding: 20px;
+            backdrop-filter: blur(10px);
         }
 
         .image-modal.active {
@@ -359,38 +382,46 @@
             height: 80vw;
             max-width: 320px;
             max-height: 320px;
-            border-radius: 8px;
-            border: 1px solid #00f0ff;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: #00f0ff;
+            font-size: 18px;
+            font-weight: 600;
+            color: #d4af37;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .modal-title {
-            color: #fff;
-            margin-top: 15px;
-            font-size: 14px;
+            color: #e5e5ea;
+            margin-top: 18px;
+            font-size: 13px;
             text-align: center;
-            padding: 0 10px;
+            padding: 0 20px;
+            letter-spacing: 0.5px;
         }
 
         .modal-close {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #fff;
-            font-size: 24px;
+            top: 24px;
+            right: 24px;
+            color: #a1a1a6;
+            font-size: 18px;
             cursor: pointer;
-            background: rgba(255,255,255,0.2);
-            width: 36px;
-            height: 36px;
+            background: rgba(255,255,255,0.08);
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #fff;
         }
     </style>
 </head>
@@ -410,13 +441,13 @@
             <div class="shop-logo">COKI</div>
             <div class="shop-detail">
                 <div class="shop-title-row">
-                    <span class="shop-name">COKI SHOP</span>
+                    <span class="shop-name">COKI BOUTIQUE</span>
                     <span class="verified-tag">品牌直营</span>
                 </div>
                 <div class="shop-stats">
-                    <span>潮流买手店</span>
+                    <span>高奢买手店</span>
                     <span>•</span>
-                    <span id="follow-count">12.8万人想要</span>
+                    <span id="follow-count">12.8万人关注</span>
                 </div>
             </div>
             <div class="shop-actions">
@@ -424,13 +455,13 @@
             </div>
         </div>
 
-        <div class="auth-banner" onclick="alert('得物正品保障：平台统一查验、鉴别真伪后再发货。')">
-            <span>🛡️ 正品保障 · 逐件查验 · 极速发货</span>
-            <span style="color: #666;">❯</span>
+        <div class="auth-banner" onclick="alert('官方鉴别保障：逐件检验，正品保证。')">
+            <span>正品保障 · 官方鉴别 · 极速送达</span>
+            <span style="color: #6e6e73;">❯</span>
         </div>
     </div>
 
-    <!-- 1. 顶部 Tab 导航（修改为：精选商品、全部商品、平价、店铺动态） -->
+    <!-- 顶部 Tab 导航（精选商品、全部商品、平价、店铺动态） -->
     <div class="nav-tabs">
         <div class="nav-item active" onclick="switchTab(this, 'featured')">精选商品</div>
         <div class="nav-item" onclick="switchTab(this, 'all')">全部商品</div>
@@ -451,12 +482,12 @@
         <div class="goods-grid" id="goodsContainer"></div>
     </div>
 
-    <!-- 底部领券栏 -->
-    <div class="bottom-promo-bar" onclick="alert('恭喜！优惠券 [满300减30] 已成功领取')">
+    <!-- 底部黑金领券栏 -->
+    <div class="bottom-promo-bar" onclick="alert('专属优惠券 [满300减30] 已存入卡包')">
         <div class="promo-text">
-            <span>COKI</span> 得物专属：全场满¥300立减¥30
+            <span>VIP</span> COKI 尊享礼遇：全场满 ¥300 立减 ¥30
         </div>
-        <div>点击领券 ❯</div>
+        <div>领券 ❯</div>
     </div>
 
     <!-- 大图查看弹窗 -->
@@ -467,27 +498,27 @@
     </div>
 
     <script>
-        // 1. 精选商品
+        // 1. 精选商品（高级感视觉与质感配色）
         const featuredProducts = [
-            { id: 1, title: 'COKI 24SS 重磅美式复古宽松连帽卫衣', price: 329, sales: '2341人付款', tag: '鉴别通过', bg: 'linear-gradient(135deg, #1e293b, #0f172a)', label: 'COKI Hoodie' },
-            { id: 2, title: 'COKI x Street 联名款厚底解构运动鞋', price: 589, sales: '8920人付款', tag: '极速到家', bg: 'linear-gradient(135deg, #331832, #110912)', label: 'COKI Sneaker' }
+            { id: 1, title: 'COKI 24SS 重磅美式剪裁连帽卫衣', price: 329, sales: '2341 人付款', tag: '官方鉴别', bg: 'linear-gradient(145deg, #1e2026, #0f1012)', label: 'COKI Hoodie' },
+            { id: 2, title: 'COKI x Street 联名系列解构运动鞋', price: 589, sales: '8920 人付款', tag: '极速发货', bg: 'linear-gradient(145deg, #252026, #120e13)', label: 'COKI Sneaker' }
         ];
 
-        // 2. 平价特惠单品（100元以内的性价比高货）
+        // 2. 平价单品
         const budgetProducts = [
-            { id: 4, title: 'COKI 棒球帽潮牌美式弯檐鸭舌帽', price: 99, sales: '4510人付款', tag: '百元平价', bg: 'linear-gradient(135deg, #2b1c11, #120b06)', label: 'COKI Cap' },
-            { id: 7, title: 'COKI 银饰925银古巴链条潮牌项链', price: 89, sales: '6720人付款', tag: '极致性价比', bg: 'linear-gradient(135deg, #1a2a3a, #0d151d)', label: 'COKI Chain' },
-            { id: 8, title: 'COKI 美式复古印花潮牌袜子 (三双装)', price: 39, sales: '1.8万人付款', tag: '平价爆款', bg: 'linear-gradient(135deg, #2a1a2a, #150d15)', label: 'COKI Socks' },
-            { id: 9, title: 'COKI 简约纯色百搭帆布斜挎包', price: 79, sales: '3200人付款', tag: '百元平价', bg: 'linear-gradient(135deg, #1f2f1f, #0f170f)', label: 'COKI Bag' }
+            { id: 4, title: 'COKI 极简美式弯檐棒球帽', price: 99, sales: '4510 人付款', tag: '平价精选', bg: 'linear-gradient(145deg, #26221f, #13100e)', label: 'COKI Cap' },
+            { id: 7, title: 'COKI 925银古巴质感链条项链', price: 89, sales: '6720 人付款', tag: '超值热销', bg: 'linear-gradient(145deg, #1f2328, #0e1013)', label: 'COKI Chain' },
+            { id: 8, title: 'COKI 复古提花潮牌长筒袜 (三双装)', price: 39, sales: '1.8万 人付款', tag: '平价爆款', bg: 'linear-gradient(145deg, #241f26, #110e13)', label: 'COKI Socks' },
+            { id: 9, title: 'COKI 极简黑武士斜挎帆布包', price: 79, sales: '3200 人付款', tag: '平价精选', bg: 'linear-gradient(145deg, #1f2620, #0e130f)', label: 'COKI Bag' }
         ];
 
         // 3. 全部商品
         const allProducts = [
             ...featuredProducts,
-            { id: 3, title: 'COKI 潮牌纯棉印花短袖T恤 男女同款', price: 169, sales: '1.2万人付款', tag: '鉴别通过', bg: 'linear-gradient(135deg, #14281d, #09120d)', label: 'COKI Tee' },
+            { id: 3, title: 'COKI 纯棉重磅微宽短袖 T 恤', price: 169, sales: '1.2万 人付款', tag: '官方鉴别', bg: 'linear-gradient(145deg, #1f2824, #0e1210)', label: 'COKI Tee' },
             ...budgetProducts,
-            { id: 5, title: 'COKI 刺绣水洗牛仔夹克外套', price: 459, sales: '890人付款', tag: '新品鉴别', bg: 'linear-gradient(135deg, #112233, #08111a)', label: 'COKI Jacket' },
-            { id: 6, title: 'COKI 极简黑武士机能工装裤', price: 299, sales: '1500人付款', tag: '极速发货', bg: 'linear-gradient(135deg, #222222, #111111)', label: 'COKI Pants' }
+            { id: 5, title: 'COKI 水洗水染工装牛仔夹克', price: 459, sales: '890 人付款', tag: '新品鉴别', bg: 'linear-gradient(145deg, #1e242b, #0e1115)', label: 'COKI Jacket' },
+            { id: 6, title: 'COKI 极简机能廓形工装裤', price: 299, sales: '1500 人付款', tag: '极速发货', bg: 'linear-gradient(145deg, #222224, #101011)', label: 'COKI Pants' }
         ];
 
         // 渲染商品网格
@@ -532,10 +563,10 @@
                 renderProducts(allProducts);
             } else if (type === 'budget') {
                 filterBar.style.display = 'flex';
-                renderProducts(budgetProducts); // 点击平价，加载百元平价单品
+                renderProducts(budgetProducts);
             } else if (type === 'dynamic') {
                 filterBar.style.display = 'none';
-                document.getElementById('mainContainer').innerHTML = '<div class="content-placeholder">📢 店铺动态：COKI 2026SS 爆款限时复刻，全场领券立减！</div>';
+                document.getElementById('mainContainer').innerHTML = '<div class="content-placeholder">COKI 2026 AUTUMN/WINTER COLLECTION<br><br>下周五 20:00 尊享首发</div>';
             }
         }
 
