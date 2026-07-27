@@ -297,33 +297,6 @@
             color: #666;
         }
 
-        /* 评论列表样式 */
-        .reviews-list {
-            padding: 10px 16px;
-        }
-
-        .review-item {
-            background: #1a1a1a;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #262626;
-            margin-bottom: 10px;
-        }
-
-        .review-user {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #aaa;
-            margin-bottom: 6px;
-        }
-
-        .review-text {
-            font-size: 13px;
-            color: #eee;
-            line-height: 1.4;
-        }
-
         .content-placeholder {
             padding: 40px 20px;
             text-align: center;
@@ -457,11 +430,11 @@
         </div>
     </div>
 
-    <!-- 1. 顶部 Tab 导航（替换为你指定的四个） -->
+    <!-- 1. 顶部 Tab 导航（修改为：精选商品、全部商品、平价、店铺动态） -->
     <div class="nav-tabs">
         <div class="nav-item active" onclick="switchTab(this, 'featured')">精选商品</div>
         <div class="nav-item" onclick="switchTab(this, 'all')">全部商品</div>
-        <div class="nav-item" onclick="switchTab(this, 'reviews')">评价</div>
+        <div class="nav-item" onclick="switchTab(this, 'budget')">平价</div>
         <div class="nav-item" onclick="switchTab(this, 'dynamic')">店铺动态</div>
     </div>
 
@@ -500,20 +473,21 @@
             { id: 2, title: 'COKI x Street 联名款厚底解构运动鞋', price: 589, sales: '8920人付款', tag: '极速到家', bg: 'linear-gradient(135deg, #331832, #110912)', label: 'COKI Sneaker' }
         ];
 
-        // 2. 全部商品
+        // 2. 平价特惠单品（100元以内的性价比高货）
+        const budgetProducts = [
+            { id: 4, title: 'COKI 棒球帽潮牌美式弯檐鸭舌帽', price: 99, sales: '4510人付款', tag: '百元平价', bg: 'linear-gradient(135deg, #2b1c11, #120b06)', label: 'COKI Cap' },
+            { id: 7, title: 'COKI 银饰925银古巴链条潮牌项链', price: 89, sales: '6720人付款', tag: '极致性价比', bg: 'linear-gradient(135deg, #1a2a3a, #0d151d)', label: 'COKI Chain' },
+            { id: 8, title: 'COKI 美式复古印花潮牌袜子 (三双装)', price: 39, sales: '1.8万人付款', tag: '平价爆款', bg: 'linear-gradient(135deg, #2a1a2a, #150d15)', label: 'COKI Socks' },
+            { id: 9, title: 'COKI 简约纯色百搭帆布斜挎包', price: 79, sales: '3200人付款', tag: '百元平价', bg: 'linear-gradient(135deg, #1f2f1f, #0f170f)', label: 'COKI Bag' }
+        ];
+
+        // 3. 全部商品
         const allProducts = [
             ...featuredProducts,
             { id: 3, title: 'COKI 潮牌纯棉印花短袖T恤 男女同款', price: 169, sales: '1.2万人付款', tag: '鉴别通过', bg: 'linear-gradient(135deg, #14281d, #09120d)', label: 'COKI Tee' },
-            { id: 4, title: 'COKI 棒球帽潮牌美式弯檐鸭舌帽', price: 99, sales: '4510人付款', tag: '鉴别通过', bg: 'linear-gradient(135deg, #2b1c11, #120b06)', label: 'COKI Cap' },
+            ...budgetProducts,
             { id: 5, title: 'COKI 刺绣水洗牛仔夹克外套', price: 459, sales: '890人付款', tag: '新品鉴别', bg: 'linear-gradient(135deg, #112233, #08111a)', label: 'COKI Jacket' },
             { id: 6, title: 'COKI 极简黑武士机能工装裤', price: 299, sales: '1500人付款', tag: '极速发货', bg: 'linear-gradient(135deg, #222222, #111111)', label: 'COKI Pants' }
-        ];
-
-        // 3. 评价数据
-        const reviewsData = [
-            { user: '潮人***88', text: '卫衣面料非常厚实，版型绝了！得物鉴别包装很专业，过验无误。', time: '2026-03-20' },
-            { user: 'K***G', text: '鞋子发货速度极快，隔天就到了，颜值在线，上脚包裹感很好！', time: '2026-03-18' },
-            { user: '发财***呀', text: 'T恤纯棉质量很好，摸起来很有质感，满意！', time: '2026-03-15' }
         ];
 
         // 渲染商品网格
@@ -543,24 +517,6 @@
             `;
         }
 
-        // 渲染评价列表
-        function renderReviews() {
-            const container = document.getElementById('mainContainer');
-            container.innerHTML = `
-                <div class="reviews-list">
-                    ${reviewsData.map(r => `
-                        <div class="review-item">
-                            <div class="review-user">
-                                <span>${r.user}</span>
-                                <span>${r.time}</span>
-                            </div>
-                            <div class="review-text">“ ${r.text} ”</div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
         // Tab 切换逻辑
         function switchTab(element, type) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -574,9 +530,9 @@
             } else if (type === 'all') {
                 filterBar.style.display = 'flex';
                 renderProducts(allProducts);
-            } else if (type === 'reviews') {
-                filterBar.style.display = 'none';
-                renderReviews();
+            } else if (type === 'budget') {
+                filterBar.style.display = 'flex';
+                renderProducts(budgetProducts); // 点击平价，加载百元平价单品
             } else if (type === 'dynamic') {
                 filterBar.style.display = 'none';
                 document.getElementById('mainContainer').innerHTML = '<div class="content-placeholder">📢 店铺动态：COKI 2026SS 爆款限时复刻，全场领券立减！</div>';
