@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Coki shop — 桌面美学选品店</title>
-  <!-- 引入支持新版 API Key 的 Supabase 最新版 SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1/dist/umd/supabase.min.js"></script>
   <style>
     :root { --dewu-black: #121212; --dewu-cyan: #00f0ff; --dewu-neon: #ccff00; --bg-gray: #f6f6f6; }
@@ -77,9 +76,8 @@
   </div>
 
   <script>
-    // 配置信息
     const SUPABASE_URL = 'https://keaokbwzveijlntfcjn.supabase.co';
-    const SUPABASE_KEY = 'Sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z';
+    const SUPABASE_KEY = 'Sb_secret_LHZHZvSiwtm_xyM0ulbLFA_uvPMvA3G';
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let cart = [];
