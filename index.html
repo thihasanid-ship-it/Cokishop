@@ -4,70 +4,206 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Coki shop — 桌面美学选品店</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1/dist/umd/supabase.min.js"></script>
   <style>
-    :root { --dewu-black: #121212; --dewu-cyan: #00f0ff; --dewu-neon: #ccff00; --bg-gray: #f6f6f6; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
-    body { background-color: var(--bg-gray); color: var(--dewu-black); padding-bottom: 90px; }
-    header { background-color: var(--dewu-black); padding: 14px 16px; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 22px; font-weight: 900; color: #fff; font-style: italic; }
-    .logo span { color: var(--dewu-cyan); }
-    .cart-btn { background: rgba(255, 255, 255, 0.15); padding: 8px 14px; border-radius: 20px; color: #fff; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .cart-badge { background: var(--dewu-neon); color: var(--dewu-black); font-size: 11px; font-weight: 900; padding: 2px 7px; border-radius: 10px; }
-    .banner-wrapper { padding: 12px 16px 0; }
-    .hero-banner { background: #000; border-radius: 18px; padding: 20px; color: #fff; }
-    .banner-tag { background: var(--dewu-cyan); color: #000; font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
-    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px 16px; }
-    .product-card { background: #fff; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-    .img-wrapper { width: 100%; height: 170px; background: #eee; position: relative; }
-    .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-    .hot-badge { position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; padding: 3px 7px; border-radius: 10px; }
+    :root {
+      --primary-pink: #ff85a2;
+      --soft-pink: #fff0f3;
+      --accent-black: #2b2d42;
+      --bg-cream: #faf7f5;
+      --card-white: #ffffff;
+      --text-main: #2b2d42;
+      --text-sub: #8d99ae;
+      --shadow-soft: 0 8px 24px rgba(255, 133, 162, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-cream); color: var(--text-main); padding-bottom: 100px; }
+
+    /* 顶部滚动公告栏 */
+    .ticker-bar { background: var(--primary-pink); color: #fff; font-size: 11px; font-weight: 600; padding: 6px 12px; text-align: center; letter-spacing: 0.5px; }
+
+    /* 顶栏 Header - 毛玻璃效果 */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250, 247, 245, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 14px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(230, 225, 222, 0.5);
+    }
+    .logo { font-size: 20px; font-weight: 900; color: var(--accent-black); letter-spacing: -0.5px; }
+    .logo span { color: var(--primary-pink); font-size: 22px; }
+
+    .cart-btn {
+      background: var(--card-white);
+      border: 1.5px solid var(--soft-pink);
+      padding: 6px 14px; border-radius: 20px;
+      color: var(--text-main); font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; gap: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      cursor: pointer; transition: transform 0.1s;
+    }
+    .cart-btn:active { transform: scale(0.95); }
+    .cart-badge { background: var(--primary-pink); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; }
+
+    /* Banner 氛围海报 */
+    .banner-container { padding: 16px 16px 8px; }
+    .hero-banner {
+      background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
+      border-radius: 20px; padding: 24px 20px; color: var(--accent-black);
+      position: relative; overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+    .hero-banner::after {
+      content: '🎀'; position: absolute; right: -10px; bottom: -10px; font-size: 80px; opacity: 0.25; transform: rotate(-15deg);
+    }
+    .banner-tag { background: #fff; color: var(--primary-pink); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 12px; display: inline-block; margin-bottom: 8px; }
+    .banner-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.3px; }
+    .banner-desc { font-size: 11px; color: #666; font-weight: 500; }
+
+    /* 商品网格 */
+    .section-title { padding: 16px 20px 8px; font-size: 15px; font-weight: 800; color: var(--accent-black); display: flex; align-items: center; gap: 6px; }
+    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 0 16px; }
+
+    /* 单张商品卡片 */
+    .product-card {
+      background: var(--card-white);
+      border-radius: 18px; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: space-between;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(240, 235, 232, 0.8);
+      transition: transform 0.2s;
+    }
+    .img-wrapper { width: 100%; aspect-ratio: 1 / 1; background: #fdfaf9; position: relative; overflow: hidden; }
+    .img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .hot-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(4px);
+      color: var(--primary-pink); font-size: 10px; font-weight: 800;
+      padding: 3px 8px; border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
     .product-info { padding: 12px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
-    .product-name { font-size: 12px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+    .product-name { font-size: 13px; font-weight: 700; color: var(--text-main); line-height: 1.35; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .price-bar { display: flex; justify-content: space-between; align-items: center; }
-    .price-num { font-size: 14px; font-weight: 900; }
-    .add-btn { background: var(--dewu-black); color: #fff; border: none; padding: 6px 12px; border-radius: 14px; font-size: 11px; font-weight: bold; cursor: pointer; }
-    .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 12px 16px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-    .checkout-now-btn { background: var(--dewu-black); color: var(--dewu-neon); border: none; padding: 12px 24px; border-radius: 20px; font-weight: 900; cursor: pointer; }
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: flex-end; }
+    .price-num { font-size: 14px; font-weight: 900; color: var(--primary-pink); }
+    .price-unit { font-size: 10px; font-weight: 600; color: var(--text-sub); }
+
+    .add-btn {
+      background: var(--soft-pink); color: var(--primary-pink);
+      border: none; padding: 6px 12px; border-radius: 14px;
+      font-size: 11px; font-weight: 800; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .add-btn:active { background: var(--primary-pink); color: #fff; transform: scale(0.92); }
+
+    /* 底部悬浮结算栏 */
+    .bottom-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      padding: 12px 20px; border-top: 1px solid rgba(230, 225, 222, 0.5);
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
+    }
+    .total-label { font-size: 10px; color: var(--text-sub); font-weight: 600; text-transform: uppercase; }
+    .total-amount { font-size: 18px; font-weight: 900; color: var(--accent-black); }
+    
+    .checkout-now-btn {
+      background: linear-gradient(135deg, #ff85a2 0%, #ff6b8b 100%);
+      color: #fff; border: none; padding: 12px 24px; border-radius: 22px;
+      font-weight: 800; font-size: 13px; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 133, 162, 0.4);
+      transition: transform 0.1s;
+    }
+    .checkout-now-btn:active { transform: scale(0.96); }
+
+    /* iOS 风格底部抽屉弹窗 */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(43, 45, 66, 0.4); backdrop-filter: blur(4px);
+      z-index: 200; display: none; align-items: flex-end;
+      transition: opacity 0.2s;
+    }
     .modal-overlay.active { display: flex; }
-    .checkout-card { background: #fff; width: 100%; border-radius: 24px 24px 0 0; padding: 24px 20px 30px; }
-    .input-field { width: 100%; box-sizing: border-box; background: #f4f4f6; border: none; padding: 12px; border-radius: 10px; font-size: 13px; margin-bottom: 10px; }
-    .submit-order-btn { width: 100%; background: #0084ff; color: #fff; border: none; padding: 15px; border-radius: 12px; font-weight: 900; cursor: pointer; }
+    .checkout-card {
+      background: var(--card-white); width: 100%; border-radius: 28px 28px 0 0;
+      padding: 24px 20px 34px; animation: slideUp 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-title { font-size: 17px; font-weight: 800; color: var(--accent-black); }
+    .close-btn { background: #f0f0f0; border: none; width: 28px; height: 28px; border-radius: 50%; color: #666; font-size: 14px; font-weight: bold; cursor: pointer; }
+
+    .order-summary-box { background: var(--bg-cream); border-radius: 14px; padding: 12px 14px; margin-bottom: 16px; font-size: 12px; max-height: 110px; overflow-y: auto; color: #555; }
+    
+    .input-field {
+      width: 100%; box-sizing: border-box; background: #f8f8f8;
+      border: 1px solid #eee; padding: 13px 16px; border-radius: 12px;
+      font-size: 13px; color: var(--accent-black); margin-bottom: 10px;
+      outline: none; transition: border 0.2s;
+    }
+    .input-field:focus { border-color: var(--primary-pink); background: #fff; }
+
+    .submit-order-btn {
+      width: 100%; background: var(--accent-black); color: #fff;
+      border: none; padding: 15px; border-radius: 16px;
+      font-weight: 800; font-size: 14px; cursor: pointer; margin-top: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
   </style>
 </head>
 <body>
 
+  <!-- 顶部小公告栏 -->
+  <div class="ticker-bar">✨ Coki shop 桌面美学选品 · 全缅甸 COD 货到付款</div>
+
+  <!-- Header 导航 -->
   <header>
-    <div class="logo">Coki shop<span>.STORE</span></div>
-    <div class="cart-btn" onclick="openCheckout()">🛒 清单 <span class="cart-badge" id="cart-count">0</span></div>
+    <div class="logo">Coki shop<span>.</span></div>
+    <div class="cart-btn" onclick="openCheckout()">
+      🛒 清单 <span class="cart-badge" id="cart-count">0</span>
+    </div>
   </header>
 
-  <div class="banner-wrapper">
+  <!-- Banner 时尚海报 -->
+  <div class="banner-container">
     <div class="hero-banner">
-      <span class="banner-tag">VANITY ORGANIZER</span>
-      <h2 style="font-size:20px; margin-bottom:4px;">Coki shop 化妆台专区</h2>
-      <p style="font-size:12px; color:#aaa;">TikTok 粉丝专属优惠 · 支持货到付款 (COD)</p>
+      <span class="banner-tag">DESK AESTHETICS</span>
+      <h2 class="banner-title">把美学带回你的化妆台</h2>
+      <p class="banner-desc">TikTok 粉丝专属优惠 · 抹谷现货直发</p>
     </div>
   </div>
 
-  <div class="product-grid" id="main-product-grid">加载中...</div>
+  <div class="section-title">🌸 选品推荐 (Selected)</div>
 
+  <!-- 商品展示双列网格 -->
+  <div class="product-grid" id="main-product-grid">
+    <div style="grid-column: span 2; text-align: center; color: var(--text-sub); padding: 50px 0; font-size: 13px;">
+      🌸 正在为你加载桌面好物...
+    </div>
+  </div>
+
+  <!-- 底部固定结算栏 -->
   <div class="bottom-bar">
     <div>
-      <div style="font-size: 11px; color: #888;">合计总价：</div>
-      <div style="font-size:18px; font-weight:900;" id="total-price-display">0 MMK</div>
+      <div class="total-label">Total / 合计</div>
+      <div class="total-amount" id="total-price-display">0 MMK</div>
     </div>
-    <button class="checkout-now-btn" onclick="openCheckout()">确认下单</button>
+    <button class="checkout-now-btn" onclick="openCheckout()">确认下单 🛍️</button>
   </div>
 
+  <!-- iOS 风格下单弹窗 -->
   <div class="modal-overlay" id="checkout-modal">
     <div class="checkout-card">
-      <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-        <b style="font-size:18px;">填写送货信息</b>
-        <span onclick="closeCheckout()" style="cursor:pointer;">✕</span>
+      <div class="modal-header">
+        <b class="modal-title">📦 送货信息</b>
+        <button class="close-btn" onclick="closeCheckout()">✕</button>
       </div>
-      <div id="order-summary" style="background:#f8f8f8; padding:10px; border-radius:8px; margin-bottom:12px; font-size:12px;"></div>
+      <div id="order-summary" class="order-summary-box"></div>
       <input type="text" class="input-field" id="cust-name" placeholder="您的姓名 (Name)">
       <input type="tel" class="input-field" id="cust-phone" placeholder="联系电话 (Phone)">
       <input type="text" class="input-field" id="cust-address" placeholder="送货地址 (City / Township)">
@@ -76,44 +212,53 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://keaokbwzveijlntfcjn.supabase.co';
-    const SUPABASE_KEY = 'Sb_secret_LHZHZvSiwtm_xyM0ulbLFA_uvPMvA3G';
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const CONFIG = {
+      baseUrl: 'https://keaokbwzveijlntfcjn.supabase.co/rest/v1/products',
+      apiKey: 'Sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z'
+    };
 
     let cart = [];
     let totalPrice = 0;
 
     async function loadProducts() {
+      const grid = document.getElementById('main-product-grid');
       try {
-        const { data, error } = await db.from('products').select('*').order('id', { ascending: false });
-        const grid = document.getElementById('main-product-grid');
-        
-        if (error || !data || data.length === 0) {
-          grid.innerHTML = '<div style="grid-column: span 2; text-align:center; padding:40px; color:#888;">暂无商品，请在后台添加</div>';
+        const res = await fetch(`${CONFIG.baseUrl}?select=*&order=id.desc`, {
+          headers: {
+            'apikey': CONFIG.apiKey,
+            'Authorization': `Bearer ${CONFIG.apiKey}`
+          }
+        });
+
+        if (!res.ok) throw new Error('网络请求失败');
+        const data = await res.json();
+
+        if (data.length === 0) {
+          grid.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #aaa; padding: 50px 0; font-size:13px;">暂无商品，请在后台添加哦</div>';
           return;
         }
 
-        let html = '';
-        data.forEach(p => {
-          html += `
-            <div class="product-card">
-              <div class="img-wrapper">
-                <img src="${p.image}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
-                ${p.badge ? `<div class="hot-badge">${p.badge}</div>` : ''}
-              </div>
-              <div class="product-info">
-                <div class="product-name">${p.name}</div>
-                <div class="price-bar">
-                  <span class="price-num">${Number(p.price).toLocaleString()} MMK</span>
-                  <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">+ 选择</button>
+        grid.innerHTML = data.map(p => `
+          <div class="product-card">
+            <div class="img-wrapper">
+              <img src="${p.image}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+              ${p.badge ? `<div class="hot-badge">✨ ${escapeHtml(p.badge)}</div>` : ''}
+            </div>
+            <div class="product-info">
+              <div class="product-name">${escapeHtml(p.name)}</div>
+              <div class="price-bar">
+                <div>
+                  <span class="price-num">${Number(p.price).toLocaleString()}</span>
+                  <span class="price-unit">MMK</span>
                 </div>
+                <button class="add-btn" onclick="addToCart('${escapeHtml(p.name)}', ${p.price})">+ 选它</button>
               </div>
             </div>
-          `;
-        });
-        grid.innerHTML = html;
-      } catch(err) {
-        document.getElementById('main-product-grid').innerHTML = '<div style="grid-column: span 2; text-align:center; padding:40px; color:#888;">数据加载失败</div>';
+          </div>
+        `).join('');
+
+      } catch (err) {
+        grid.innerHTML = `<div style="grid-column: span 2; text-align: center; color: #ff85a2; padding: 40px 0; font-size:13px;">商品加载失败，请刷新页面试试</div>`;
       }
     }
 
@@ -125,9 +270,8 @@
     }
 
     function openCheckout() {
-      if (cart.length === 0) return alert('请先选择至少一款商品');
-      let summary = '';
-      cart.forEach((item, i) => { summary += `<div>${i+1}. ${item.name} - ${item.price.toLocaleString()} MMK</div>`; });
+      if (cart.length === 0) return alert('请先选择至少一款桌面好物哦~');
+      let summary = cart.map((item, i) => `<div style="margin-bottom:4px;">${i + 1}. ${item.name} <b style="color:#ff85a2;">(${item.price.toLocaleString()} MMK)</b></div>`).join('');
       document.getElementById('order-summary').innerHTML = summary;
       document.getElementById('checkout-modal').classList.add('active');
     }
@@ -135,19 +279,26 @@
     function closeCheckout() { document.getElementById('checkout-modal').classList.remove('active'); }
 
     function sendOrder() {
-      const name = document.getElementById('cust-name').value;
-      const phone = document.getElementById('cust-phone').value;
-      const address = document.getElementById('cust-address').value;
-      if (!name || !phone || !address) return alert('请填写完整信息');
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
 
-      let msg = `🛒【Coki shop 官网新订单】\n👤 姓名: ${name}\n📞 电话: ${phone}\n📍 地址: ${address}\n\n📦 商品列表:\n`;
+      if (!name || !phone || !address) return alert('请填写完整您的姓名、电话和地址');
+
+      let msg = `🛒【Coki shop 官网新订单】\n👤 姓名: ${name}\n📞 电话: ${phone}\n📍 地址: ${address}\n\n📦 订购商品列表:\n`;
       cart.forEach((item, i) => { msg += `${i + 1}. ${item.name} (${item.price.toLocaleString()} MMK)\n`; });
-      msg += `\n💰 总额: ${totalPrice.toLocaleString()} MMK (COD货到付款)`;
+      msg += `\n💰 合计金额: ${totalPrice.toLocaleString()} MMK (COD货到付款)`;
 
       navigator.clipboard.writeText(msg).then(() => {
-        alert("订单已复制！可以直接发送给客服消息。");
+        alert("🎉 订单已复制成功！请直接在聊天框粘贴发送给客服小助手！");
         closeCheckout();
+      }).catch(() => {
+        alert("复制失败，请截图发给客服哦。");
       });
+    }
+
+    function escapeHtml(str) {
+      return str ? str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m])) : '';
     }
 
     loadProducts();
