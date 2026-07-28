@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Coki shop — 桌面美学选品店</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- 引入支持新版 API Key 的 Supabase 最新版 SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1/dist/umd/supabase.min.js"></script>
   <style>
     :root { --dewu-black: #121212; --dewu-cyan: #00f0ff; --dewu-neon: #ccff00; --bg-gray: #f6f6f6; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
@@ -76,42 +77,46 @@
   </div>
 
   <script>
-    // ⬇️ 请替换下面单引号里的内容为你的凭证：
-    const SUPABASE_URL = 'https://keaokkbwzveijlntfcjn.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z';
+    // 配置信息
+    const SUPABASE_URL = 'https://keaokbwzveijlntfcjn.supabase.co';
+    const SUPABASE_KEY = 'Sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z';
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let cart = [];
     let totalPrice = 0;
 
     async function loadProducts() {
-      const { data, error } = await db.from('products').select('*').order('id', { ascending: false });
-      const grid = document.getElementById('main-product-grid');
-      
-      if (error || !data || data.length === 0) {
-        grid.innerHTML = '<div style="grid-column: span 2; text-align:center; padding:40px; color:#888;">暂无商品，请在后台添加</div>';
-        return;
-      }
+      try {
+        const { data, error } = await db.from('products').select('*').order('id', { ascending: false });
+        const grid = document.getElementById('main-product-grid');
+        
+        if (error || !data || data.length === 0) {
+          grid.innerHTML = '<div style="grid-column: span 2; text-align:center; padding:40px; color:#888;">暂无商品，请在后台添加</div>';
+          return;
+        }
 
-      let html = '';
-      data.forEach(p => {
-        html += `
-          <div class="product-card">
-            <div class="img-wrapper">
-              <img src="${p.image}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
-              ${p.badge ? `<div class="hot-badge">${p.badge}</div>` : ''}
-            </div>
-            <div class="product-info">
-              <div class="product-name">${p.name}</div>
-              <div class="price-bar">
-                <span class="price-num">${Number(p.price).toLocaleString()} MMK</span>
-                <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">+ 选择</button>
+        let html = '';
+        data.forEach(p => {
+          html += `
+            <div class="product-card">
+              <div class="img-wrapper">
+                <img src="${p.image}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+                ${p.badge ? `<div class="hot-badge">${p.badge}</div>` : ''}
+              </div>
+              <div class="product-info">
+                <div class="product-name">${p.name}</div>
+                <div class="price-bar">
+                  <span class="price-num">${Number(p.price).toLocaleString()} MMK</span>
+                  <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">+ 选择</button>
+                </div>
               </div>
             </div>
-          </div>
-        `;
-      });
-      grid.innerHTML = html;
+          `;
+        });
+        grid.innerHTML = html;
+      } catch(err) {
+        document.getElementById('main-product-grid').innerHTML = '<div style="grid-column: span 2; text-align:center; padding:40px; color:#888;">数据加载失败</div>';
+      }
     }
 
     function addToCart(name, price) {
