@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coki shop — 后台管理系统</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1/dist/umd/supabase.min.js"></script>
+  <title>Coki shop — 后台管理</title>
   <style>
     body { font-family: -apple-system, sans-serif; background: #f4f4f6; margin: 0; padding: 16px; }
     .card { background: #fff; padding: 20px; border-radius: 12px; max-width: 500px; margin: 0 auto 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -12,7 +11,6 @@
     input, button { width: 100%; box-sizing: border-box; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 14px; }
     button { background: #111; color: #fff; font-weight: bold; border: none; cursor: pointer; }
     .item { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; }
-    .item img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
     .del-btn { background: #ff4d4f; width: auto; padding: 6px 12px; margin: 0; }
   </style>
 </head>
@@ -26,9 +24,9 @@
 
   <div class="card" id="admin-box" style="display:none;">
     <h2>➕ 上架新商品</h2>
-    <input type="text" id="p-name" placeholder="商品名称 (例如: 多功能带镜收纳盒)">
+    <input type="text" id="p-name" placeholder="商品名称 (例如: 多功能收纳盒)">
     <input type="number" id="p-price" placeholder="价格 (例如: 40000)">
-    <input type="text" id="p-image" placeholder="图片文件名或网络URL (例如: item1.jpg)">
+    <input type="text" id="p-image" placeholder="图片链接 (例如: item1.jpg)">
     <input type="text" id="p-badge" placeholder="标签 (例如: 🔥 热销款)">
     <button onclick="addProduct()">发布到前台</button>
 
@@ -37,40 +35,43 @@
   </div>
 
   <script>
+    // 你的 Publishable Key
     const SUPABASE_URL = 'https://keaokbwzveijlntfcjn.supabase.co';
-    const SUPABASE_KEY = 'Sb_secret_LHZHZvSiwtm_xyM0ulbLFA_uvPMvA3G';
+    const SUPABASE_KEY = 'Sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z';
 
-    let db;
+    const HEADERS = {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    };
 
     function login() {
       const pass = document.getElementById('admin-pass').value;
       if (pass === '888888') {
         document.getElementById('login-box').style.display = 'none';
         document.getElementById('admin-box').style.display = 'block';
-
-        try {
-          db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-          loadProducts();
-        } catch(e) {
-          alert('连接数据库失败: ' + e.message);
-        }
+        loadProducts();
       } else {
         alert('密码错误！');
       }
     }
 
+    // 原生 Fetch 获取数据
     async function loadProducts() {
       try {
-        const { data, error } = await db.from('products').select('*').order('id', { ascending: false });
-        if (error) throw error;
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc`, {
+          headers: HEADERS
+        });
+        if (!res.ok) throw new Error(' HTTP 状态码: ' + res.status);
+        const data = await res.json();
 
         let html = '';
         if (data && data.length > 0) {
           data.forEach(p => {
             html += `
               <div class="item">
-                <img src="${p.image}" onerror="this.src='https://via.placeholder.com/50'">
-                <div style="flex:1; margin-left:10px;">
+                <div style="flex:1;">
                   <div style="font-weight:bold;">${p.name}</div>
                   <div style="color:#666;">${Number(p.price).toLocaleString()} MMK</div>
                 </div>
@@ -83,21 +84,27 @@
         }
         document.getElementById('product-list').innerHTML = html;
       } catch (err) {
-        alert('加载商品失败: ' + err.message);
+        alert('加载失败: ' + err.message);
       }
     }
 
+    // 原生 Fetch 添加数据
     async function addProduct() {
       const name = document.getElementById('p-name').value;
       const price = document.getElementById('p-price').value;
       const image = document.getElementById('p-image').value;
       const badge = document.getElementById('p-badge').value;
 
-      if(!name || !price || !image) return alert('请完整填写名称、价格和图片');
+      if(!name || !price || !image) return alert('请填写完整信息');
 
       try {
-        const { error } = await db.from('products').insert([{ name, price: Number(price), image, badge }]);
-        if (error) throw error;
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/products`, {
+          method: 'POST',
+          headers: HEADERS,
+          body: JSON.stringify([{ name, price: Number(price), image, badge }])
+        });
+
+        if (!res.ok) throw new Error('HTTP 状态码: ' + res.status);
 
         alert('🎉 上架成功！');
         document.getElementById('p-name').value = '';
@@ -110,11 +117,15 @@
       }
     }
 
+    // 原生 Fetch 删除数据
     async function deleteProduct(id) {
-      if(!confirm('确定要下架该商品吗？')) return;
+      if(!confirm('确定要下架吗？')) return;
       try {
-        const { error } = await db.from('products').delete().eq('id', id);
-        if (error) throw error;
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${id}`, {
+          method: 'DELETE',
+          headers: HEADERS
+        });
+        if (!res.ok) throw new Error('HTTP 状态码: ' + res.status);
         loadProducts();
       } catch (err) {
         alert('下架失败: ' + err.message);
