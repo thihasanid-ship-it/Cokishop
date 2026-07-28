@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Coki shop — 后台管理系统</title>
-  <!-- 引入 Supabase 核心库 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1/dist/umd/supabase.min.js"></script>
   <style>
     body { font-family: -apple-system, sans-serif; background: #f4f4f6; margin: 0; padding: 16px; }
     .card { background: #fff; padding: 20px; border-radius: 12px; max-width: 500px; margin: 0 auto 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -38,9 +37,9 @@
   </div>
 
   <script>
-    // 项目专属配置
+    // 你的专有配置
     const SUPABASE_URL = 'https://keaokbwzveijlntfcjn.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z';
+    const SUPABASE_KEY = 'Sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z';
 
     let db;
 
@@ -50,16 +49,12 @@
         document.getElementById('login-box').style.display = 'none';
         document.getElementById('admin-box').style.display = 'block';
 
-        // 初始化 Supabase 数据库
         try {
-          if (typeof supabase !== 'undefined') {
-            db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            loadProducts();
-          } else {
-            alert('网络加载 SDK 失败，请刷新页面重试');
-          }
+          // 初始化最新版 Supabase
+          db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+          loadProducts();
         } catch(e) {
-          alert('配置错误: ' + e.message);
+          alert('连接数据库失败: ' + e.message);
         }
       } else {
         alert('密码错误！');
@@ -86,11 +81,11 @@
             `;
           });
         } else {
-          html = '暂无商品';
+          html = '暂无商品，请在上方添加';
         }
         document.getElementById('product-list').innerHTML = html;
       } catch (err) {
-        alert('读取数据失败: ' + err.message);
+        alert('加载商品失败: ' + err.message);
       }
     }
 
