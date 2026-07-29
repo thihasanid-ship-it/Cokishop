@@ -8,18 +8,49 @@
     :root {
       --manga-black: #111111;
       --manga-white: #ffffff;
-      --manga-gray: #f4f4f4;
-      --border-light: #e0e0e0;
+      --manga-gray: #f7f7f7;
+      --accent-pink: #ff69b4;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--manga-gray); color: var(--manga-black); padding: 16px 12px 90px; }
+    body { background-color: var(--manga-gray); color: var(--manga-black); padding: 12px 12px 100px; max-width: 480px; margin: 0 auto; }
 
-    .header { text-align: center; margin-bottom: 20px; padding-top: 10px; }
-    .shop-title { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
-    .shop-subtitle { font-size: 11px; font-weight: 700; color: #666; margin-top: 4px; }
+    /* 顶部海报风格 */
+    .hero-banner {
+      background: var(--manga-black);
+      color: var(--manga-white);
+      border: 3px solid var(--manga-black);
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+      margin-bottom: 16px;
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    }
+    .hero-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .hero-sub { font-size: 11px; font-weight: 700; color: #ccc; }
+    
+    /* 蓝勾认证与小贴士 */
+    .trust-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #e8f4fd; color: #1d9bf0;
+      font-size: 10px; font-weight: 800; padding: 3px 8px;
+      border-radius: 20px; border: 1.5px solid #1d9bf0;
+      margin-top: 10px;
+    }
 
-    /* Product Grid */
+    /* COD 提示条 */
+    .cod-notice {
+      background: #fff;
+      border: 2px solid var(--manga-black);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 11px; font-weight: 800;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+      box-shadow: 2px 2px 0px var(--manga-black);
+    }
+
+    /* 商品网格 */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -28,8 +59,8 @@
 
     .product-card {
       background: var(--manga-white);
-      border: 2px solid var(--manga-black);
-      border-radius: 12px;
+      border: 2.5px solid var(--manga-black);
+      border-radius: 14px;
       padding: 10px;
       position: relative;
       box-shadow: 3px 3px 0px var(--manga-black);
@@ -45,50 +76,60 @@
     }
 
     .product-img {
-      width: 100%; height: 160px; object-fit: cover;
-      border: 2px solid var(--manga-black); border-radius: 8px;
+      width: 100%; height: 150px; object-fit: cover;
+      border: 2px solid var(--manga-black); border-radius: 10px;
       background: #eee; margin-bottom: 8px;
     }
 
     .product-name {
       font-size: 12px; font-weight: 800; line-height: 1.3;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-      height: 30px; margin-bottom: 6px;
+      height: 32px; margin-bottom: 6px;
     }
 
     .product-price {
       font-size: 13px; font-weight: 900; color: var(--manga-black);
     }
 
-    /* Floating Bag Bar */
+    /* 底部购物车栏 */
     .bag-bar {
-      position: fixed; bottom: 16px; left: 16px; right: 16px;
+      position: fixed; bottom: 16px; left: 12px; right: 12px; max-width: 456px; margin: 0 auto;
       background: var(--manga-black); color: var(--manga-white);
-      border: 2px solid var(--manga-black); border-radius: 14px;
+      border: 2.5px solid var(--manga-black); border-radius: 16px;
       padding: 14px 20px; display: flex; justify-content: space-between; align-items: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
     }
     .bag-text { font-size: 12px; font-weight: 800; }
     .bag-btn {
       background: var(--manga-white); color: var(--manga-black);
-      border: none; padding: 6px 14px; border-radius: 8px;
+      border: none; padding: 8px 16px; border-radius: 10px;
       font-size: 11px; font-weight: 900; cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="shop-title">🖤 COKI STORE</div>
-    <div class="shop-subtitle">Selected Daily & Fashion</div>
+  <!-- 顶部精美海报与蓝勾 -->
+  <div class="hero-banner">
+    <div class="hero-title">🖤 COKI OFFICIAL</div>
+    <div class="hero-sub">Kawaii Selection & Daily Fashion</div>
+    <div class="trust-badge">
+      ✓ Verified Store & Official Partner
+    </div>
   </div>
 
-  <!-- Product List Container -->
+  <!-- COD 货到付款说明 -->
+  <div class="cod-notice">
+    <span>📦 Support Cash on Delivery (COD)</span>
+    <span style="color: #666; font-size: 10px;">Fast Shipping</span>
+  </div>
+
+  <!-- 商品列表容器 -->
   <div class="product-grid" id="product-list">
     <div style="grid-column: span 2; text-align: center; padding: 40px; font-size: 12px; font-weight: 700; color: #888;">Loading products...</div>
   </div>
 
-  <!-- Bottom Bar -->
+  <!-- 底部结算栏 -->
   <div class="bag-bar">
     <div class="bag-text">🛍️ Bag: <span id="bag-count">0</span> items</div>
     <button class="bag-btn" onclick="checkout()">Checkout</button>
@@ -97,11 +138,11 @@
   <script>
     let bagCount = 0;
 
-    // 页面加载时从同目录下的 products.json 读取数据
+    // 从 GitHub 的 products.json 实时读取商品
     async function loadProducts() {
       try {
-        const response = await fetch('products.json?' + new Date().getTime()); // 加时间戳防缓存
-        if (!response.ok) throw new Error('Failed to load products');
+        const response = await fetch('products.json?' + new Date().getTime());
+        if (!response.ok) throw new Error('Failed to load');
         
         const products = await response.json();
         renderProducts(products);
@@ -109,12 +150,12 @@
         console.error(err);
         document.getElementById('product-list').innerHTML = `
           <div style="grid-column: span 2; text-align: center; padding: 30px; font-size: 11px; font-weight: 700; color: #888;">
-            No products found yet. Please add products.json to your repository!
+            Please check your products.json file in repository!
           </div>`;
       }
     }
 
-    // 渲染商品到页面
+    // 渲染商品
     function renderProducts(products) {
       const container = document.getElementById('product-list');
       if (!products || products.length === 0) {
@@ -149,7 +190,6 @@
       return str ? str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m])) : ''; 
     }
 
-    // 自动加载
     loadProducts();
   </script>
 </body>
