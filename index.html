@@ -9,13 +9,12 @@
       --manga-black: #111111;
       --manga-white: #ffffff;
       --manga-gray: #f4f4f4;
-      --verified-blue: #0095f6; /* 认证蓝勾勾颜色 */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--manga-gray); color: var(--manga-black); padding-bottom: 100px; }
 
-    /* 顶部滚动公告栏 - 纯黑白极简 */
+    /* 顶部滚动公告栏 */
     .ticker-bar { background: var(--manga-black); color: var(--manga-white); font-size: 11px; font-weight: 700; padding: 8px 12px; text-align: center; letter-spacing: 1px; }
 
     /* 顶栏 Header */
@@ -27,15 +26,18 @@
       border-bottom: 2px solid var(--manga-black);
     }
     .logo-area { display: flex; flex-direction: column; }
-    .logo-main { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; display: flex; align-items: center; gap: 4px; }
-    .verified-badge { 
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 15px; height: 15px; background: var(--verified-blue); color: #fff; 
-      border-radius: 50%; font-size: 9px; font-weight: 900; 
+    .logo-main { 
+      font-size: 18px; font-weight: 900; letter-spacing: -0.5px; 
+      display: flex; align-items: center; gap: 5px; 
+    }
+    /* 完美居中的SVG蓝标认证 */
+    .verified-icon {
+      width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center;
+      vertical-align: middle;
     }
     .logo-sub { font-size: 10px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1px; }
 
-    /* 购物车按钮 - 2D漫画框 */
+    /* 购物车按钮 */
     .cart-btn {
       background: var(--manga-white);
       border: 2px solid var(--manga-black);
@@ -48,7 +50,7 @@
     .cart-btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--manga-black); }
     .cart-badge { background: var(--manga-black); color: var(--manga-white); border: 1px solid var(--manga-black); font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 10px; }
 
-    /* Banner 氛围海报 - 纯黑白风 */
+    /* Banner 氛围海报 */
     .banner-container { padding: 16px 16px 10px; }
     .hero-banner {
       background: var(--manga-black);
@@ -66,14 +68,13 @@
     .section-title { padding: 16px 20px 10px; font-size: 15px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
     .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 0 16px; }
 
-    /* 单张商品卡片 - 纯黑白框与硬阴影 */
+    /* 商品卡片 */
     .product-card {
       background: var(--manga-white);
       border: 2px solid var(--manga-black);
       border-radius: 12px; overflow: hidden;
       display: flex; flex-direction: column; justify-content: space-between;
       box-shadow: 4px 4px 0px var(--manga-black);
-      transition: all 0.2s;
     }
     .img-wrapper { width: 100%; aspect-ratio: 1 / 1; background: #eee; border-bottom: 2px solid var(--manga-black); position: relative; }
     .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
@@ -90,7 +91,6 @@
     .price-num { font-size: 14px; font-weight: 900; }
     .price-unit { font-size: 10px; font-weight: 800; color: #666; }
 
-    /* 加购按钮 */
     .add-btn {
       background: var(--manga-white); color: var(--manga-black);
       border: 2px solid var(--manga-black); padding: 6px 12px; border-radius: 14px;
@@ -114,9 +114,7 @@
       border: 2px solid var(--manga-black); padding: 12px 24px; border-radius: 20px;
       font-weight: 900; font-size: 13px; cursor: pointer;
       box-shadow: 3px 3px 0px #888;
-      transition: all 0.1s;
     }
-    .checkout-now-btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px #888; }
 
     /* 下单弹窗 */
     .modal-overlay {
@@ -135,17 +133,15 @@
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .modal-title { font-size: 17px; font-weight: 900; }
     .close-btn { background: var(--manga-white); border: 2px solid var(--manga-black); width: 28px; height: 28px; border-radius: 50%; font-size: 14px; font-weight: 900; cursor: pointer; box-shadow: 2px 2px 0px var(--manga-black); }
-    .close-btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--manga-black); }
 
     .order-summary-box { background: var(--manga-gray); border: 2px solid var(--manga-black); border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; font-size: 12px; font-weight: 700; max-height: 110px; overflow-y: auto; }
     
     .input-field {
       width: 100%; box-sizing: border-box; background: var(--manga-white);
       border: 2px solid var(--manga-black); padding: 13px 16px; border-radius: 12px;
-      font-size: 13px; font-weight: 700; margin-bottom: 10px;
-      outline: none; box-shadow: 2px 2px 0px var(--manga-black);
+      font-size: 13px; font-weight: 700; margin-bottom: 10px; outline: none;
+      box-shadow: 2px 2px 0px var(--manga-black);
     }
-    .input-field:focus { box-shadow: 0px 0px 0px var(--manga-black); transform: translate(2px, 2px); }
 
     .submit-order-btn {
       width: 100%; background: var(--manga-black); color: var(--manga-white);
@@ -163,7 +159,14 @@
   <header>
     <div class="logo-area">
       <div class="logo-main">
-        Coki <span class="verified-badge">✓</span>
+        Coki 
+        <!-- 标准正圆形SVG蓝勾勾，绝对居中 -->
+        <span class="verified-icon" title="Verified Official">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <circle cx="12" cy="12" r="12" fill="#0095f6"/>
+            <path d="M7 12.5l3.5 3.5 7-7" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
       </div>
       <div class="logo-sub">Official Page</div>
     </div>
@@ -172,7 +175,7 @@
     </div>
   </header>
 
-  <!-- Banner 时尚海报 -->
+  <!-- Banner 海报 -->
   <div class="banner-container">
     <div class="hero-banner">
       <span class="banner-tag">VERIFIED STORE</span>
@@ -183,14 +186,14 @@
 
   <div class="section-title">📦 在售商品 (Products)</div>
 
-  <!-- 商品展示双列网格 -->
+  <!-- 商品网格 -->
   <div class="product-grid" id="main-product-grid">
     <div style="grid-column: span 2; text-align: center; color: #888; padding: 50px 0; font-size: 13px; font-weight: 700;">
       正在加载官方商品...
     </div>
   </div>
 
-  <!-- 底部固定结算栏 -->
+  <!-- 底部结算栏 -->
   <div class="bottom-bar">
     <div>
       <div class="total-label">Total Amount</div>
@@ -238,8 +241,8 @@
         if (!res.ok) throw new Error('网络请求失败');
         const data = await res.json();
 
-        if (data.length === 0) {
-          grid.innerHTML = '<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 50px 0;">暂无上架商品</div>';
+        if (!data || data.length === 0) {
+          grid.innerHTML = '<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 50px 0;">暂无上架商品，请先去后台添加</div>';
           return;
         }
 
@@ -263,7 +266,7 @@
         `).join('');
 
       } catch (err) {
-        grid.innerHTML = `<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 40px 0;">加载失败，请刷新页面</div>`;
+        grid.innerHTML = `<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 40px 0; color: #333;">加载失败，请检查网络或刷新页面</div>`;
       }
     }
 
@@ -307,4 +310,4 @@
     loadProducts();
   </script>
 </body>
-</html>
+</html>  
