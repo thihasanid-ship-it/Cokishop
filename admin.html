@@ -1,201 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Coki Store Admin</title>
-  <style>
-    :root {
-      --manga-black: #111111;
-      --manga-white: #ffffff;
-      --manga-gray: #f4f4f4;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--manga-gray); color: var(--manga-black); padding: 16px; max-width: 480px; margin: 0 auto; padding-bottom: 80px; }
-    
-    .header { background: var(--manga-black); color: var(--manga-white); padding: 16px; border-radius: 12px; text-align: center; margin-bottom: 16px; border: 2px solid var(--manga-black); }
-    .header h2 { font-size: 18px; font-weight: 900; }
-    
-    .card { background: var(--manga-white); border: 2px solid var(--manga-black); border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 3px 3px 0px var(--manga-black); }
-    .card h3 { font-size: 14px; font-weight: 900; margin-bottom: 10px; }
-
-    .input-field { width: 100%; background: var(--manga-white); border: 2px solid var(--manga-black); padding: 10px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; margin-bottom: 10px; outline: none; }
-    
-    .btn { background: var(--manga-black); color: var(--manga-white); border: 2px solid var(--manga-black); padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 900; cursor: pointer; width: 100%; text-align: center; }
-    .btn:active { transform: translate(2px, 2px); }
-    
-    .product-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding: 8px 0; font-size: 11px; font-weight: 700; }
-    .del-btn { background: #ff4d4f; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; cursor: pointer; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coki Store - 商品后台管理</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background: #f9f9f9; color: #333; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 10px; margin: 8px 0 15px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { background: #ff4757; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background: #ff6b81; }
+        .success { color: green; margin-top: 10px; font-weight: bold; }
+    </style>
 </head>
 <body>
 
-  <div class="header">
-    <h2>🛠️ Coki Admin Panel</h2>
-  </div>
+    <h2>Coki Store - 管理后台</h2>
 
-  <!-- 配置面板 (只需第一次保存) -->
-  <div class="card">
-    <h3>1. GitHub Configuration</h3>
-    <input type="text" class="input-field" id="gh-owner" placeholder="GitHub Username (e.g. thihasanid-ship-it)">
-    <input type="text" class="input-field" id="gh-repo" placeholder="Repository Name (e.g. Cokishop)">
-    <input type="password" class="input-field" id="gh-token" placeholder="Personal Access Token (ghp_...)">
-    <button class="btn" onclick="saveConfig()">Save Config</button>
-  </div>
+    <!-- GitHub 配置卡片 -->
+    <div class="card">
+        <h3>1. GitHub 配置 (保存一次即可)</h3>
+        <label>GitHub 用户名:</label>
+        <input type="text" id="username" placeholder="例如: thihasanid-ship-it">
+        
+        <label>仓库名称 (Repo):</label>
+        <input type="text" id="repo" placeholder="例如: Cokishop">
+        
+        <label>GitHub Token (PAT):</label>
+        <input type="password" id="token" placeholder="粘贴你的 Token">
+        
+        <button onclick="saveConfig()">保存配置</button>
+        <div id="configStatus" class="success"></div>
+    </div>
 
-  <!-- 添加新商品面板 -->
-  <div class="card">
-    <h3>2. Add New Product</h3>
-    <input type="text" class="input-field" id="p-name" placeholder="Product Name">
-    <input type="number" class="input-field" id="p-price" placeholder="Price (MMK)">
-    <input type="text" class="input-field" id="p-image" placeholder="Image URL (Image link)">
-    <input type="text" class="input-field" id="p-badge" placeholder="Badge (e.g. HOT, NEW, leave empty if none)">
-    <button class="btn" style="background: #238636;" onclick="addProduct()">Publish to Store 🚀</button>
-  </div>
+    <!-- 发布商品卡片 -->
+    <div class="card">
+        <h3>2. 发布新商品</h3>
+        <label>商品名称:</label>
+        <input type="text" id="title" placeholder="例如: 少女心化妆品收纳盒">
+        
+        <label>价格 (缅币):</label>
+        <input type="text" id="price" placeholder="例如: 63500">
+        
+        <label>封面主图链接 (Image URL):</label>
+        <input type="text" id="image" placeholder="https://raw.githubusercontent.com/.../item3.jpg">
 
-  <!-- 当前商品列表 -->
-  <div class="card">
-    <h3>3. Current Products in Store</h3>
-    <div id="product-list-admin">Loading...</div>
-  </div>
+        <label>详情图链接 (多张可用逗号隔开):</label>
+        <textarea id="detailImages" rows="2" placeholder="输入更多细节图链接，用英文逗号隔开"></textarea>
 
-  <script>
-    let products = [];
-    let sha = ''; // GitHub 文件的 SHA 校验码，更新时必需
+        <label>规格说明 / 详情描述:</label>
+        <textarea id="specs" rows="3" placeholder="例如: 材质: 环保木塑板 | 尺寸: 30x20x15cm | 颜色: 白色"></textarea>
+        
+        <button onclick="publishProduct()">立即发布商品</button>
+        <div id="publishStatus" class="success"></div>
+    </div>
 
-    // 页面加载时自动读取配置和商品
+<script>
+    // 页面加载时自动读取本地配置
     window.onload = function() {
-      document.getElementById('gh-owner').value = localStorage.getItem('gh_owner') || '';
-      document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
-      document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
-      loadCloudProducts();
-    };
+        if(localStorage.getItem('gh_username')) document.getElementById('username').value = localStorage.getItem('gh_username');
+        if(localStorage.getItem('gh_repo')) document.getElementById('repo').value = localStorage.getItem('gh_repo');
+        if(localStorage.getItem('gh_token')) document.getElementById('token').value = localStorage.getItem('gh_token');
+    }
 
     function saveConfig() {
-      localStorage.setItem('gh_owner', document.getElementById('gh-owner').value.trim());
-      localStorage.setItem('gh_repo', document.getElementById('gh-repo').value.trim());
-      localStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
-      alert('Configuration saved successfully!');
-      loadCloudProducts();
+        localStorage.setItem('gh_username', document.getElementById('username').value);
+        localStorage.setItem('gh_repo', document.getElementById('repo').value);
+        localStorage.setItem('gh_token', document.getElementById('token').value);
+        document.getElementById('configStatus').innerText = "配置保存成功！";
     }
 
-    // 从 GitHub 读取现有的 products.json
-    async function loadCloudProducts() {
-      const owner = localStorage.getItem('gh_owner');
-      const repo = localStorage.getItem('gh_repo');
-      if (!owner || !repo) {
-        document.getElementById('product-list-admin').innerText = 'Please fill in GitHub configuration above.';
-        return;
-      }
+    async function publishProduct() {
+        const username = document.getElementById('username').value;
+        const repo = document.getElementById('repo').value;
+        const token = document.getElementById('token').value;
 
-      try {
-        const url = `https://api.github.com/repos/${owner}/${repo}/contents/products.json`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error('Failed to load');
-        const data = await res.json();
-        
-        sha = data.sha; // 记录文件 SHA
-        const decodedContent = decodeURIComponent(escape(atob(data.content)));
-        products = JSON.parse(decodedContent);
-
-        renderAdminList();
-      } catch (err) {
-        document.getElementById('product-list-admin').innerText = 'No products.json found yet or config error.';
-        products = [];
-      }
-    }
-
-    function renderAdminList() {
-      const container = document.getElementById('product-list-admin');
-      if (!products || products.length === 0) {
-        container.innerHTML = '<div>Store is empty.</div>';
-        return;
-      }
-      container.innerHTML = products.map((p, index) => `
-        <div class="product-row">
-          <span><b>${p.name}</b> - ${Number(p.price).toLocaleString()} MMK</span>
-          <button class="del-btn" onclick="deleteProduct(${index})">Delete</button>
-        </div>
-      `).join('');
-    }
-
-    async function addProduct() {
-      const name = document.getElementById('p-name').value.trim();
-      const price = Number(document.getElementById('p-price').value);
-      const image = document.getElementById('p-image').value.trim();
-      const badge = document.getElementById('p-badge').value.trim();
-
-      if (!name || !price || !image) {
-        alert('Please fill in name, price, and image URL!');
-        return;
-      }
-
-      const newProduct = {
-        id: Date.now(),
-        name,
-        price,
-        image,
-        badge: badge || undefined
-      };
-
-      products.unshift.call(products, newProduct); // 放到最前面
-      await saveToGitHub('Add product: ' + name);
-
-      // 清空输入框
-      document.getElementById('p-name').value = '';
-      document.getElementById('p-price').value = '';
-      document.getElementById('p-image').value = '';
-      document.getElementById('p-badge').value = '';
-    }
-
-    async function deleteProduct(index) {
-      if (!confirm('Are you sure you want to delete this product?')) return;
-      products.splice(index, 1);
-      await saveToGitHub('Delete product');
-    }
-
-    // 核心：把修改后的 products.json 自动提交并保存到 GitHub 仓库
-    async function saveToGitHub(message) {
-      const owner = localStorage.getItem('gh_owner');
-      const repo = localStorage.getItem('gh_repo');
-      const token = localStorage.getItem('gh_token');
-
-      if (!owner || !repo || !token) {
-        alert('Please complete GitHub configuration first!');
-        return;
-      }
-
-      const url = `https://api.github.com/repos/${owner}/${repo}/contents/products.json`;
-      const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2))));
-
-      try {
-        const res = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: message,
-            content: contentEncoded,
-            sha: sha
-          })
-        });
-
-        if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.message || 'Failed to update');
+        if(!username || !repo || !token) {
+            alert('请先完整填写并保存 GitHub 配置！');
+            return;
         }
 
-        const data = await res.json();
-        sha = data.content.sha; // 更新最新的 SHA
-        renderAdminList();
-        alert('🎉 Successfully published! Your storefront is updated.');
-      } catch (err) {
-        alert('Publish failed: ' + err.message);
-        loadCloudProducts(); // 重新加载同步
-      }
+        const title = document.getElementById('title').value;
+        const price = document.getElementById('price').value;
+        const image = document.getElementById('image').value;
+        const detailImages = document.getElementById('detailImages').value;
+        const specs = document.getElementById('specs').value;
+
+        if(!title || !price || !image) {
+            alert('商品名称、价格和封面图不能为空！');
+            return;
+        }
+
+        document.getElementById('publishStatus').innerText = "正在发布，请稍候...";
+
+        const path = "products.json";
+        const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}`;
+
+        try {
+            // 1. 获取现有 products.json 的内容和 sha
+            let sha = "";
+            let products = [];
+            const getRes = await fetch(url, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+
+            if(getRes.ok) {
+                const fileData = await getRes.json();
+                sha = fileData.sha;
+                // 解码 base64 内容
+                const decodedContent = decodeURIComponent(escape(atob(fileData.content)));
+                products = JSON.parse(decodedContent);
+            }
+
+            // 2. 组装新商品数据 (用时间戳当作唯一 id)
+            const newProduct = {
+                id: Date.now(),
+                title: title,
+                price: price,
+                image: image,
+                detailImages: detailImages ? detailImages.split(',').map(s => s.trim()) : [image],
+                specs: specs || "暂无详细规格"
+            };
+
+            products.unshift(newProduct); // 放到最前面
+
+            // 3. 编码回 base64 并提交更新到 GitHub
+            const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2))));
+
+            const putRes = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: "Add new product via admin panel",
+                    content: updatedContent,
+                    sha: sha
+                })
+            });
+
+            if(putRes.ok) {
+                document.getElementById('publishStatus').innerText = "商品发布成功！前台已同步更新。";
+                document.getElementById('title').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('image').value = '';
+                document.getElementById('detailImages').value = '';
+                document.getElementById('specs').value = '';
+            } else {
+                const errText = await putRes.text();
+                document.getElementById('publishStatus').innerText = "发布失败: " + errText;
+            }
+
+        } catch (e) {
+            document.getElementById('publishStatus').innerText = "发生错误: " + e.message;
+        }
     }
-  </script>
+</script>
 </body>
 </html>
