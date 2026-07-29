@@ -9,24 +9,24 @@
             --manga-black: #111111;
             --manga-white: #ffffff;
             --manga-gray: #f4f4f4;
-            --border-light: #e0e0e0;
+            --border-light: #e0e0e0; /* 浅灰色淡化分割线 */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--manga-gray); color: var(--manga-black); padding-bottom: 80px; }
 
-        /* Header */
+        /* Header - 使用淡化后的边框 */
         .header {
             background: var(--manga-white); padding: 12px 16px; 
-            display: flex; align-items: center; border-bottom: 2px solid var(--manga-black); 
+            display: flex; align-items: center; border-bottom: 1px solid var(--border-light); 
             position: sticky; top: 0; z-index: 10;
         }
-        .back-btn { font-size: 13px; color: var(--manga-black); text-decoration: none; font-weight: 900; background: var(--manga-white); border: 2px solid var(--manga-black); padding: 4px 10px; border-radius: 12px; box-shadow: 2px 2px 0px var(--manga-black); }
-        .back-btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--manga-black); }
+        .back-btn { font-size: 13px; color: var(--manga-black); text-decoration: none; font-weight: 800; background: var(--manga-white); border: 1.5px solid var(--border-light); padding: 4px 10px; border-radius: 12px; }
+        .back-btn:active { background: var(--manga-gray); }
         .header-title { flex-grow: 1; text-align: center; font-size: 14px; font-weight: 900; margin-right: 40px; }
 
-        /* Image Gallery Slider */
-        .gallery-container { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #fff; border-bottom: 2px solid var(--manga-black); overflow: hidden; }
+        /* Image Gallery Slider - 使用淡化分割线 */
+        .gallery-container { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #fff; border-bottom: 1px solid var(--border-light); overflow: hidden; }
         .gallery-track { display: flex; width: 100%; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; }
         .gallery-track::-webkit-scrollbar { display: none; }
         .gallery-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; }
@@ -35,27 +35,32 @@
         /* Page Indicator Badge (e.g. 1/5) */
         .image-counter {
             position: absolute; bottom: 12px; right: 12px;
-            background: rgba(17, 17, 17, 0.8); color: var(--manga-white);
+            background: rgba(17, 17, 17, 0.7); color: var(--manga-white);
             font-size: 10px; font-weight: 900; padding: 4px 8px; border-radius: 10px;
-            border: 1px solid var(--manga-white); pointer-events: none;
-            letter-spacing: 1px;
+            pointer-events: none; letter-spacing: 1px;
         }
 
-        /* Product Info Box */
-        .info-box { background: var(--manga-white); padding: 16px; border-bottom: 2px solid var(--manga-black); margin-bottom: 12px; }
+        /* Product Info Box - 淡化底部边框 */
+        .info-box { background: var(--manga-white); padding: 16px; border-bottom: 1px solid var(--border-light); margin-bottom: 12px; }
         .price { color: var(--manga-black); font-size: 20px; font-weight: 900; margin-bottom: 6px; }
-        .title { font-size: 14px; font-weight: 800; line-height: 1.4; }
+        .title { font-size: 14px; font-weight: 800; line-height: 1.4; color: #222; }
 
         /* Specs Section */
-        .section-title { font-size: 12px; font-weight: 900; margin: 16px 16px 8px 16px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
-        .specs-box { background: var(--manga-white); border: 2px solid var(--manga-black); border-radius: 10px; margin: 0 16px; padding: 14px; font-size: 12px; font-weight: 700; line-height: 1.6; color: #333; white-space: pre-wrap; box-shadow: 3px 3px 0px var(--manga-black); margin-bottom: 16px; }
+        .section-title { font-size: 11px; font-weight: 800; margin: 16px 16px 8px 16px; color: #777; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* Specs Box - 换成精致的浅边框和轻量阴影 */
+        .specs-box { 
+            background: var(--manga-white); border: 1px solid var(--border-light); border-radius: 10px; 
+            margin: 0 16px; padding: 14px; font-size: 12px; font-weight: 700; line-height: 1.6; color: #444; 
+            white-space: pre-wrap; box-shadow: 0 2px 6px rgba(0,0,0,0.03); margin-bottom: 16px; 
+        }
 
         /* Detail Images Section (下方长图) */
         .detail-images-container { width: 100%; display: flex; flex-direction: column; gap: 4px; }
         .detail-images-container img { width: 100%; display: block; }
 
         /* Loading & Error */
-        .loading, .error { text-align: center; padding: 60px 20px; font-weight: 800; color: #666; font-size: 13px; }
+        .loading, .error { text-align: center; padding: 60px 20px; font-weight: 800; color: #888; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -92,7 +97,6 @@
                 return;
             }
 
-            // 整理所有图片（轮播图）
             let images = [];
             if (product.detailImages && product.detailImages.length > 0) {
                 images = product.detailImages;
@@ -104,7 +108,6 @@
 
             const totalImages = images.length;
 
-            // 生成顶部轮播图 HTML
             let slidesHtml = '';
             images.forEach((imgUrl) => {
                 slidesHtml += `
@@ -114,7 +117,6 @@
                 `;
             });
 
-            // 生成下方长图文详情区 HTML（把所有细节图一张接一张往下排）
             let detailImagesHtml = '';
             images.forEach((imgUrl) => {
                 detailImagesHtml += `<img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">`;
@@ -151,7 +153,6 @@
         }
     }
 
-    // 实时计算当前滑动到了第几张照片 (1/5 效果)
     function updateImageCounter(total) {
         const track = document.getElementById('gallery-track');
         if (!track) return;
