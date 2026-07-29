@@ -48,7 +48,11 @@
 
         /* Specs Section */
         .section-title { font-size: 12px; font-weight: 900; margin: 16px 16px 8px 16px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
-        .specs-box { background: var(--manga-white); border: 2px solid var(--manga-black); border-radius: 10px; margin: 0 16px; padding: 14px; font-size: 12px; font-weight: 700; line-height: 1.6; color: #333; white-space: pre-wrap; box-shadow: 3px 3px 0px var(--manga-black); }
+        .specs-box { background: var(--manga-white); border: 2px solid var(--manga-black); border-radius: 10px; margin: 0 16px; padding: 14px; font-size: 12px; font-weight: 700; line-height: 1.6; color: #333; white-space: pre-wrap; box-shadow: 3px 3px 0px var(--manga-black); margin-bottom: 16px; }
+
+        /* Detail Images Section (下方长图) */
+        .detail-images-container { width: 100%; display: flex; flex-direction: column; gap: 4px; }
+        .detail-images-container img { width: 100%; display: block; }
 
         /* Loading & Error */
         .loading, .error { text-align: center; padding: 60px 20px; font-weight: 800; color: #666; font-size: 13px; }
@@ -88,7 +92,7 @@
                 return;
             }
 
-            // 整理所有图片（优先使用 detailImages，如果没有则用主图）
+            // 整理所有图片（轮播图）
             let images = [];
             if (product.detailImages && product.detailImages.length > 0) {
                 images = product.detailImages;
@@ -100,14 +104,20 @@
 
             const totalImages = images.length;
 
-            // 生成轮播图 HTML
+            // 生成顶部轮播图 HTML
             let slidesHtml = '';
-            images.forEach((imgUrl, index) => {
+            images.forEach((imgUrl) => {
                 slidesHtml += `
                     <div class="gallery-slide">
                         <img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
                     </div>
                 `;
+            });
+
+            // 生成下方长图文详情区 HTML（把所有细节图一张接一张往下排）
+            let detailImagesHtml = '';
+            images.forEach((imgUrl) => {
+                detailImagesHtml += `<img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">`;
             });
 
             const pTitle = product.title || product.name || 'Untitled';
@@ -129,6 +139,11 @@
 
                 <div class="section-title">Specifications & Description</div>
                 <div class="specs-box">${escapeHtml(pSpecs)}</div>
+
+                <div class="section-title">Product Details Gallery</div>
+                <div class="detail-images-container">
+                    ${detailImagesHtml}
+                </div>
             `;
 
         } catch (e) {
@@ -136,7 +151,7 @@
         }
     }
 
-    // 实时计算当前滑动到了第几张照片
+    // 实时计算当前滑动到了第几张照片 (1/5 效果)
     function updateImageCounter(total) {
         const track = document.getElementById('gallery-track');
         if (!track) return;
