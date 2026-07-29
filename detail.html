@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情 - Coki Store</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background: #f9f9f9; color: #333; padding-bottom: 60px; }
+        .header { background: white; padding: 12px 15px; display: flex; align-items: center; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 10; }
+        .back-btn { font-size: 16px; color: #ff4757; text-decoration: none; font-weight: bold; }
+        .header-title { flex-grow: 1; text-align: center; font-size: 16px; font-weight: bold; margin-right: 30px; }
+        
+        .main-img { width: 100%; height: 350px; object-fit: cover; background: #eee; }
+        .info-box { background: white; padding: 15px; margin-bottom: 10px; }
+        .price { color: #ff4757; font-size: 22px; font-weight: bold; margin: 0 0 8px 0; }
+        .title { font-size: 18px; margin: 0; line-height: 1.4; }
+        
+        .section-title { font-size: 15px; font-weight: bold; margin: 15px 15px 8px 15px; color: #555; }
+        .specs-box { background: white; padding: 15px; font-size: 14px; line-height: 1.6; color: #666; white-space: pre-wrap; margin-bottom: 15px; }
+        
+        .detail-images img { width: 100%; display: block; margin-bottom: 5px; }
+        .loading, .error { text-align: center; padding: 50px; color: #888; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html" class="back-btn">‹ 返回</a>
+        <div class="header-title">商品详情</div>
+    </div>
+
+    <div id="content">
+        <div class="loading">正在加载商品详情...</div>
+    </div>
+
+<script>
+    async function loadDetail() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        const container = document.getElementById('content');
+
+        if (!productId) {
+            container.innerHTML = '<div class="error">未找到商品信息</div>';
+            return;
+        }
+
+        try {
+            const res = await fetch('products.json?t=' + Date.now());
+            if (!res.ok) throw new Error("无法读取商品数据");
+            
+            const products = await res.json();
+            // 根据传过来的 id 寻找对应的商品
+            const product = products.find(p => String(p.id) === String(productId));
+
+            if (!product) {
+                container.innerHTML = '<div class="error">该商品已下架或不存在</div>';
+                return;
+            }
+
+            // 渲染详情页内容
+            let detailImagesHtml = '';
+            if (product.detailImages && product.detailImages.length > 0) {
+                product.detailImages.forEach(imgUrl => {
+                    detailImagesHtml += `<img src="${imgUrl}" alt="细节图">`;
+                });
+            }
+
+            container.innerHTML = `
+                <img src="${product.image}" class="main-img" alt="${product.title}">
+                <div class="info-box">
+                    <p class="price">${product.price} Ks</p>
+                    <h2 class="title">${product.title}</h2>
+                </div>
+
+                <div class="section-title">规格与说明</div>
+                <div class="specs-box">${product.specs}</div>
+
+                <div class="section-title">商品详情图</div>
+                <div class="detail-images">
+                    ${detailImagesHtml}
+                </div>
+            `;
+
+        } catch (e) {
+            container.innerHTML = '<div class="error">加载详情失败，请检查网络</div>';
+        }
+    }
+
+    loadDetail();
+</script>
+</body>
+</html>
