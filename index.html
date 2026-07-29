@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Coki official page — 官方精选</title>
+  <title>Coki Official Page</title>
   <style>
     :root {
       --manga-black: #111111;
       --manga-white: #ffffff;
       --manga-gray: #f4f4f4;
+      --accent-blue: #0095f6;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--manga-gray); color: var(--manga-black); padding-bottom: 100px; }
 
-    /* 顶部公告栏 (全英文) */
+    /* Top Announcement Bar */
     .ticker-bar { background: var(--manga-black); color: var(--manga-white); font-size: 11px; font-weight: 700; padding: 8px 12px; text-align: center; letter-spacing: 1px; }
 
-    /* 顶栏 Header - 模仿拼多多旗舰店横向布局 */
+    /* Header - Pinduoduo Flagship Style */
     header {
       position: sticky; top: 0; z-index: 100;
       background: var(--manga-white);
@@ -28,14 +29,14 @@
     
     .store-info { display: flex; align-items: center; gap: 10px; }
     
-    /* 左侧圆形 Logo */
+    /* Left Logo */
     .store-avatar {
       width: 42px; height: 42px; border-radius: 50%;
       border: 2px solid var(--manga-black);
       object-fit: cover; background: #fff;
     }
 
-    /* 右侧文字与蓝标同行 */
+    /* Right Text Group & Verified Badge */
     .store-text-group { display: flex; flex-direction: column; justify-content: center; }
     .store-name-row { 
       font-size: 15px; font-weight: 900; letter-spacing: -0.3px; 
@@ -43,13 +44,13 @@
     }
     .store-sub-row { font-size: 10px; font-weight: 700; color: #666; text-transform: uppercase; margin-top: 1px; }
 
-    /* 标准正圆形SVG蓝勾勾 */
+    /* Official Blue Checkmark */
     .verified-icon {
       width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center;
       vertical-align: middle; flex-shrink: 0;
     }
 
-    /* 购物车按钮 */
+    /* Cart Button */
     .cart-btn {
       background: var(--manga-white);
       border: 2px solid var(--manga-black);
@@ -62,24 +63,35 @@
     .cart-btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--manga-black); }
     .cart-badge { background: var(--manga-black); color: var(--manga-white); border: 1px solid var(--manga-black); font-size: 9px; font-weight: 900; padding: 2px 5px; border-radius: 8px; }
 
-    /* Banner 海报 */
-    .banner-container { padding: 14px 16px 8px; }
-    .hero-banner {
-      background: var(--manga-black);
-      color: var(--manga-white);
-      border: 2px solid var(--manga-black);
-      border-radius: 14px; padding: 18px 16px; 
-      box-shadow: 4px 4px 0px #ccc;
+    /* Category Navigation Tabs */
+    .nav-tabs {
+      background: var(--manga-white);
+      border-bottom: 2px solid var(--manga-black);
+      display: flex; justify-content: space-around;
+      position: sticky; top: 66px; z-index: 90;
     }
-    .banner-tag { background: var(--manga-white); color: var(--manga-black); font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px; }
-    .banner-title { font-size: 18px; font-weight: 900; margin-bottom: 3px; }
-    .banner-desc { font-size: 11px; font-weight: 600; color: #aaa; }
+    .nav-tab {
+      flex: 1; text-align: center; padding: 12px 0;
+      font-size: 12px; font-weight: 900; color: #666;
+      cursor: pointer; position: relative;
+      transition: color 0.2s;
+    }
+    .nav-tab.active {
+      color: var(--manga-black);
+    }
+    .nav-tab.active::after {
+      content: ''; position: absolute; bottom: -2px; left: 20%; right: 20%;
+      height: 3px; background: var(--manga-black); border-radius: 2px;
+    }
 
-    /* 商品网格 */
-    .section-title { padding: 14px 16px 8px; font-size: 14px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
-    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; }
+    /* Content Sections */
+    .tab-content { display: none; padding: 14px 16px; }
+    .tab-content.active { display: block; }
 
-    /* 商品卡片 */
+    /* Product Grid */
+    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+    /* Product Card */
     .product-card {
       background: var(--manga-white);
       border: 2px solid var(--manga-black);
@@ -109,7 +121,19 @@
     }
     .add-btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--manga-black); }
 
-    /* 底部结算栏 */
+    /* Reviews Section Style */
+    .review-card {
+      background: var(--manga-white);
+      border: 2px solid var(--manga-black);
+      border-radius: 10px; padding: 12px; margin-bottom: 10px;
+      box-shadow: 3px 3px 0px var(--manga-black);
+    }
+    .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .review-user { font-size: 12px; font-weight: 900; }
+    .review-stars { color: #f59e0b; font-size: 11px; }
+    .review-text { font-size: 11px; font-weight: 700; color: #444; line-height: 1.4; }
+
+    /* Bottom Checkout Bar */
     .bottom-bar {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
       background: var(--manga-white); border-top: 2px solid var(--manga-black);
@@ -125,7 +149,7 @@
       box-shadow: 2px 2px 0px #888;
     }
 
-    /* 弹窗 */
+    /* Checkout Modal */
     .modal-overlay {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0, 0, 0, 0.5);
@@ -161,16 +185,13 @@
 </head>
 <body>
 
-  <!-- 顶部小公告栏 (全英文) -->
+  <!-- Top Announcement Bar -->
   <div class="ticker-bar">✨ OFFICIAL STORE · Cash on Delivery (COD) Available Nationwide</div>
 
-  <!-- Header 导航 - 拼多多旗舰店风格布局 -->
+  <!-- Header -->
   <header>
     <div class="store-info">
-      <!-- 左侧：已直接填入你的 Logo 图片直链 -->
       <img src="https://raw.githubusercontent.com/thihasanid-ship-it/Cokishop/refs/heads/main/d3edc28c3ca009c6423fc4fe30de650d.png" alt="Coki Logo" class="store-avatar">
-      
-      <!-- 右侧：Coki Official Page 连排 + 正圆蓝标 -->
       <div class="store-text-group">
         <div class="store-name-row">
           Coki Official Page
@@ -186,54 +207,84 @@
     </div>
 
     <div class="cart-btn" onclick="openCheckout()">
-      🛒 清单 <span class="cart-badge" id="cart-count">0</span>
+      🛒 Bag <span class="cart-badge" id="cart-count">0</span>
     </div>
   </header>
 
-  <!-- Banner 海报 -->
-  <div class="banner-container">
-    <div class="hero-banner">
-      <span class="banner-tag">OFFICIAL STORE</span>
-      <h2 class="banner-title">Coki 官方精选</h2>
-      <p class="banner-desc">TikTok 粉丝专属认证 · 严选好物直发</p>
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="switchTab('all', this)">All Products</div>
+    <div class="nav-tab" onclick="switchTab('featured', this)">Featured</div>
+    <div class="nav-tab" onclick="switchTab('reviews', this)">Reviews</div>
+  </div>
+
+  <!-- Tab 1: All Products -->
+  <div id="tab-all" class="tab-content active">
+    <div class="product-grid" id="grid-all">
+      <div style="grid-column: span 2; text-align: center; color: #888; padding: 40px 0; font-size: 12px; font-weight: 700;">Loading products...</div>
     </div>
   </div>
 
-  <div class="section-title">📦 在售商品 (Products)</div>
-
-  <!-- 商品网格 -->
-  <div class="product-grid" id="main-product-grid">
-    <div style="grid-column: span 2; text-align: center; color: #888; padding: 40px 0; font-size: 12px; font-weight: 700;">
-      正在加载官方商品...
+  <!-- Tab 2: Featured -->
+  <div id="tab-featured" class="tab-content">
+    <div class="product-grid" id="grid-featured">
+      <div style="grid-column: span 2; text-align: center; color: #888; padding: 40px 0; font-size: 12px; font-weight: 700;">Loading featured items...</div>
     </div>
   </div>
 
-  <!-- 底部结算栏 -->
+  <!-- Tab 3: Reviews -->
+  <div id="tab-reviews" class="tab-content">
+    <div id="reviews-container">
+      <div class="review-card">
+        <div class="review-header">
+          <span class="review-user">Su Su (Yangon)</span>
+          <span class="review-stars">★★★★★</span>
+        </div>
+        <div class="review-text">Super cute items! Fast delivery and good quality. Will definitely order again! ✨</div>
+      </div>
+      <div class="review-card">
+        <div class="review-header">
+          <span class="review-user">Aung Aung (Mandalay)</span>
+          <span class="review-stars">★★★★★</span>
+        </div>
+        <div class="review-text">Trusted seller. The packaging was neat and safe. COD service is very convenient. 👍</div>
+      </div>
+      <div class="review-card">
+        <div class="review-header">
+          <span class="review-user">Hnin Hnin (Taunggyi)</span>
+          <span class="review-stars">★★★★★</span>
+        </div>
+        <div class="review-text">Love the design! Exactly like the pictures shown on TikTok. Highly recommended! ❤️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Checkout Bar -->
   <div class="bottom-bar">
     <div>
       <div class="total-label">Total Amount</div>
       <div class="total-amount" id="total-price-display">0 MMK</div>
     </div>
-    <button class="checkout-now-btn" onclick="openCheckout()">立即结算</button>
+    <button class="checkout-now-btn" onclick="openCheckout()">Checkout Now</button>
   </div>
 
-  <!-- 弹窗 -->
+  <!-- Checkout Modal -->
   <div class="modal-overlay" id="checkout-modal">
     <div class="checkout-card">
       <div class="modal-header">
-        <b class="modal-title">📦 填写送货信息</b>
+        <b class="modal-title">📦 Shipping Details</b>
         <button class="close-btn" onclick="closeCheckout()">✕</button>
       </div>
       <div id="order-summary" class="order-summary-box"></div>
-      <input type="text" class="input-field" id="cust-name" placeholder="您的姓名 (Name)">
-      <input type="tel" class="input-field" id="cust-phone" placeholder="联系电话 (Phone)">
-      <input type="text" class="input-field" id="cust-address" placeholder="送货地址 (City / Township)">
+      <input type="text" class="input-field" id="cust-name" placeholder="Full Name">
+      <input type="tel" class="input-field" id="cust-phone" placeholder="Phone Number">
+      <input type="text" class="input-field" id="cust-address" placeholder="Delivery Address (City / Township)">
       
       <p style="font-size: 11px; font-weight: 700; color: #666; text-align: center; margin: 8px 0;">
-        💡 提交后将自动复制订单，请发送给官方客服
+        💡 Order will be copied automatically. Please send it to official support.
       </p>
 
-      <button class="submit-order-btn" onclick="sendOrder()">提交订单并复制</button>
+      <button class="submit-order-btn" onclick="sendOrder()">Confirm & Copy Order</button>
     </div>
   </div>
 
@@ -245,44 +296,71 @@
 
     let cart = [];
     let totalPrice = 0;
+    let allProductsData = [];
+
+    // Switch Tabs Logic
+    function switchTab(tabName, element) {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      element.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+    }
 
     async function loadProducts() {
-      const grid = document.getElementById('main-product-grid');
       try {
         const res = await fetch(`${CONFIG.baseUrl}?select=*&order=id.desc`, {
           headers: { 'apikey': CONFIG.apiKey, 'Authorization': `Bearer ${CONFIG.apiKey}` }
         });
 
-        if (!res.ok) throw new Error('网络请求失败');
-        const data = await res.json();
+        if (!res.ok) throw new Error('Network error');
+        allProductsData = await res.json();
 
-        if (!data || data.length === 0) {
-          grid.innerHTML = '<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 40px 0;">暂无上架商品，请先去后台添加</div>';
-          return;
-        }
+        renderGrids();
+      } catch (err) {
+        document.getElementById('grid-all').innerHTML = `<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 30px 0;">Failed to load products. Please check connection.</div>`;
+      }
+    }
 
-        grid.innerHTML = data.map(p => `
-          <div class="product-card">
-            <div class="img-wrapper">
-              <img src="${p.image}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
-              ${p.badge ? `<div class="hot-badge">${escapeHtml(p.badge)}</div>` : ''}
-            </div>
-            <div class="product-info">
-              <div class="product-name">${escapeHtml(p.name)}</div>
-              <div class="price-bar">
-                <div>
-                  <span class="price-num">${Number(p.price).toLocaleString()}</span>
-                  <span class="price-unit">MMK</span>
-                </div>
-                <button class="add-btn" onclick="addToCart('${escapeHtml(p.name)}', ${p.price})">＋ 选择</button>
+    function renderGrids() {
+      const gridAll = document.getElementById('grid-all');
+      const gridFeatured = document.getElementById('grid-featured');
+
+      if (!allProductsData || allProductsData.length === 0) {
+        gridAll.innerHTML = '<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 40px 0;">No products available yet.</div>';
+        gridFeatured.innerHTML = '<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 40px 0;">No featured items yet.</div>';
+        return;
+      }
+
+      // Render All Products
+      gridAll.innerHTML = allProductsData.map(p => productCardHtml(p)).join('');
+
+      // Render Featured (Filter items that have a badge or first 4 items)
+      const featuredItems = allProductsData.filter(p => p.badge && p.badge.trim() !== '');
+      const displayFeatured = featuredItems.length > 0 ? featuredItems : allProductsData.slice(0, 4);
+      
+      gridFeatured.innerHTML = displayFeatured.map(p => productCardHtml(p)).join('');
+    }
+
+    function productCardHtml(p) {
+      return `
+        <div class="product-card">
+          <div class="img-wrapper">
+            <img src="${p.image}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+            ${p.badge ? `<div class="hot-badge">${escapeHtml(p.badge)}</div>` : ''}
+          </div>
+          <div class="product-info">
+            <div class="product-name">${escapeHtml(p.name)}</div>
+            <div class="price-bar">
+              <div>
+                <span class="price-num">${Number(p.price).toLocaleString()}</span>
+                <span class="price-unit">MMK</span>
               </div>
+              <button class="add-btn" onclick="addToCart('${escapeHtml(p.name).replace(/'/g, "\\'")}', ${p.price})">＋ Add</button>
             </div>
           </div>
-        `).join('');
-
-      } catch (err) {
-        grid.innerHTML = `<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 30px 0; color: #333;">加载失败，请检查网络或刷新页面</div>`;
-      }
+        </div>
+      `;
     }
 
     function addToCart(name, price) {
@@ -293,7 +371,7 @@
     }
 
     function openCheckout() {
-      if (cart.length === 0) return alert('请先挑选商品哦！');
+      if (cart.length === 0) return alert('Please select some items first!');
       let summary = cart.map((item, i) => `<div style="margin-bottom:6px; display:flex; justify-content:space-between;"><span>${i + 1}. ${item.name}</span> <span>${item.price.toLocaleString()} MMK</span></div>`).join('');
       document.getElementById('order-summary').innerHTML = summary;
       document.getElementById('checkout-modal').classList.add('active');
@@ -306,17 +384,17 @@
       const phone = document.getElementById('cust-phone').value.trim();
       const address = document.getElementById('cust-address').value.trim();
 
-      if (!name || !phone || !address) return alert('请把名字、电话和地址都填上哦！');
+      if (!name || !phone || !address) return alert('Please fill in your name, phone number, and address!');
 
-      let msg = `🛒【Coki Official 新订单】\n👤 姓名: ${name}\n📞 电话: ${phone}\n📍 地址: ${address}\n\n📦 购买清单:\n`;
+      let msg = `🛒【Coki Official Order】\n👤 Name: ${name}\n📞 Phone: ${phone}\n📍 Address: ${address}\n\n📦 Items:\n`;
       cart.forEach((item, i) => { msg += `${i + 1}. ${item.name} (${item.price.toLocaleString()} MMK)\n`; });
-      msg += `\n💰 合计: ${totalPrice.toLocaleString()} MMK (COD货到付款)`;
+      msg += `\n💰 Total: ${totalPrice.toLocaleString()} MMK (Cash on Delivery)`;
 
       navigator.clipboard.writeText(msg).then(() => {
-        alert("🎉 订单复制成功！请粘贴发送给官方客服。");
+        alert("🎉 Order copied successfully! Please paste and send it to our official support.");
         closeCheckout();
       }).catch(() => {
-        alert("复制失败，请截图当前屏幕发给客服。");
+        alert("Copy failed, please screenshot your screen and send to support.");
       });
     }
 
