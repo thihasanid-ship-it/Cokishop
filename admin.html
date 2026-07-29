@@ -1,136 +1,179 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coki shop — 后台管理</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Coki Admin Panel</title>
   <style>
-    body { font-family: -apple-system, sans-serif; background: #f4f4f6; margin: 0; padding: 16px; }
-    .card { background: #fff; padding: 20px; border-radius: 12px; max-width: 500px; margin: 0 auto 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    h2 { margin-top: 0; font-size: 18px; border-bottom: 2px solid #111; padding-bottom: 8px; }
-    input, button { width: 100%; box-sizing: border-box; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 14px; }
-    button { background: #111; color: #fff; font-weight: bold; border: none; cursor: pointer; }
-    .item { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; }
-    .del-btn { background: #ff4d4f; width: auto; padding: 6px 12px; margin: 0; }
+    :root {
+      --manga-black: #111111;
+      --manga-white: #ffffff;
+      --manga-gray: #f4f4f4;
+      --border-light: #e0e0e0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--manga-gray); color: var(--manga-black); padding: 20px 16px 80px; }
+
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .title { font-size: 18px; font-weight: 900; }
+    
+    .card {
+      background: var(--manga-white);
+      border: 2px solid var(--manga-black);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 3px 3px 0px var(--manga-black);
+    }
+
+    .card-title { font-size: 14px; font-weight: 900; margin-bottom: 12px; }
+
+    .input-field {
+      width: 100%; background: var(--manga-white);
+      border: 2px solid var(--manga-black); padding: 10px 12px; border-radius: 8px;
+      font-size: 12px; font-weight: 700; margin-bottom: 10px; outline: none;
+    }
+
+    .btn {
+      width: 100%; background: var(--manga-black); color: var(--manga-white);
+      border: 2px solid var(--manga-black); padding: 12px; border-radius: 8px;
+      font-weight: 900; font-size: 12px; cursor: pointer; text-align: center;
+    }
+    .btn:active { transform: translate(2px, 2px); }
+
+    .product-list-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid var(--border-light);
+    }
+    .product-info-text { font-size: 12px; font-weight: 800; }
+    .product-price-text { font-size: 11px; font-weight: 700; color: #666; }
+    
+    .delete-btn {
+      background: #ef4444; color: #fff; border: 2px solid var(--manga-black);
+      padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-  <div class="card" id="login-box">
-    <h2>🔐 后台登录</h2>
-    <input type="password" id="admin-pass" placeholder="输入后台密码 (默认: 888888)">
-    <button onclick="login()">登录管理后台</button>
+  <div class="header">
+    <div class="title">🛠️ Coki Admin Panel</div>
+    <a href="index.html" style="font-size: 11px; font-weight: 900; color: #0095f6; text-decoration: none;">← View Store</a>
   </div>
 
-  <div class="card" id="admin-box" style="display:none;">
-    <h2>➕ 上架新商品</h2>
-    <input type="text" id="p-name" placeholder="商品名称 (例如: 多功能收纳盒)">
-    <input type="number" id="p-price" placeholder="价格 (例如: 40000)">
-    <input type="text" id="p-image" placeholder="图片链接 (例如: item1.jpg)">
-    <input type="text" id="p-badge" placeholder="标签 (例如: 🔥 热销款)">
-    <button onclick="addProduct()">发布到前台</button>
+  <!-- Add Product Form -->
+  <div class="card">
+    <div class="card-title">➕ Add New Product</div>
+    <input type="text" class="input-field" id="p-name" placeholder="Product Name (e.g., Cute Hoodie)">
+    <input type="number" class="input-field" id="p-price" placeholder="Price in MMK (e.g., 15000)">
+    <input type="text" class="input-field" id="p-image" placeholder="Image URL (GitHub raw link or image link)">
+    <input type="text" class="input-field" id="p-badge" placeholder="Badge (Optional, e.g., HOT / NEW)">
+    <button class="btn" onclick="addProduct()">Publish Product</button>
+  </div>
 
-    <h2 style="margin-top: 30px;">📦 在售商品列表</h2>
-    <div id="product-list">加载中...</div>
+  <!-- Product Management List -->
+  <div class="card">
+    <div class="card-title">📦 Existing Products</div>
+    <div id="admin-product-list">
+      <div style="font-size: 11px; font-weight: 700; color: #888; text-align: center; padding: 20px 0;">Loading list...</div>
+    </div>
   </div>
 
   <script>
-    // 你的 Publishable Key
-    const SUPABASE_URL = 'https://keaokbwzveijlntfcjn.supabase.co';
-    const SUPABASE_KEY = 'Sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z';
-
-    const HEADERS = {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=representation'
+    const CONFIG = {
+      baseUrl: 'https://keaokbwzveijlntfcjn.supabase.co/rest/v1/products',
+      apiKey: 'Sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z'
     };
 
-    function login() {
-      const pass = document.getElementById('admin-pass').value;
-      if (pass === '888888') {
-        document.getElementById('login-box').style.display = 'none';
-        document.getElementById('admin-box').style.display = 'block';
-        loadProducts();
-      } else {
-        alert('密码错误！');
-      }
-    }
-
-    // 原生 Fetch 获取数据
-    async function loadProducts() {
+    async function loadAdminProducts() {
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc`, {
-          headers: HEADERS
+        const res = await fetch(`${CONFIG.baseUrl}?select=*&order=id.desc`, {
+          headers: { 'apikey': CONFIG.apiKey, 'Authorization': `Bearer ${CONFIG.apiKey}` }
         });
-        if (!res.ok) throw new Error(' HTTP 状态码: ' + res.status);
+        if (!res.ok) throw new Error('Fetch failed');
         const data = await res.json();
-
-        let html = '';
-        if (data && data.length > 0) {
-          data.forEach(p => {
-            html += `
-              <div class="item">
-                <div style="flex:1;">
-                  <div style="font-weight:bold;">${p.name}</div>
-                  <div style="color:#666;">${Number(p.price).toLocaleString()} MMK</div>
-                </div>
-                <button class="del-btn" onclick="deleteProduct(${p.id})">下架</button>
-              </div>
-            `;
-          });
-        } else {
-          html = '暂无商品，请在上方添加';
+        
+        const listContainer = document.getElementById('admin-product-list');
+        if (!data || data.length === 0) {
+          listContainer.innerHTML = '<div style="font-size: 11px; font-weight: 700; color: #888; text-align: center; padding: 20px 0;">No products found.</div>';
+          return;
         }
-        document.getElementById('product-list').innerHTML = html;
+
+        listContainer.innerHTML = data.map(p => `
+          <div class="product-list-item">
+            <div>
+              <div class="product-info-text">${escapeHtml(p.name)}</div>
+              <div class="product-price-text">${Number(p.price).toLocaleString()} MMK</div>
+            </div>
+            <button class="delete-btn" onclick="deleteProduct(${p.id})">Delete</button>
+          </div>
+        `).join('');
       } catch (err) {
-        alert('加载失败: ' + err.message);
+        console.error(err);
       }
     }
 
-    // 原生 Fetch 添加数据
     async function addProduct() {
-      const name = document.getElementById('p-name').value;
-      const price = document.getElementById('p-price').value;
-      const image = document.getElementById('p-image').value;
-      const badge = document.getElementById('p-badge').value;
+      const name = document.getElementById('p-name').value.trim();
+      const price = document.getElementById('p-price').value.trim();
+      const image = document.getElementById('p-image').value.trim();
+      const badge = document.getElementById('p-badge').value.trim();
 
-      if(!name || !price || !image) return alert('请填写完整信息');
+      if (!name || !price || !image) {
+        alert('Please fill in Name, Price, and Image URL!');
+        return;
+      }
 
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/products`, {
+        const res = await fetch(CONFIG.baseUrl, {
           method: 'POST',
-          headers: HEADERS,
-          body: JSON.stringify([{ name, price: Number(price), image, badge }])
+          headers: {
+            'apikey': CONFIG.apiKey,
+            'Authorization': `Bearer ${CONFIG.apiKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ name, price: Number(price), image, badge })
         });
 
-        if (!res.ok) throw new Error('HTTP 状态码: ' + res.status);
+        if (!res.ok) throw new Error('Failed to add product');
 
-        alert('🎉 上架成功！');
+        alert('🎉 Product added successfully!');
         document.getElementById('p-name').value = '';
         document.getElementById('p-price').value = '';
         document.getElementById('p-image').value = '';
         document.getElementById('p-badge').value = '';
-        loadProducts();
+        loadAdminProducts();
       } catch (err) {
-        alert('添加失败: ' + err.message);
+        alert('Error adding product. Please check console.');
+        console.error(err);
       }
     }
 
-    // 原生 Fetch 删除数据
     async function deleteProduct(id) {
-      if(!confirm('确定要下架吗？')) return;
+      if (!confirm('Are you sure you want to delete this product?')) return;
+
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${id}`, {
+        const res = await fetch(`${CONFIG.baseUrl}?id=eq.${id}`, {
           method: 'DELETE',
-          headers: HEADERS
+          headers: {
+            'apikey': CONFIG.apiKey,
+            'Authorization': `Bearer ${CONFIG.apiKey}`
+          }
         });
-        if (!res.ok) throw new Error('HTTP 状态码: ' + res.status);
-        loadProducts();
+
+        if (!res.ok) throw new Error('Failed to delete');
+        loadAdminProducts();
       } catch (err) {
-        alert('下架失败: ' + err.message);
+        alert('Error deleting product.');
+        console.error(err);
       }
     }
+
+    function escapeHtml(str) { return str ? str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m])) : ''; }
+
+    loadAdminProducts();
   </script>
 </body>
 </html>
