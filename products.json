@@ -1,5 +1,12 @@
 [
   {
+    "id": 1785324415473,
+    "name": "Mirror",
+    "price": 60000,
+    "image": "https://raw.githubusercontent.com/thihasanid-ship-it/Cokishop/main/item3.jpg",
+    "badge": "Sale"
+  },
+  {
     "id": 1,
     "name": "Cute Anime Hoodie",
     "price": 15000,
