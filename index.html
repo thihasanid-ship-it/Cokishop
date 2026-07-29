@@ -403,6 +403,129 @@
     function escapeHtml(str) { return str ? str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m])) : ''; }
 
     loadProducts();
+    <script>
+    const CONFIG = {
+      baseUrl: 'https://keaokbwzveijlntfcjn.supabase.co/rest/v1/products',
+      apiKey: 'Sb_publishable_fdwg49L6AQlqlj4MApcuaQ_4YZF3M6Z'
+    };
+
+    let cart = [];
+    let totalPrice = 0;
+    let allProductsData = [];
+
+    // Switch Tabs Logic
+    function switchTab(tabName, element) {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      element.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+    }
+
+    async function loadProducts() {
+      try {
+        const res = await fetch(`${CONFIG.baseUrl}?select=*&order=id.desc`, {
+          headers: { 'apikey': CONFIG.apiKey, 'Authorization': `Bearer ${CONFIG.apiKey}` }
+        });
+
+        if (!res.ok) {
+          // 如果后端返回错误（比如401、404等），把状态码抛出来
+          throw new Error(`HTTP Error: ${res.status} ${res.statusText}`);
+        }
+        
+        allProductsData = await res.json();
+        renderGrids();
+      } catch (err) {
+        // 关键点：直接把错误原因显示在页面上！
+        console.error(err);
+        document.getElementById('grid-all').innerHTML = `
+          <div style="grid-column: span 2; text-align: center; color: #ef4444; padding: 30px 10px; font-size: 11px; font-weight: 700; word-break: break-all;">
+            ❌ 连不上后端报错：<br>${err.message}<br><br>
+            💡 请检查 URL 或 API Key 是否复制完整。
+          </div>`;
+      }
+    }
+
+    function renderGrids() {
+      const gridAll = document.getElementById('grid-all');
+      const gridFeatured = document.getElementById('grid-featured');
+
+      if (!allProductsData || allProductsData.length === 0) {
+        gridAll.innerHTML = '<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 40px 0;">No products available yet.</div>';
+        gridFeatured.innerHTML = '<div style="grid-column: span 2; text-align: center; font-weight: 700; padding: 40px 0;">No featured items yet.</div>';
+        return;
+      }
+
+      // Render All Products
+      gridAll.innerHTML = allProductsData.map(p => productCardHtml(p)).join('');
+
+      // Render Featured
+      const featuredItems = allProductsData.filter(p => p.badge && p.badge.trim() !== '');
+      const displayFeatured = featuredItems.length > 0 ? featuredItems : allProductsData.slice(0, 4);
+      
+      gridFeatured.innerHTML = displayFeatured.map(p => productCardHtml(p)).join('');
+    }
+
+    function productCardHtml(p) {
+      return `
+        <div class="product-card">
+          <div class="img-wrapper">
+            <img src="${p.image}" onerror="this.src='https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500'">
+            ${p.badge ? `<div class="hot-badge">${escapeHtml(p.badge)}</div>` : ''}
+          </div>
+          <div class="product-info">
+            <div class="product-name">${escapeHtml(p.name)}</div>
+            <div class="price-bar">
+              <div>
+                <span class="price-num">${Number(p.price).toLocaleString()}</span>
+                <span class="price-unit">MMK</span>
+              </div>
+              <button class="add-btn" onclick="addToCart('${escapeHtml(p.name).replace(/'/g, "\\'")}', ${p.price})">＋ Add</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      totalPrice += price;
+      document.getElementById('cart-count').innerText = cart.length;
+      document.getElementById('total-price-display').innerText = totalPrice.toLocaleString() + ' MMK';
+    }
+
+    function openCheckout() {
+      if (cart.length === 0) return alert('Please select some items first!');
+      let summary = cart.map((item, i) => `<div style="margin-bottom:6px; display:flex; justify-content:space-between;"><span>${i + 1}. ${item.name}</span> <span>${item.price.toLocaleString()} MMK</span></div>`).join('');
+      document.getElementById('order-summary').innerHTML = summary;
+      document.getElementById('checkout-modal').classList.add('active');
+    }
+
+    function closeCheckout() { document.getElementById('checkout-modal').classList.remove('active'); }
+
+    function sendOrder() {
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
+
+      if (!name || !phone || !address) return alert('Please fill in your name, phone number, and address!');
+
+      let msg = `🛒【Coki Official Order】\n👤 Name: ${name}\n📞 Phone: ${phone}\n📍 Address: ${address}\n\n📦 Items:\n`;
+      cart.forEach((item, i) => { msg += `${i + 1}. ${item.name} (${item.price.toLocaleString()} MMK)\n`; });
+      msg += `\n💰 Total: ${totalPrice.toLocaleString()} MMK (Cash on Delivery)`;
+
+      navigator.clipboard.writeText(msg).then(() => {
+        alert("🎉 Order copied successfully! Please paste and send it to our official support.");
+        closeCheckout();
+      }).catch(() => {
+        alert("Copy failed, please screenshot your screen and send to support.");
+      });
+    }
+
+    function escapeHtml(str) { return str ? str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m])) : ''; }
+
+    loadProducts();
   </script>
+
 </body>
 </html>
